@@ -1,11 +1,7 @@
 package com.yetote.mp4info;
 
 public class ReadInfo {
-    static {
-        System.loadLibrary("native-lib");
+    public static void readFile(String path){
+        NativeReadInfo.readFile(path);
     }
-
-
-
-    public native void show();
 }
