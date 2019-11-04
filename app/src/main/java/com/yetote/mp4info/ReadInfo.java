@@ -1,7 +1,15 @@
 package com.yetote.mp4info;
 
 public class ReadInfo {
-    public static void readFile(String path){
-        NativeReadInfo.readFile(path);
+
+    NIOReadInfo nioReadInfo;
+
+    public ReadInfo(String path) {
+        nioReadInfo = new NIOReadInfo(path);
+    }
+
+    public void prepare() {
+//        NativeReadInfo.readFile(path);
+        nioReadInfo.prepare();
     }
 }
