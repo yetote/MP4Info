@@ -1,4 +1,4 @@
-package com.yetote.mp4info;
+package com.yetote.mp4info.util;
 
 public class ReadInfo {
 

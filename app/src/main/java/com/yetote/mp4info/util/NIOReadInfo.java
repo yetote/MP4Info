@@ -1,4 +1,4 @@
-package com.yetote.mp4info;
+package com.yetote.mp4info.util;
 
 import android.util.Log;
 
@@ -34,7 +34,7 @@ public class NIOReadInfo {
             String type = "";
             byte[] lengthArr = new byte[4];
             byte[] typeArr = new byte[4];
-            for (; ; ) {
+            do {
                 fileChannel.position(position);
                 fileChannel.read(buffer);
                 buffer.flip();
@@ -45,8 +45,7 @@ public class NIOReadInfo {
                 Log.e(TAG, "prepare: type为:" + type + "长度:" + length);
                 buffer.clear();
                 position += length;
-                if (position >= fileChannel.size()) break;
-            }
+            } while (position < fileChannel.size());
 
             fileChannel.close();
             inputStream.close();
