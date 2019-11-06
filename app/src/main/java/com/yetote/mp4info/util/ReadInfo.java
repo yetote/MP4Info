@@ -1,5 +1,7 @@
 package com.yetote.mp4info.util;
 
+import java.util.List;
+
 public class ReadInfo {
 
     NIOReadInfo nioReadInfo;
@@ -8,8 +10,13 @@ public class ReadInfo {
         nioReadInfo = new NIOReadInfo(path);
     }
 
-    public void prepare() {
+    public boolean prepare() {
 //        NativeReadInfo.readFile(path);
-        nioReadInfo.prepare();
+        return nioReadInfo.prepare();
+    }
+
+
+    public List<String> getBoxName(int level, int parentId) {
+        return nioReadInfo.getBoxName(level, parentId);
     }
 }

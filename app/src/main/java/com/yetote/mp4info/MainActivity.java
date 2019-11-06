@@ -3,8 +3,10 @@ package com.yetote.mp4info;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,6 +17,18 @@ import com.unnamed.b.atv.view.AndroidTreeView;
 import com.unnamed.b.atv.view.TreeNodeWrapperView;
 import com.yetote.mp4info.util.ReadInfo;
 
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+
 public class MainActivity extends AppCompatActivity {
     private TextView pathTv;
     private Button chooseFileBtn, prepareBtn;
@@ -22,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     ReadInfo readInfo;
+    TreeNode root;
+    TreeNode parent;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +64,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("描述"), true);
         tabLayout.addTab(tabLayout.newTab().setText("数据"));
 
-        TreeNode root = TreeNode.root();
-        TreeNode parent = new TreeNode("父节点");
-        TreeNode child0 = new TreeNode("子节点1");
-        TreeNode child1 = new TreeNode("子节点2");
-        parent.addChildren(child0, child1);
+        root = TreeNode.root();
+        TreeNode parent = new TreeNode("mp4");
+
         root.addChild(parent);
         AndroidTreeView tView = new AndroidTreeView(this, root);
         treeView.addView(tView.getView());
@@ -64,7 +79,21 @@ public class MainActivity extends AppCompatActivity {
             readInfo = new ReadInfo(path);
         });
         prepareBtn.setOnClickListener(v -> {
-            readInfo.prepare();
+            Observable.create((ObservableOnSubscribe<Boolean>) emitter -> emitter.onNext(readInfo.prepare()))
+                    .subscribeOn(Schedulers.newThread())
+                    .flatMap((Function<Boolean, ObservableSource<List<String>>>) rst -> {
+                        if (rst) return Observable.just(readInfo.getBoxName(1, 0));
+                        else return null;
+                    }).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(strings -> {
+                        if (strings != null) {
+                            for (int i = 0; i < strings.size(); i++) {
+                                TreeNode child = new TreeNode(strings.get(i));
+                                parent.addChildren(child);
+                            }
+                        }
+                    });
+
         });
     }
 }
