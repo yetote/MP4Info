@@ -80,14 +80,9 @@ public class NIOReadInfo {
         return size;
     }
 
-    public List<String> getBoxName(int level, int parentId) {
-        List<String> nameList = new ArrayList<>();
-        for (Box item : boxList) {
-            if (item.getLevel() == level && item.getParentId() == parentId) {
-                nameList.add(item.getName());
-            }
-        }
-        if (nameList.size() > 0) return nameList;
+    public List<Box> getBox(int level, int parentId) {
+
+        if (boxList.size() > 0) return boxList;
         return null;
     }
 }

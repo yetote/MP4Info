@@ -12,6 +12,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
+import com.yetote.mp4info.adapter.TreeNodeAdapter;
+import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.util.ReadInfo;
 
 import java.util.List;
@@ -19,7 +21,9 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -56,10 +60,11 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("数据"));
 
         root = TreeNode.root();
-        TreeNode parent = new TreeNode("mp4");
+        TreeNode parent = new TreeNode(new Box("mp4", -1, 0, 0, 0, 0));
 
         root.addChild(parent);
         AndroidTreeView tView = new AndroidTreeView(this, root);
+        tView.setDefaultViewHolder(TreeNodeAdapter.class);
         treeView.addView(tView.getView());
 
         chooseFileBtn.setOnClickListener(v -> {
@@ -70,17 +75,21 @@ public class MainActivity extends AppCompatActivity {
             readInfo = new ReadInfo(path);
         });
         prepareBtn.setOnClickListener(v -> {
-            Observable.create((ObservableOnSubscribe<Boolean>) emitter -> emitter.onNext(readInfo.prepare()))
-                    .subscribeOn(Schedulers.newThread())
-                    .flatMap((Function<Boolean, ObservableSource<List<String>>>) rst -> {
-                        if (rst) return Observable.just(readInfo.getBoxName(1, 0));
-                        else return null;
-                    }).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(strings -> {
-                        if (strings != null) {
-                            for (int i = 0; i < strings.size(); i++) {
-                                TreeNode child = new TreeNode(strings.get(i));
-                                parent.addChildren(child);
+            Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
+                emitter.onNext(readInfo.prepare());
+            }).subscribeOn(Schedulers.newThread())
+                    .flatMap((Function<Boolean, ObservableSource<List<Box>>>) isPrepare -> {
+                        if (isPrepare)
+                            return Observable.just(readInfo.getBox(1, 0));
+                        else
+                            return null;
+                    }).subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(boxes -> {
+                        if (boxes != null) {
+                            for (int i = 0; i < boxes.size(); i++) {
+                                TreeNode child = new TreeNode(boxes);
+                                tView.addNode(parent,child);
                             }
                         }
                     });

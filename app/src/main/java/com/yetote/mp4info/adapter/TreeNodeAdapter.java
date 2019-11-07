@@ -1,0 +1,42 @@
+package com.yetote.mp4info.adapter;
+
+import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.unnamed.b.atv.model.TreeNode;
+import com.yetote.mp4info.R;
+import com.yetote.mp4info.model.Box;
+
+public class TreeNodeAdapter extends TreeNode.BaseNodeViewHolder<Box> {
+    private TextView tv;
+    private ImageView icon;
+    private Context context;
+    private static final String TAG = "TreeNodeAdapter";
+
+    public TreeNodeAdapter(Context context) {
+        super(context);
+        this.context = context;
+    }
+
+    @Override
+    public View createNodeView(TreeNode node, Box value) {
+        View v = LayoutInflater.from(context).inflate(R.layout.layout_nodetree_item, null, false);
+        tv = v.findViewById(R.id.layout_treenode_item_name);
+        icon = v.findViewById(R.id.layout_treenode_item_icon);
+        tv.setText(value.getName());
+        Log.e(TAG, "createNodeView: " + value.getName());
+        return v;
+    }
+
+
+    @Override
+    public void toggleSelectionMode(boolean isCheck) {
+//        super.toggleSelectionMode(editModeEnabled);
+        Glide.with(icon).load(isCheck ? R.drawable.show : R.drawable.hide);
+    }
+}
