@@ -1,31 +1,25 @@
 package com.yetote.mp4info;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.tabs.TabLayout;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
-import com.unnamed.b.atv.view.TreeNodeWrapperView;
 import com.yetote.mp4info.util.ReadInfo;
 
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -47,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
 
-//        String path = getExternalFilesDir(Environment.DIRECTORY_MOVIES).getPath() + "/test.mp4";
-
-//        readInfo.prepare();
     }
 
     private void initView() {
