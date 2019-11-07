@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     .subscribe(boxes -> {
                         if (boxes != null) {
                             for (int i = 0; i < boxes.size(); i++) {
-                                TreeNode child = new TreeNode(boxes);
+                                TreeNode child = new TreeNode(boxes.get(i));
                                 tView.addNode(parent,child);
                             }
                         }
