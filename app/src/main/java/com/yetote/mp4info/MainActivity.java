@@ -2,9 +2,11 @@ package com.yetote.mp4info;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -65,6 +67,23 @@ public class MainActivity extends AppCompatActivity {
         root.addChild(parent);
         AndroidTreeView tView = new AndroidTreeView(this, root);
         tView.setDefaultViewHolder(TreeNodeAdapter.class);
+//        tView.setSelectionModeEnabled(true);
+        tView.setDefaultNodeClickListener(new TreeNode.TreeNodeClickListener() {
+            @Override
+            public void onClick(TreeNode node, Object value) {
+                Box parent = (Box) value;
+                if (parent.getLevel() != 0) {
+//                    List<Box> boxList = readInfo.readBox(parent);
+//                    for (Box child : boxList) {
+//                        TreeNode childNode = new TreeNode(child);
+//                        Log.e(TAG, "onClick: "+child.toString() );
+//                        tView.addNode(node, childNode);
+//                    }
+//                    tView.addNode(node, child);
+                    readInfo.readBox(parent);
+                }
+            }
+        });
         treeView.addView(tView.getView());
 
         chooseFileBtn.setOnClickListener(v -> {
@@ -89,8 +108,9 @@ public class MainActivity extends AppCompatActivity {
                         if (boxes != null) {
                             for (int i = 0; i < boxes.size(); i++) {
                                 TreeNode child = new TreeNode(boxes.get(i));
-                                tView.addNode(parent,child);
+                                tView.addNode(parent, child);
                             }
+                            Toast.makeText(this, "解析完成", Toast.LENGTH_SHORT).show();
                         }
                     });
 

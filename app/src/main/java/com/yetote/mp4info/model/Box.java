@@ -1,5 +1,8 @@
 package com.yetote.mp4info.model;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
 public class Box {
     private String name;
     private int id;
@@ -7,6 +10,7 @@ public class Box {
     private int length;
     private int level;
     private int parentId;
+    ByteBuffer buffer;
 
     public Box(String name, int id, int pos, int length, int level, int parentId) {
         this.id = id;
@@ -15,6 +19,7 @@ public class Box {
         this.level = level;
         this.parentId = parentId;
         this.name = name;
+        buffer = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());
     }
 
     public String getName() {
@@ -63,5 +68,17 @@ public class Box {
 
     public void setParentId(int parentId) {
         this.parentId = parentId;
+    }
+
+    @Override
+    public String toString() {
+        return "Box{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", pos=" + pos +
+                ", length=" + length +
+                ", level=" + level +
+                ", parentId=" + parentId +
+                '}';
     }
 }

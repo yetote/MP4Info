@@ -1,44 +1,69 @@
 package com.yetote.mp4info.model;
 
+import android.util.Log;
+
+import java.io.IOException;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.channels.FileChannel;
+
 public class Ftyp {
-    String describe = "ftyp为file type,意味着文件格式,其中包含MP4的一些文件信息";
+    String describe = "ftyp为file type,意味着文件格式,其中包含MP4的一些文件信息,其中包含三部分:\nmajor_brand(协议名称)\nminor_version(版本号)\ncompatible_brands(兼容的协议)";
     //协议名称
-    String major_brand;
+    byte[] major_brand;
     //版本号
-    String minor_version;
+    byte[] minor_version;
     //兼容的协议
-    String compatible_brands;
+    byte[] compatible_brands;
     int length;
 
-    public String getMajor_brand() {
-        return major_brand;
+    int major_brand_size = 4;
+    int minor_version_size = 4;
+    int compatible_brands_size = 16;
+
+    public Ftyp() {
+//        major_brand = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());
+//        minor_version = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());
+//        compatible_brands = ByteBuffer.allocate(16).order(ByteOrder.nativeOrder());
+
+        major_brand = new byte[4];
+        minor_version = new byte[4];
+        compatible_brands = new byte[16];
     }
 
-    public void setMajor_brand(String major_brand) {
-        this.major_brand = major_brand;
-    }
 
-    public String getMinor_version() {
-        return minor_version;
-    }
+    public String[] read(int pos, int length, FileChannel fileChannel) {
+        ByteBuffer ftypBuffer = ByteBuffer.allocate(length).order(ByteOrder.nativeOrder());
+        try {
+            String describe = this.describe;
+            fileChannel.position(pos);
+            fileChannel.read(ftypBuffer);
 
-    public void setMinor_version(String minor_version) {
-        this.minor_version = minor_version;
-    }
+            ftypBuffer.flip();
+            byte[] all = new byte[length];
+            ftypBuffer.get(all);
+            String all_str = new String(all);
 
-    public String getCompatible_brands() {
-        return compatible_brands;
-    }
+            ftypBuffer.position(8);
+            ftypBuffer.get(major_brand);
+            String major_brand_str = new String(major_brand);
 
-    public void setCompatible_brands(String compatible_brands) {
-        this.compatible_brands = compatible_brands;
-    }
+            ftypBuffer.get(minor_version);
+            String minor_version_str = new String(minor_version);
 
-    public int getLength() {
-        return length;
-    }
+            ftypBuffer.get(compatible_brands);
+            String compatible_brands_str = new String(compatible_brands);
 
-    public void setLength(int length) {
-        this.length = length;
+            ftypBuffer.clear();
+            String data = "全部数据 : " + all_str + "\n"
+                    + "major_brand : " + major_brand_str + "\n"
+                    + "minor_version : " + minor_version_str + "\n"
+                    + "compatible_brands : " + compatible_brands_str + "\n";
+            return new String[]{describe, data};
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

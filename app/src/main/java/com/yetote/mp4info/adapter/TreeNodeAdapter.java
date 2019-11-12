@@ -36,7 +36,8 @@ public class TreeNodeAdapter extends TreeNode.BaseNodeViewHolder<Box> {
 
     @Override
     public void toggleSelectionMode(boolean isCheck) {
-//        super.toggleSelectionMode(editModeEnabled);
-        Glide.with(icon).load(isCheck ? R.drawable.show : R.drawable.hide);
+        super.toggleSelectionMode(isCheck);
+        Glide.with(context).load(isCheck ? R.drawable.show : R.drawable.hide).into(icon);
+        Log.e(TAG, "toggleSelectionMode: "+isCheck );
     }
 }

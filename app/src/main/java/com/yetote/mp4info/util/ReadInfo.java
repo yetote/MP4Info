@@ -18,6 +18,10 @@ public class ReadInfo {
     }
 
 
+    public String[] readBox(Box box) {
+        return nioReadInfo.readBox(box);
+    }
+
     public List<Box> getBox(int level, int parentId) {
         return nioReadInfo.getBox(level, parentId);
     }
