@@ -15,9 +15,66 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/path_tv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/choose_file"
+            app:layout_constraintEnd_toStartOf="@+id/choose_file"
+            app:layout_constraintStart_toStartOf="@+id/tabLayout"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/choose_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择文件"
+            app:layout_constraintEnd_toStartOf="@+id/prepare"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:text="开始解析"
+            android:id="@+id/prepare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/tabLayout"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/treeView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/path_tv" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/vp"
+            app:layout_constraintStart_toEndOf="@+id/treeView"
+            app:layout_constraintTop_toBottomOf="@+id/choose_file" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.935"
+            app:layout_constraintStart_toEndOf="@+id/treeView"
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.33" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

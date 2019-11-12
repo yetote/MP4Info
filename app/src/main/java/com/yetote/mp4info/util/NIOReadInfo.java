@@ -1,6 +1,8 @@
-package com.yetote.mp4info;
+package com.yetote.mp4info.util;
 
 import android.util.Log;
+
+import com.yetote.mp4info.model.Box;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,15 +10,19 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NIOReadInfo {
     private String path;
-    private Map<String, Integer> indexMap;
+    private Map<String, Box> indexMap;
+    private List<Box> boxList = new ArrayList<>();
     private static final String TAG = "Read";
     FileInputStream inputStream;
     FileChannel fileChannel;
+    private static int id = 0;
 
     public NIOReadInfo(String path) {
         this.path = path;
@@ -24,8 +30,9 @@ public class NIOReadInfo {
 
     }
 
-    public void prepare() {
+    public boolean prepare() {
         ByteBuffer buffer = ByteBuffer.allocate(8).order(ByteOrder.nativeOrder());
+
         try {
             inputStream = new FileInputStream(path);
             fileChannel = inputStream.getChannel();
@@ -34,7 +41,7 @@ public class NIOReadInfo {
             String type = "";
             byte[] lengthArr = new byte[4];
             byte[] typeArr = new byte[4];
-            for (; ; ) {
+            do {
                 fileChannel.position(position);
                 fileChannel.read(buffer);
                 buffer.flip();
@@ -42,11 +49,12 @@ public class NIOReadInfo {
                 buffer.get(typeArr);
                 length = toInt(lengthArr);
                 type = new String(typeArr);
-                Log.e(TAG, "prepare: type为:" + type + "长度:" + length);
                 buffer.clear();
+//                indexMap.put(type, new Box(id, position, length, 1, 0));
+                boxList.add(new Box(type, id, position, length, 1, 0));
                 position += length;
-                if (position >= fileChannel.size()) break;
-            }
+                id++;
+            } while (position < fileChannel.size());
 
             fileChannel.close();
             inputStream.close();
@@ -55,10 +63,14 @@ public class NIOReadInfo {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-
         }
+        return true;
     }
+
+    public void readChild() {
+
+    }
+
 
     private int toInt(byte[] arr) {
         int size = 0;
@@ -68,4 +80,9 @@ public class NIOReadInfo {
         return size;
     }
 
+    public List<Box> getBox(int level, int parentId) {
+
+        if (boxList.size() > 0) return boxList;
+        return null;
+    }
 }
