@@ -2,6 +2,7 @@ package com.yetote.mp4info.util;
 
 import com.yetote.mp4info.model.Box;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReadInfo {
@@ -22,7 +23,11 @@ public class ReadInfo {
         return nioReadInfo.readBox(box);
     }
 
-    public List<Box> getBox(int level, int parentId) {
+    public ArrayList<Box> readBox(Box box, boolean isChild) {
+        return nioReadInfo.readBox(box,isChild);
+    }
+
+    public ArrayList<Box> getBox(int level, int parentId) {
         return nioReadInfo.getBox(level, parentId);
     }
 }

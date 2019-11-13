@@ -21,6 +21,7 @@ import com.yetote.mp4info.adapter.ViewPagerAdapter;
 import com.yetote.mp4info.fragment.DataFragment;
 import com.yetote.mp4info.fragment.DescribeFragment;
 import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.util.MP4;
 import com.yetote.mp4info.util.ReadInfo;
 
 import java.util.ArrayList;
@@ -87,7 +88,28 @@ public class MainActivity extends AppCompatActivity {
                     });
         });
 
+        tView.setDefaultNodeClickListener((node, value) -> {
+            Box box = (Box) value;
+            if (box.getLevel() != 0) {
 
+                if (MP4.getChild(box.getName())) {
+                    ArrayList<Box> list = readInfo.readBox(box, false);
+                    for (Box b : list) {
+                        TreeNode child = new TreeNode(b);
+                        tView.addNode(node, child);
+                    }
+                } else {
+                    String[] strings = readInfo.readBox(box);
+                    if (strings != null) {
+                        describeFragment.setDescribe(strings[0]);
+                        dataFragment.setData(strings[1]);
+                    } else {
+                        describeFragment.setDescribe("暂无数据");
+                        dataFragment.setData("暂无数据");
+                    }
+                }
+            }
+        });
     }
 
     private void initView() {
@@ -117,31 +139,7 @@ public class MainActivity extends AppCompatActivity {
         root.addChild(parent);
         tView = new AndroidTreeView(this, root);
         tView.setDefaultViewHolder(TreeNodeAdapter.class);
-//        tView.setSelectionModeEnabled(true);
-        tView.setDefaultNodeClickListener(new TreeNode.TreeNodeClickListener() {
-            @Override
-            public void onClick(TreeNode node, Object value) {
-                Box parent = (Box) value;
-                if (parent.getLevel() != 0) {
-//                    List<Box> boxList = readInfo.readBox(parent);
-//                    for (Box child : boxList) {
-//                        TreeNode childNode = new TreeNode(child);
-//                        Log.e(TAG, "onClick: "+child.toString() );
-//                        tView.addNode(node, childNode);
-//                    }
-//                    tView.addNode(node, child);
-                    String[] strings = readInfo.readBox(parent);
-//                    Toast.makeText(MainActivity.this, strings[1], Toast.LENGTH_SHORT).show();
-                    if (strings != null) {
-                        describeFragment.setDescribe(strings[0]);
-                        dataFragment.setData(strings[1]);
-                    }else {
-                        describeFragment.setDescribe("暂无数据");
-                        dataFragment.setData("暂无数据");
-                    }
-                }
-            }
-        });
+
         treeView.addView(tView.getView());
     }
 }

@@ -3,7 +3,6 @@ package com.yetote.mp4info.util;
 import android.util.Log;
 
 import com.yetote.mp4info.model.Box;
-import com.yetote.mp4info.model.MP4;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,7 +12,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,10 +60,14 @@ public class NIOReadInfo {
     }
 
 
-    public List<Box> getBox(int level, int parentId) {
-
-        if (boxList.size() > 0) return boxList;
-        return null;
+    public ArrayList<Box> getBox(int level, int parentId) {
+        ArrayList<Box> list = new ArrayList<>();
+        for (Box b : boxList) {
+            if (b.getLevel() == level && b.getParentId() == parentId) {
+                list.add(b);
+            }
+        }
+        return list;
     }
 
     private void readFile(int pos, long max, int level, int parentId) {
@@ -99,5 +101,10 @@ public class NIOReadInfo {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<Box> readBox(Box box, boolean isChild) {
+        readFile(box.getPos() + 8, box.getPos() + box.getLength(), box.getLevel() + 1, box.getId());
+        return getBox(box.getLevel() + 1, box.getId());
     }
 }

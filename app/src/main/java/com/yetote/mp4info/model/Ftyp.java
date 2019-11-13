@@ -26,10 +26,6 @@ public class Ftyp {
     int compatible_brands_size = 12;
 
     public Ftyp() {
-//        major_brand = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());
-//        minor_version = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());
-//        compatible_brands = ByteBuffer.allocate(16).order(ByteOrder.nativeOrder());
-
         major_brand = new byte[4];
         minor_version = new byte[4];
         compatible_brands = new byte[12];
