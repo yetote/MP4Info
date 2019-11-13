@@ -23,9 +23,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -44,9 +42,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initView();
-
     }
 
     private void initView() {
@@ -94,14 +90,10 @@ public class MainActivity extends AppCompatActivity {
             readInfo = new ReadInfo(path);
         });
         prepareBtn.setOnClickListener(v -> {
-            Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
-                emitter.onNext(readInfo.prepare());
-            }).subscribeOn(Schedulers.newThread())
+            Observable.create((ObservableOnSubscribe<Boolean>) emitter -> emitter.onNext(readInfo.prepare()))
+                    .subscribeOn(Schedulers.newThread())
                     .flatMap((Function<Boolean, ObservableSource<List<Box>>>) isPrepare -> {
-                        if (isPrepare)
-                            return Observable.just(readInfo.getBox(1, 0));
-                        else
-                            return null;
+                        return isPrepare ? Observable.just(readInfo.getBox(1, 0)) : null;
                     }).subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(boxes -> {
@@ -113,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(this, "解析完成", Toast.LENGTH_SHORT).show();
                         }
                     });
-
         });
     }
 }

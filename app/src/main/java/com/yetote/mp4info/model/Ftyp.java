@@ -7,6 +7,7 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
+import java.util.Arrays;
 
 public class Ftyp {
     String describe = "ftyp为file type,意味着文件格式,其中包含MP4的一些文件信息,其中包含三部分:\nmajor_brand(协议名称)\nminor_version(版本号)\ncompatible_brands(兼容的协议)";
@@ -20,7 +21,7 @@ public class Ftyp {
 
     int major_brand_size = 4;
     int minor_version_size = 4;
-    int compatible_brands_size = 16;
+    int compatible_brands_size = 12;
 
     public Ftyp() {
 //        major_brand = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());
@@ -29,7 +30,7 @@ public class Ftyp {
 
         major_brand = new byte[4];
         minor_version = new byte[4];
-        compatible_brands = new byte[16];
+        compatible_brands = new byte[12];
     }
 
 
@@ -56,7 +57,7 @@ public class Ftyp {
             String compatible_brands_str = new String(compatible_brands);
 
             ftypBuffer.clear();
-            String data = "全部数据 : " + all_str + "\n"
+            String data = "全部数据 : " + Arrays.toString(all) + "\n"
                     + "major_brand : " + major_brand_str + "\n"
                     + "minor_version : " + minor_version_str + "\n"
                     + "compatible_brands : " + compatible_brands_str + "\n";

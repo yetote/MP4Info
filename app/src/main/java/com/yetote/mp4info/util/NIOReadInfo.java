@@ -51,7 +51,9 @@ public class NIOReadInfo {
     public String[] readBox(Box box) {
         try {
             List<Box> childList = new ArrayList<>();
-            Class<?> clz = Class.forName(MP4.getValue(box.getName()));
+            String className = MP4.getValue(box.getName());
+            if (className == null) return null;
+            Class<?> clz = Class.forName(className);
             Method method = clz.getMethod("read", int.class, int.class, FileChannel.class);
             String[] strings = (String[]) method.invoke(clz.newInstance(), box.getPos(), box.getLength(), fileChannel);
             Log.e(TAG, "readBox: " + Arrays.toString(strings));
