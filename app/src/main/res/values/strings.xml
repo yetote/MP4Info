@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MP4Info</string>
+    <string name="non">暂无数据</string>
 </resources>

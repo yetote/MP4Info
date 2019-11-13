@@ -2,6 +2,8 @@ package com.yetote.mp4info.model;
 
 import android.util.Log;
 
+import com.yetote.mp4info.util.CharUtil;
+
 import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -44,23 +46,23 @@ public class Ftyp {
             ftypBuffer.flip();
             byte[] all = new byte[length];
             ftypBuffer.get(all);
-            String all_str = new String(all);
+            String all_str = CharUtil.changePrimevalData(all);
 
             ftypBuffer.position(8);
             ftypBuffer.get(major_brand);
-            String major_brand_str = new String(major_brand);
+            String major_brand_str = CharUtil.c2Str(major_brand);
 
             ftypBuffer.get(minor_version);
-            String minor_version_str = new String(minor_version);
+            int minor_version_str = CharUtil.c2Int(minor_version);
 
             ftypBuffer.get(compatible_brands);
-            String compatible_brands_str = new String(compatible_brands);
+            String compatible_brands_str = CharUtil.c2Str(compatible_brands);
 
             ftypBuffer.clear();
-            String data = "全部数据 : " + Arrays.toString(all) + "\n"
-                    + "major_brand : " + major_brand_str + "\n"
-                    + "minor_version : " + minor_version_str + "\n"
-                    + "compatible_brands : " + compatible_brands_str + "\n";
+            String data = "全部数据 : " + all_str + "\n"
+                    + "major_brand : ("+ CharUtil.changePrimevalData(major_brand)+")"+ major_brand_str + "\n"
+                    + "minor_version : ("+ CharUtil.changePrimevalData(minor_version)+")"+ minor_version_str + "\n"
+                    + "compatible_brands : ("+ CharUtil.changePrimevalData(compatible_brands)+")"+ compatible_brands_str + "\n";
             return new String[]{describe, data};
         } catch (IOException e) {
             e.printStackTrace();

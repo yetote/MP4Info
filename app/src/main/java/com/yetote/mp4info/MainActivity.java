@@ -9,15 +9,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 import com.yetote.mp4info.adapter.TreeNodeAdapter;
+import com.yetote.mp4info.adapter.ViewPagerAdapter;
+import com.yetote.mp4info.fragment.DataFragment;
+import com.yetote.mp4info.fragment.DescribeFragment;
 import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.util.ReadInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -37,50 +43,23 @@ public class MainActivity extends AppCompatActivity {
     TreeNode root;
     TreeNode parent;
     private static final String TAG = "MainActivity";
+    private AndroidTreeView tView;
+    private ViewPagerAdapter viewPagerAdapter;
+    private ArrayList<Fragment> fragmentArrayList;
+    private DescribeFragment describeFragment;
+    private DataFragment dataFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         initView();
+
+        onClick();
     }
 
-    private void initView() {
-
-        pathTv = findViewById(R.id.path_tv);
-        chooseFileBtn = findViewById(R.id.choose_file);
-        prepareBtn = findViewById(R.id.prepare);
-        treeView = findViewById(R.id.treeView);
-        tabLayout = findViewById(R.id.tabLayout);
-        viewPager = findViewById(R.id.vp);
-
-        tabLayout.addTab(tabLayout.newTab().setText("描述"), true);
-        tabLayout.addTab(tabLayout.newTab().setText("数据"));
-
-        root = TreeNode.root();
-        TreeNode parent = new TreeNode(new Box("mp4", -1, 0, 0, 0, 0));
-
-        root.addChild(parent);
-        AndroidTreeView tView = new AndroidTreeView(this, root);
-        tView.setDefaultViewHolder(TreeNodeAdapter.class);
-//        tView.setSelectionModeEnabled(true);
-        tView.setDefaultNodeClickListener(new TreeNode.TreeNodeClickListener() {
-            @Override
-            public void onClick(TreeNode node, Object value) {
-                Box parent = (Box) value;
-                if (parent.getLevel() != 0) {
-//                    List<Box> boxList = readInfo.readBox(parent);
-//                    for (Box child : boxList) {
-//                        TreeNode childNode = new TreeNode(child);
-//                        Log.e(TAG, "onClick: "+child.toString() );
-//                        tView.addNode(node, childNode);
-//                    }
-//                    tView.addNode(node, child);
-                    readInfo.readBox(parent);
-                }
-            }
-        });
-        treeView.addView(tView.getView());
+    private void onClick() {
 
         chooseFileBtn.setOnClickListener(v -> {
             String path = pathTv.getText().toString();
@@ -89,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
             readInfo = new ReadInfo(path);
         });
+
         prepareBtn.setOnClickListener(v -> {
             Observable.create((ObservableOnSubscribe<Boolean>) emitter -> emitter.onNext(readInfo.prepare()))
                     .subscribeOn(Schedulers.newThread())
@@ -106,5 +86,62 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         });
+
+
+    }
+
+    private void initView() {
+
+        pathTv = findViewById(R.id.path_tv);
+        chooseFileBtn = findViewById(R.id.choose_file);
+        prepareBtn = findViewById(R.id.prepare);
+        treeView = findViewById(R.id.treeView);
+        tabLayout = findViewById(R.id.tabLayout);
+        viewPager = findViewById(R.id.vp);
+
+        tabLayout.addTab(tabLayout.newTab().setText("描述"), true);
+        tabLayout.addTab(tabLayout.newTab().setText("数据"));
+        fragmentArrayList = new ArrayList<>();
+        describeFragment = new DescribeFragment();
+        dataFragment = new DataFragment();
+        fragmentArrayList.add(describeFragment);
+        fragmentArrayList.add(dataFragment);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0, fragmentArrayList);
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+
+        root = TreeNode.root();
+        parent = new TreeNode(new Box("mp4", -1, 0, 0, 0, 0));
+
+        root.addChild(parent);
+        tView = new AndroidTreeView(this, root);
+        tView.setDefaultViewHolder(TreeNodeAdapter.class);
+//        tView.setSelectionModeEnabled(true);
+        tView.setDefaultNodeClickListener(new TreeNode.TreeNodeClickListener() {
+            @Override
+            public void onClick(TreeNode node, Object value) {
+                Box parent = (Box) value;
+                if (parent.getLevel() != 0) {
+//                    List<Box> boxList = readInfo.readBox(parent);
+//                    for (Box child : boxList) {
+//                        TreeNode childNode = new TreeNode(child);
+//                        Log.e(TAG, "onClick: "+child.toString() );
+//                        tView.addNode(node, childNode);
+//                    }
+//                    tView.addNode(node, child);
+                    String[] strings = readInfo.readBox(parent);
+//                    Toast.makeText(MainActivity.this, strings[1], Toast.LENGTH_SHORT).show();
+                    if (strings != null) {
+                        describeFragment.setDescribe(strings[0]);
+                        dataFragment.setData(strings[1]);
+                    }else {
+                        describeFragment.setDescribe("暂无数据");
+                        dataFragment.setData("暂无数据");
+                    }
+                }
+            }
+        });
+        treeView.addView(tView.getView());
     }
 }
