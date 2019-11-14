@@ -97,14 +97,14 @@ public class MainActivity extends AppCompatActivity {
             if (box.getLevel() != 0) {
 
                 if (MP4.getChild(box.getName())) {
-                    if (!box.isRead()) {
-                        ArrayList<Box> list = readInfo.readBox(builders, box, box.isRead());
+                    ArrayList<Box> list = readInfo.readBox(builders, box, box.isRead());
+                    if (list != null) {
                         for (Box b : list) {
                             TreeNode child = new TreeNode(b);
                             tView.addNode(node, child);
                         }
-                        box.setRead(true);
                     }
+                    box.setRead(true);
                 } else {
                     readInfo.readBox(builders, box);
                 }
@@ -124,8 +124,8 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.vp);
         builders = new SpannableStringBuilder[2];
-        builders[0]=new SpannableStringBuilder();
-        builders[1]=new SpannableStringBuilder();
+        builders[0] = new SpannableStringBuilder();
+        builders[1] = new SpannableStringBuilder();
         tabLayout.addTab(tabLayout.newTab().setText("描述"), true);
         tabLayout.addTab(tabLayout.newTab().setText("数据"));
         fragmentArrayList = new ArrayList<>();
