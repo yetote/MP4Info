@@ -3,15 +3,9 @@ package com.yetote.mp4info.model;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 
-import com.yetote.mp4info.util.CharUtil;
 import com.yetote.mp4info.util.NIOReadInfo;
 
-import java.io.IOException;
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
-import java.util.Arrays;
 
 public class Ftyp {
     //协议名称
@@ -22,7 +16,7 @@ public class Ftyp {
     byte[] compatible_brands;
     byte[] all;
     private static final String TAG = "Ftyp";
-    SpannableStringBuilder describe = SpannableStringBuilder.valueOf("ftyp为file type,意味着文件格式,其中包含MP4的一些文件信息,其中包含三部分:\nmajor_brand(协议名称)\nminor_version(版本号)\ncompatible_brands(兼容的协议)");
+    String describe = "ftyp为file type,意味着文件格式,其中包含MP4的一些文件信息,其中包含三部分:\nmajor_brand(协议名称)\nminor_version(版本号)\ncompatible_brands(兼容的协议)";
     int length;
 
     int major_brand_size = 4;
@@ -40,8 +34,7 @@ public class Ftyp {
 
 
     public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel) {
-        builders[0] = this.describe;
-        builders[1] = new SpannableStringBuilder();
+        builders[0].append(this.describe);
         String[] name = new String[]{"全部数据", "major_brand", "minor_version", "compatible_brands"};
         byte[][] data = new byte[][]{all, major_brand, minor_version, compatible_brands};
         String[] value = new String[4];

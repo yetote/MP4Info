@@ -25,6 +25,9 @@ public class DescribeFragment extends Fragment {
     }
 
     public void setDescribe(SpannableStringBuilder s) {
+        if (s.length() == 0) {
+            s.append("暂无数据");
+        }
         textView.setText(s);
     }
 }

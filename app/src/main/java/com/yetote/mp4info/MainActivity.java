@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
         tView.setDefaultNodeClickListener((node, value) -> {
             Box box = (Box) value;
+            builders[0].clear();
+            builders[1].clear();
             if (box.getLevel() != 0) {
 
                 if (MP4.getChild(box.getName())) {
@@ -106,16 +108,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     readInfo.readBox(builders, box);
                 }
-                if (builders[0] != null && builders[1] != null) {
-                    describeFragment.setDescribe(builders[0]);
-                    dataFragment.setData(builders[1]);
-                } else if (builders[0] != null) {
-                    describeFragment.setDescribe(builders[0]);
-                    dataFragment.setData(SpannableStringBuilder.valueOf("暂无数据"));
-                } else {
-                    describeFragment.setDescribe(SpannableStringBuilder.valueOf("暂无数据"));
-                    dataFragment.setData(SpannableStringBuilder.valueOf("暂无数据"));
-                }
+                describeFragment.setDescribe(builders[0]);
+                dataFragment.setData(builders[1]);
+
             }
         });
     }
@@ -129,7 +124,8 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.vp);
         builders = new SpannableStringBuilder[2];
-
+        builders[0]=new SpannableStringBuilder();
+        builders[1]=new SpannableStringBuilder();
         tabLayout.addTab(tabLayout.newTab().setText("描述"), true);
         tabLayout.addTab(tabLayout.newTab().setText("数据"));
         fragmentArrayList = new ArrayList<>();
