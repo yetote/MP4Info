@@ -25,8 +25,8 @@ public class ReadInfo {
         nioReadInfo.readBox(builders, box);
     }
 
-    public ArrayList<Box> readBox(Box box, boolean isChild) {
-        return nioReadInfo.readBox(box, isChild);
+    public ArrayList<Box> readBox(SpannableStringBuilder[] builders,Box box,boolean isRead) {
+        return nioReadInfo.readBox(builders,box,isRead);
     }
 
     public ArrayList<Box> getBox(int level, int parentId) {

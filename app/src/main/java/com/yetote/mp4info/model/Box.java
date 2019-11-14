@@ -11,6 +11,7 @@ public class Box {
     private int level;
     private int parentId;
     ByteBuffer buffer;
+    private boolean isRead = false;
 
     public Box(String name, int id, int pos, int length, int level, int parentId) {
         this.id = id;
@@ -20,6 +21,14 @@ public class Box {
         this.parentId = parentId;
         this.name = name;
         buffer = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
     }
 
     public String getName() {

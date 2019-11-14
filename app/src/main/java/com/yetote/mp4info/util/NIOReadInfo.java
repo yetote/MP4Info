@@ -8,6 +8,7 @@ import com.yetote.mp4info.model.Box;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
@@ -105,9 +106,26 @@ public class NIOReadInfo {
         }
     }
 
-    public ArrayList<Box> readBox(Box box, boolean isChild) {
-        readFile(box.getPos() + 8, box.getPos() + box.getLength(), box.getLevel() + 1, box.getId());
-        return getBox(box.getLevel() + 1, box.getId());
+    public ArrayList<Box> readBox(SpannableStringBuilder[] builders, Box box,boolean isRead) {
+        try {
+            if (box.getLevel() != 0) {
+                String className = MP4.getValue(box.getName());
+                Class clz = Class.forName(className);
+                Field field = clz.getDeclaredField("describe");
+                field.setAccessible(true);
+                String describe = (String) field.get(clz.newInstance());
+                if (describe != null) {
+                    builders[0]=new SpannableStringBuilder();
+                    builders[0].append(describe);
+                    Log.e(TAG, "readBox: describe" + describe);
+                }
+            }
+            readFile(box.getPos() + 8, box.getPos() + box.getLength(), box.getLevel() + 1, box.getId());
+            return getBox(box.getLevel() + 1, box.getId());
+        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

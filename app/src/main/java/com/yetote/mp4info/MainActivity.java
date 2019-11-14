@@ -95,20 +95,26 @@ public class MainActivity extends AppCompatActivity {
             if (box.getLevel() != 0) {
 
                 if (MP4.getChild(box.getName())) {
-                    ArrayList<Box> list = readInfo.readBox(box, false);
-                    for (Box b : list) {
-                        TreeNode child = new TreeNode(b);
-                        tView.addNode(node, child);
+                    if (!box.isRead()) {
+                        ArrayList<Box> list = readInfo.readBox(builders, box, box.isRead());
+                        for (Box b : list) {
+                            TreeNode child = new TreeNode(b);
+                            tView.addNode(node, child);
+                        }
+                        box.setRead(true);
                     }
                 } else {
                     readInfo.readBox(builders, box);
-                    if (builders[0] != null || builders[1] != null) {
-                        describeFragment.setDescribe(builders[0]);
-                        dataFragment.setData(builders[1]);
-                    } else {
-                        describeFragment.setDescribe(SpannableStringBuilder.valueOf("暂无数据"));
-                        dataFragment.setData(SpannableStringBuilder.valueOf("暂无数据"));
-                    }
+                }
+                if (builders[0] != null && builders[1] != null) {
+                    describeFragment.setDescribe(builders[0]);
+                    dataFragment.setData(builders[1]);
+                } else if (builders[0] != null) {
+                    describeFragment.setDescribe(builders[0]);
+                    dataFragment.setData(SpannableStringBuilder.valueOf("暂无数据"));
+                } else {
+                    describeFragment.setDescribe(SpannableStringBuilder.valueOf("暂无数据"));
+                    dataFragment.setData(SpannableStringBuilder.valueOf("暂无数据"));
                 }
             }
         });
