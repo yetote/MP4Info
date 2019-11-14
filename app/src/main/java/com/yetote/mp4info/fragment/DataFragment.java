@@ -1,6 +1,7 @@
 package com.yetote.mp4info.fragment;
 
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ public class DataFragment extends Fragment {
         return view;
     }
 
-    public void setData(String s) {
+    public void setData(SpannableStringBuilder s) {
         textView.setText(s);
     }
 

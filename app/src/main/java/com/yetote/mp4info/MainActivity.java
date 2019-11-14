@@ -2,6 +2,7 @@ package com.yetote.mp4info;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Fragment> fragmentArrayList;
     private DescribeFragment describeFragment;
     private DataFragment dataFragment;
+    SpannableStringBuilder[] builders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,13 +101,13 @@ public class MainActivity extends AppCompatActivity {
                         tView.addNode(node, child);
                     }
                 } else {
-                    String[] strings = readInfo.readBox(box);
-                    if (strings != null) {
-                        describeFragment.setDescribe(strings[0]);
-                        dataFragment.setData(strings[1]);
+                    readInfo.readBox(builders, box);
+                    if (builders[0] != null || builders[1] != null) {
+                        describeFragment.setDescribe(builders[0]);
+                        dataFragment.setData(builders[1]);
                     } else {
-                        describeFragment.setDescribe("暂无数据");
-                        dataFragment.setData("暂无数据");
+                        describeFragment.setDescribe(SpannableStringBuilder.valueOf("暂无数据"));
+                        dataFragment.setData(SpannableStringBuilder.valueOf("暂无数据"));
                     }
                 }
             }
@@ -120,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         treeView = findViewById(R.id.treeView);
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.vp);
+        builders = new SpannableStringBuilder[2];
 
         tabLayout.addTab(tabLayout.newTab().setText("描述"), true);
         tabLayout.addTab(tabLayout.newTab().setText("数据"));

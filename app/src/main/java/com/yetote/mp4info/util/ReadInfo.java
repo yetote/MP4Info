@@ -1,5 +1,7 @@
 package com.yetote.mp4info.util;
 
+import android.text.SpannableStringBuilder;
+
 import com.yetote.mp4info.model.Box;
 
 import java.util.ArrayList;
@@ -19,12 +21,12 @@ public class ReadInfo {
     }
 
 
-    public String[] readBox(Box box) {
-        return nioReadInfo.readBox(box);
+    public void readBox(SpannableStringBuilder[] builders, Box box) {
+        nioReadInfo.readBox(builders, box);
     }
 
     public ArrayList<Box> readBox(Box box, boolean isChild) {
-        return nioReadInfo.readBox(box,isChild);
+        return nioReadInfo.readBox(box, isChild);
     }
 
     public ArrayList<Box> getBox(int level, int parentId) {

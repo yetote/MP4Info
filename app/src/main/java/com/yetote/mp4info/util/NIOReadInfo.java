@@ -1,11 +1,13 @@
 package com.yetote.mp4info.util;
 
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 
 import com.yetote.mp4info.model.Box;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
@@ -46,17 +48,17 @@ public class NIOReadInfo {
         return true;
     }
 
-    public String[] readBox(Box box) {
+    public void readBox(SpannableStringBuilder[] builders, Box box) {
         try {
             String className = MP4.getValue(box.getName());
-            if (className == null) return null;
+            if (className == null) return;
             Class<?> clz = Class.forName(className);
-            Method method = clz.getMethod("read", int.class, int.class, FileChannel.class);
-            return (String[]) method.invoke(clz.newInstance(), box.getPos(), box.getLength(), fileChannel);
+            Constructor constructor = clz.getConstructor(int.class);
+            Method method = clz.getMethod("read", SpannableStringBuilder[].class, int.class, int.class, FileChannel.class);
+            method.invoke(constructor.newInstance(box.getLength()), builders, box.getPos(), box.getLength(), fileChannel);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
 
@@ -106,5 +108,29 @@ public class NIOReadInfo {
     public ArrayList<Box> readBox(Box box, boolean isChild) {
         readFile(box.getPos() + 8, box.getPos() + box.getLength(), box.getLevel() + 1, box.getId());
         return getBox(box.getLevel() + 1, box.getId());
+    }
+
+
+    public static void readBox(SpannableStringBuilder builder, int pos, int length, FileChannel fileChannel, String[] name, String[] value, byte[][] data) {
+        try {
+            fileChannel.position(pos);
+            ByteBuffer boxBuffer = ByteBuffer.allocate(length).order(ByteOrder.nativeOrder());
+            fileChannel.read(boxBuffer);
+
+            boxBuffer.flip();
+            byte[] all = new byte[length];
+            boxBuffer.get(all);
+            value[0] = CharUtil.c2Str(all);
+
+            boxBuffer.position(8);
+            for (int i = 1; i < value.length; i++) {
+                boxBuffer.get(data[i]);
+                value[i] = CharUtil.c2Str(data[i]);
+            }
+            boxBuffer.clear();
+            CharUtil.linkDataString(builder, name, data, value);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
