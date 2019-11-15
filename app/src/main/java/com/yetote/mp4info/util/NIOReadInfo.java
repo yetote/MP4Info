@@ -138,9 +138,8 @@ public class NIOReadInfo {
             fileChannel.read(boxBuffer);
 
             boxBuffer.flip();
-            byte[] all = new byte[length];
-            boxBuffer.get(all);
-            value[0] = CharUtil.c2Str(all);
+            boxBuffer.get(data[0]);
+            value[0] = CharUtil.c2Str(data[0]);
 
             boxBuffer.position(8);
             for (int i = 1; i < value.length; i++) {
