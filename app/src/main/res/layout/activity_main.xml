@@ -21,9 +21,11 @@
             android:id="@+id/path_tv"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             app:layout_constraintBottom_toBottomOf="@+id/choose_file"
             app:layout_constraintEnd_toStartOf="@+id/choose_file"
-            app:layout_constraintStart_toStartOf="@+id/tabLayout"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
@@ -35,10 +37,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:text="开始解析"
             android:id="@+id/prepare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="开始解析"
             app:layout_constraintEnd_toEndOf="@+id/tabLayout"
             app:layout_constraintTop_toTopOf="parent" />
 

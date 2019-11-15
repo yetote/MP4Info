@@ -1,5 +1,8 @@
 package com.yetote.mp4info;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.SpannableStringBuilder;
@@ -9,7 +12,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -22,6 +28,7 @@ import com.yetote.mp4info.adapter.ViewPagerAdapter;
 import com.yetote.mp4info.fragment.DataFragment;
 import com.yetote.mp4info.fragment.DescribeFragment;
 import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.util.FileUtil;
 import com.yetote.mp4info.util.MP4;
 import com.yetote.mp4info.util.ReadInfo;
 
@@ -34,6 +41,8 @@ import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+
+import static android.content.pm.PackageManager.PERMISSION_DENIED;
 
 public class MainActivity extends AppCompatActivity {
     private TextView pathTv;
@@ -51,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
     private DescribeFragment describeFragment;
     private DataFragment dataFragment;
     SpannableStringBuilder[] builders;
+    private static final int FILE_SELECT_CODE = 0x01;
+    private static final int PERMISSION_READ_FILE = 0x10;
+    private String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +77,20 @@ public class MainActivity extends AppCompatActivity {
     private void onClick() {
 
         chooseFileBtn.setOnClickListener(v -> {
-            String path = pathTv.getText().toString();
-            if (path.isEmpty()) {
-                path = getExternalFilesDir(Environment.DIRECTORY_MOVIES).getPath() + "/test.mp4";
+            clear();
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_READ_FILE);
+            } else {
+                chooseFile();
             }
-            readInfo = new ReadInfo(path);
         });
 
         prepareBtn.setOnClickListener(v -> {
+            if (pathTv.getText().toString().isEmpty()) {
+                Toast.makeText(this, "请选择文件", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            readInfo = new ReadInfo(pathTv.getText().toString());
             Observable.create((ObservableOnSubscribe<Boolean>) emitter -> emitter.onNext(readInfo.prepare()))
                     .subscribeOn(Schedulers.newThread())
                     .flatMap((Function<Boolean, ObservableSource<List<Box>>>) isPrepare -> {
@@ -115,6 +133,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void chooseFile() {
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.setType("video/*");
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(Intent.createChooser(i, "Select a File to Upload"), FILE_SELECT_CODE);
+    }
+
     private void initView() {
 
         pathTv = findViewById(R.id.path_tv);
@@ -147,4 +172,41 @@ public class MainActivity extends AppCompatActivity {
 
         treeView.addView(tView.getView());
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case FILE_SELECT_CODE:
+                if (resultCode == RESULT_OK) {
+                    String path = FileUtil.findFilePath(this, data.getData());
+                    Log.e(TAG, "onActivityResult: " + path);
+                    pathTv.setText(path);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_READ_FILE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    chooseFile();
+                } else {
+                    Toast.makeText(this, "权限被拒绝，无法读取文件", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
+
+    public void clear() {
+        pathTv.setText("");
+        root.deleteChild(parent);
+        parent = new TreeNode(new Box("mp4", -1, 0, 0, 0, 0));
+        root.addChild(parent);
+    }
+
 }
