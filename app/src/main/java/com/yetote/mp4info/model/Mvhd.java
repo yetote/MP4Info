@@ -1,12 +1,21 @@
 package com.yetote.mp4info.model;
 
 public class Mvhd {
-    String describe = "moov定义了媒体文件的中的数据信息,至少包括以下三种容器之一\n" +
-            "mvhd:Movie Header Atom,存放为压缩过的影片信息容器\n" +
-            "cmov:Compressed Movie Atom,压缩过的影片信息容器(不常用)\n" +
-            "rmra:Reference Moview Atom,参考电影信息容器(不常用)\n";
+    String describe = "该box在文件中唯一，对整个问题文件惊醒了全局的描述（这些信息与媒体数据无关，只是对媒体文件的描述）\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n";
 
-
+    //
     private int version_size = 1;
     private int flag_size = 1;
     private int creation_time_size = 1;
