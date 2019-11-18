@@ -84,12 +84,15 @@ public class NIOReadInfo {
                 buffer.get(lengthArr);
                 buffer.get(typeArr);
                 int length = CharUtil.c2Int(lengthArr);
+
                 String type = new String(typeArr);
                 buffer.clear();
                 boxList.add(new Box(type, id, pos, length, level, parentId));
                 pos += length;
                 Log.e(TAG, "readFile:" + boxList.get(id).toString());
                 id++;
+                // TODO: 2019/11/18 需要处理==1时的largesize
+                if (length == 0 || length == 1) return;
             } while (pos < max);
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,6 +110,7 @@ public class NIOReadInfo {
     }
 
     public ArrayList<Box> readBox(SpannableStringBuilder[] builders, Box box, boolean isRead) {
+        Log.e(TAG, "readBox: ");
         try {
             if (box.getLevel() != 0) {
                 String className = MP4.getValue(box.getName());

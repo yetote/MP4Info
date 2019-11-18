@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.widget.Button;
@@ -17,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -90,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "请选择文件", Toast.LENGTH_SHORT).show();
                 return;
             }
+
             readInfo = new ReadInfo(pathTv.getText().toString());
             Observable.create((ObservableOnSubscribe<Boolean>) emitter -> emitter.onNext(readInfo.prepare()))
                     .subscribeOn(Schedulers.newThread())
@@ -101,7 +100,9 @@ public class MainActivity extends AppCompatActivity {
                         if (boxes != null) {
                             for (int i = 0; i < boxes.size(); i++) {
                                 TreeNode child = new TreeNode(boxes.get(i));
+                                Log.e(TAG, "onClick: " + parent.getLevel());
                                 tView.addNode(parent, child);
+                                Log.e(TAG, "onClick: " + boxes.get(i).toString());
                             }
                             Toast.makeText(this, "解析完成", Toast.LENGTH_SHORT).show();
                         }
@@ -109,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tView.setDefaultNodeClickListener((node, value) -> {
+            Log.e(TAG, "onClick: ");
             Box box = (Box) value;
             builders[0].clear();
             builders[1].clear();
@@ -169,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
         root.addChild(parent);
         tView = new AndroidTreeView(this, root);
         tView.setDefaultViewHolder(TreeNodeAdapter.class);
+        tView.setDefaultContainerStyle(R.style.TreeNodeStyle);
+        tView.setSelectionModeEnabled(true);
 
         treeView.addView(tView.getView());
     }
@@ -205,8 +209,10 @@ public class MainActivity extends AppCompatActivity {
     public void clear() {
         pathTv.setText("");
         root.deleteChild(parent);
-        parent = new TreeNode(new Box("mp4", -1, 0, 0, 0, 0));
-        root.addChild(parent);
+        for (int i = 0; i < parent.getChildren().size(); i++) {
+            parent.deleteChild(parent.getChildren().get(i));
+        }
     }
+
 
 }
