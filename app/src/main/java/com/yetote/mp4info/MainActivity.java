@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         root.addChild(parent);
         tView = new AndroidTreeView(this, root);
         tView.setDefaultViewHolder(TreeNodeAdapter.class);
-        tView.setDefaultContainerStyle(R.style.TreeNodeStyle);
+//        tView.setDefaultContainerStyle(R.style.TreeNodeStyle);
         tView.setSelectionModeEnabled(true);
 
         treeView.addView(tView.getView());
