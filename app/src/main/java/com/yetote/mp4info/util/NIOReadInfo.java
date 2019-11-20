@@ -102,8 +102,12 @@ public class NIOReadInfo {
 
     private void destroy() {
         try {
-            fileChannel.close();
-            inputStream.close();
+            if (fileChannel != null) {
+                fileChannel.close();
+            }
+            if (inputStream != null) {
+                inputStream.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -174,5 +178,10 @@ public class NIOReadInfo {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void clear() {
+        destroy();
+        id = 0;
     }
 }

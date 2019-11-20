@@ -208,9 +208,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void clear() {
         pathTv.setText("");
-        root.deleteChild(parent);
+//        root.deleteChild(parent);
         for (int i = 0; i < parent.getChildren().size(); i++) {
             parent.deleteChild(parent.getChildren().get(i));
+        }
+        if (readInfo != null) {
+            readInfo.clear();
         }
     }
 

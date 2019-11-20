@@ -25,11 +25,15 @@ public class ReadInfo {
         nioReadInfo.readBox(builders, box);
     }
 
-    public ArrayList<Box> readBox(SpannableStringBuilder[] builders,Box box,boolean isRead) {
-        return nioReadInfo.readBox(builders,box,isRead);
+    public ArrayList<Box> readBox(SpannableStringBuilder[] builders, Box box, boolean isRead) {
+        return nioReadInfo.readBox(builders, box, isRead);
     }
 
     public ArrayList<Box> getBox(int level, int parentId) {
         return nioReadInfo.getBox(level, parentId);
+    }
+
+    public void clear() {
+        nioReadInfo.clear();
     }
 }

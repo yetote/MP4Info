@@ -2,6 +2,8 @@ package com.yetote.mp4info.util;
 
 import com.yetote.mp4info.model.Ftyp;
 import com.yetote.mp4info.model.Mdat;
+import com.yetote.mp4info.model.Mdhd;
+import com.yetote.mp4info.model.Mdia;
 import com.yetote.mp4info.model.Moov;
 import com.yetote.mp4info.model.Mvhd;
 import com.yetote.mp4info.model.Tkhd;
@@ -21,12 +23,16 @@ public class MP4 {
         MP4_MAP.put("mvhd", Mvhd.class.getName());
         MP4_MAP.put("trak", Trak.class.getName());
         MP4_MAP.put("tkhd", Tkhd.class.getName());
+        MP4_MAP.put("mdia", Mdia.class.getName());
+        MP4_MAP.put("mdhd", Mdhd.class.getName());
 
         CHILD_MAP.put("ftyp", false);
         CHILD_MAP.put("moov", true);
         CHILD_MAP.put("mvhd", false);
         CHILD_MAP.put("trak", true);
         CHILD_MAP.put("tkhd", false);
+        CHILD_MAP.put("mdia", true);
+        CHILD_MAP.put("mdhd", false);
     }
 
     public static String getValue(String key) {
