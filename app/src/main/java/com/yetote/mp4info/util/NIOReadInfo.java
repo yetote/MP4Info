@@ -161,6 +161,9 @@ public class NIOReadInfo {
                     case "matrix":
                         value[i] = CharUtil.c2Str(data[i]);
                         break;
+                    case "fixed":
+                        value[i] = (float) CharUtil.c2Fixed(data[i]) + "";
+                        break;
                     default:
                         value[i] = CharUtil.c2Str(data[i]);
                         break;

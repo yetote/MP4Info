@@ -4,6 +4,8 @@ import com.yetote.mp4info.model.Ftyp;
 import com.yetote.mp4info.model.Mdat;
 import com.yetote.mp4info.model.Moov;
 import com.yetote.mp4info.model.Mvhd;
+import com.yetote.mp4info.model.Tkhd;
+import com.yetote.mp4info.model.Trak;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,10 +19,14 @@ public class MP4 {
         MP4_MAP.put("ftyp", Ftyp.class.getName());
         MP4_MAP.put("moov", Moov.class.getName());
         MP4_MAP.put("mvhd", Mvhd.class.getName());
+        MP4_MAP.put("trak", Trak.class.getName());
+        MP4_MAP.put("tkhd", Tkhd.class.getName());
 
         CHILD_MAP.put("ftyp", false);
         CHILD_MAP.put("moov", true);
         CHILD_MAP.put("mvhd", false);
+        CHILD_MAP.put("trak", true);
+        CHILD_MAP.put("tkhd", false);
     }
 
     public static String getValue(String key) {

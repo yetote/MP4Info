@@ -30,7 +30,22 @@ public class CharUtil {
         return i;
     }
 
-
+    public static double c2Fixed(byte[] arr) {
+        int length = arr.length;
+        double temp = 0.0;
+        switch (length) {
+            case 2:
+                temp = c2Int(arr) / Math.pow(2, 8);
+                break;
+            case 4:
+                Log.e(TAG, "c2Fixed: " + c2Int(arr));
+                Log.e(TAG, "c2Fixed: " + Math.pow(2, 16));
+                temp = c2Int(arr) / Math.pow(2, 16);
+                Log.e(TAG, "c2Fixed: " + temp);
+                break;
+        }
+        return temp;
+    }
 //    public static String c2Time(byte[] data) {
 //        if (MP4.TIME_SCALE==0){
 //            return "无法计算具体时间，原始数据为:"+c2Int(data);

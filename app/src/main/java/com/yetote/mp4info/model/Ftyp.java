@@ -24,8 +24,8 @@ public class Ftyp {
     int compatible_brands_size = 12;
 
     public Ftyp(int length) {
-        major_brand = new byte[4];
-        minor_version = new byte[4];
+        major_brand = new byte[major_brand_size];
+        minor_version = new byte[minor_version_size];
         all = new byte[length];
         compatible_brands_size = length - minor_version_size - major_brand_size - 8;
         compatible_brands = new byte[compatible_brands_size];
