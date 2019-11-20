@@ -38,6 +38,10 @@ public class Ftyp {
         String[] name = new String[]{"全部数据", "major_brand", "minor_version", "compatible_brands"};
         byte[][] data = new byte[][]{all, major_brand, minor_version, compatible_brands};
         String[] value = new String[4];
-        NIOReadInfo.readBox(builders[1], pos, length, fileChannel, name, value, data);
+        String[] type = new String[]{"char",
+                "char",
+                "int",
+                "char"};
+        NIOReadInfo.readBox(builders[1], pos, length, fileChannel, name, value, data, type);
     }
 }

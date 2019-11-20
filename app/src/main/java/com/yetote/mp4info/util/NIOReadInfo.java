@@ -135,7 +135,7 @@ public class NIOReadInfo {
     }
 
 
-    public static void readBox(SpannableStringBuilder builder, int pos, int length, FileChannel fileChannel, String[] name, String[] value, byte[][] data) {
+    public static void readBox(SpannableStringBuilder builder, int pos, int length, FileChannel fileChannel, String[] name, String[] value, byte[][] data, String[] type) {
         try {
             fileChannel.position(pos);
             ByteBuffer boxBuffer = ByteBuffer.allocate(length).order(ByteOrder.nativeOrder());
@@ -148,7 +148,23 @@ public class NIOReadInfo {
             boxBuffer.position(8);
             for (int i = 1; i < value.length; i++) {
                 boxBuffer.get(data[i]);
-                value[i] = CharUtil.c2Str(data[i]);
+                switch (type[i]) {
+                    case "char":
+                        value[i] = CharUtil.c2Str(data[i]);
+                        break;
+                    case "int":
+                        value[i] = CharUtil.c2Int(data[i]) + "";
+                        break;
+                    case "time":
+                        value[i] = CharUtil.c2Str(data[i]);
+                        break;
+                    case "matrix":
+                        value[i] = CharUtil.c2Str(data[i]);
+                        break;
+                    default:
+                        value[i] = CharUtil.c2Str(data[i]);
+                        break;
+                }
             }
             boxBuffer.clear();
             CharUtil.linkDataString(builder, name, data, value);
