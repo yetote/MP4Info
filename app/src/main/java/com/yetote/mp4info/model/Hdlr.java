@@ -14,10 +14,10 @@ public class Hdlr {
             "flag:标志码\n" +
             "per_define:预定义\n" +
             "handler_type:hdlr类型\n" +
-            "   当父容器为mdia时：该值表示track类型包括以下几种值：\n" +
-            "       vide：该track为视频\n" +
-            "       soun：该track为音频\n" +
-            "   当父容器为meta时：该值表示文件的别名\n" +
+            "       当父容器为mdia时：该值表示track类型包括以下几种值：\n" +
+            "               vide：该track为视频\n" +
+            "               soun：该track为音频\n" +
+            "       当父容器为meta时：该值表示文件的别名\n" +
             "reserved:保留\n" +
             "name:是一个以 \\0 结尾的，可变的扩展hdlr的扩展名，方便理解与调试（该值长度可为0）\n" +
             "ps:该box存在于mdia和meta中\n";
@@ -54,25 +54,19 @@ public class Hdlr {
 
     public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel) {
         builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据",
-                "version",
-                "flag",
+        String[] name = new String[]{"全部数据", "version", "flag",
                 "per_define",
                 "handler_type",
                 "reserved",
                 "name"};
-        byte[][] data = new byte[][]{all,
-                version,
-                flag,
+        byte[][] data = new byte[][]{all, version, flag,
                 per_define,
                 handler_type,
                 reserved,
                 extend_name,
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char",
-                "int",
-                "int",
+        String[] type = new String[]{"char", "int", "int",
                 "char",
                 "char",
                 "char",

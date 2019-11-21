@@ -67,9 +67,7 @@ public class Mvhd {
 
     public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel) {
         builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据",
-                "version",
-                "flag",
+        String[] name = new String[]{"全部数据", "version", "flag",
                 "creation_time",
                 "modification_time",
                 "time_scale",
@@ -80,9 +78,7 @@ public class Mvhd {
                 "matrix",
                 "pre_defined",
                 "next_track_id"};
-        byte[][] data = new byte[][]{all,
-                version,
-                flag,
+        byte[][] data = new byte[][]{all, version, flag,
                 creation_time,
                 modification_time,
                 time_scale,
@@ -94,9 +90,7 @@ public class Mvhd {
                 pre_defined,
                 next_track_id};
         String[] value = new String[name.length];
-        String[] type = new String[]{"char",
-                "int",
-                "int",
+        String[] type = new String[]{"char", "int", "int",
                 "time",
                 "time",
                 "int",

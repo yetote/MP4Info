@@ -55,18 +55,14 @@ public class Mdhd {
 
     public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel) {
         builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据",
-                "version",
-                "flag",
+        String[] name = new String[]{"全部数据", "version", "flag",
                 "creation_time",
                 "modification_time",
                 "time_scale",
                 "duration",
                 "language",
                 "pre_define"};
-        byte[][] data = new byte[][]{all,
-                version,
-                flag,
+        byte[][] data = new byte[][]{all, version, flag,
                 creation_time,
                 modification_time,
                 time_scale,
@@ -75,9 +71,7 @@ public class Mdhd {
                 pre_define,
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char",
-                "int",
-                "int",
+        String[] type = new String[]{"char", "int", "int",
                 "time",
                 "time",
                 "int",

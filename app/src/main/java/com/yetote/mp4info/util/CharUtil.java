@@ -5,8 +5,6 @@ import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.util.Log;
 
-import java.util.Arrays;
-
 public class CharUtil {
     private static final String TAG = "CharUtil";
 

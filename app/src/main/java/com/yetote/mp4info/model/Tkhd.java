@@ -10,10 +10,10 @@ public class Tkhd {
     String describe = "该box用于描述对应的trak信息，其中包括\n" +
             "version:版本号\n" +
             "flag:标志码\n" +
-            "   1、0x000001(track_enable)：指示该track启用\n" +
-            "   2、0x000002(track_in_movie)：指示该track用于播放\n" +
-            "   3、0x000004(track_in_preview)：指示该track用于预览\n" +
-            "   4、0x000008(track_size_is_aspect_ratio)：指示该track的宽高未以像素为单位表示，而是用的宽高比\n" +
+            "       1、0x000001(track_enable)：指示该track启用\n" +
+            "       2、0x000002(track_in_movie)：指示该track用于播放\n" +
+            "       3、0x000004(track_in_preview)：指示该track用于预览\n" +
+            "       4、0x000008(track_size_is_aspect_ratio)：指示该track的宽高未以像素为单位表示，而是用的宽高比\n" +
             "creation_time:媒体文件创建时间（从1904-01-01 00:00:00开始计算，单位：秒）\n" +
             "modification_time：媒体文件最新修改时间（从1904-01-01 00:00:00开始计算，单位：秒。该数值并不一定准确）\n" +
             "track_ID:指示此track的id，唯一且不为0\n" +
@@ -83,9 +83,7 @@ public class Tkhd {
 
     public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel) {
         builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据",
-                "version",
-                "flag",
+        String[] name = new String[]{"全部数据", "version", "flag",
                 "creation_time",
                 "modification_time",
                 "track_ID",
@@ -100,9 +98,7 @@ public class Tkhd {
                 "width",
                 "height"
         };
-        byte[][] data = new byte[][]{all,
-                version,
-                flag,
+        byte[][] data = new byte[][]{all, version, flag,
                 creation_time,
                 modification_time,
                 track_ID,
@@ -118,9 +114,7 @@ public class Tkhd {
                 height,
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char",
-                "int",
-                "int",
+        String[] type = new String[]{"char", "int", "int",
                 "time",
                 "time",
                 "int",
