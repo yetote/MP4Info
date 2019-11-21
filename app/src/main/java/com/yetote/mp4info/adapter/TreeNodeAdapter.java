@@ -41,5 +41,4 @@ public class TreeNodeAdapter extends TreeNode.BaseNodeViewHolder<Box> {
         Glide.with(context).load(isCheck ? R.drawable.show : R.drawable.hide).into(icon);
         Log.e(TAG, "toggleSelectionMode: " + isCheck);
     }
-
 }

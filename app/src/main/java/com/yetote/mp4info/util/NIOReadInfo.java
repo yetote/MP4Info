@@ -150,7 +150,11 @@ public class NIOReadInfo {
             value[0] = CharUtil.c2Str(data[0]);
 
             boxBuffer.position(8);
-            for (int i = 1; i < value.length; i++) {
+            for (int i = 1; i < name.length; i++) {
+                if (data[i].length == 0) {
+                    value[i] = "null";
+                    continue;
+                }
                 boxBuffer.get(data[i]);
                 switch (type[i]) {
                     case "char":
@@ -167,6 +171,9 @@ public class NIOReadInfo {
                         break;
                     case "fixed":
                         value[i] = (float) CharUtil.c2Fixed(data[i]) + "";
+                        break;
+                    case "null":
+                        value[i] = "null";
                         break;
                     default:
                         value[i] = CharUtil.c2Str(data[i]);
