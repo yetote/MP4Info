@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +45,7 @@ import static android.content.pm.PackageManager.PERMISSION_DENIED;
 public class MainActivity extends AppCompatActivity {
     private TextView pathTv;
     private Button chooseFileBtn, prepareBtn;
-    private RelativeLayout treeView;
+    private ScrollView treeView;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     ReadInfo readInfo;
