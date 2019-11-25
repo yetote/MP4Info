@@ -1,5 +1,11 @@
 package com.yetote.mp4info.model;
 
+import android.text.SpannableStringBuilder;
+
+import com.yetote.mp4info.util.NIOReadInfo;
+
+import java.nio.channels.FileChannel;
+
 public class Trak {
     String describe = "trak容器定义了媒体中的某一个track信息，一个媒体文件中可以包括多个trak容器，各容器间相互独立。\n" +
             "trak有两个目的：\n" +
@@ -7,6 +13,11 @@ public class Trak {
             "       2、包含流媒体数据打包协议(hint track)\n" +
             "一个trak至少要包括一个tkhd容器和一个mdia容器";
 
-    public Trak() {
+    public Trak(int length) {
+    }
+
+    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel) {
+        builders[0].append(this.describe);
+        builders[1].append("暂无数据");
     }
 }

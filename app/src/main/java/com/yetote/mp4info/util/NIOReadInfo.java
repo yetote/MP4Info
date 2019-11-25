@@ -115,25 +115,24 @@ public class NIOReadInfo {
 
     public ArrayList<Box> readBox(SpannableStringBuilder[] builders, Box box, boolean isRead) {
         Log.e(TAG, "readBox: ");
-        try {
-            if (box.getLevel() != 0) {
-                String className = MP4.getValue(box.getName());
-                Class clz = Class.forName(className);
-                Field field = clz.getDeclaredField("describe");
-                field.setAccessible(true);
-                String describe = (String) field.get(clz.newInstance());
-                if (describe != null) {
-                    builders[0] = new SpannableStringBuilder();
-                    builders[0].append(describe);
-                    Log.e(TAG, "readBox: describe" + describe);
-                }
-            }
-            if (!isRead) {
-                readFile(box.getPos() + 8, box.getPos() + box.getLength(), box.getLevel() + 1, box.getId());
-                return getBox(box.getLevel() + 1, box.getId());
-            }
-        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
+//        try {
+//            if (box.getLevel() != 0) {
+//                String className = MP4.getValue(box.getName());
+//                Class clz = Class.forName(className);
+//                Field field = clz.getDeclaredField("describe");
+//                field.setAccessible(true);
+//                String describe = (String) field.get(clz.newInstance());
+//                if (describe != null) {
+//                    builders[0] = new SpannableStringBuilder();
+//                    builders[0].append(describe);
+//                    Log.e(TAG, "readBox: describe" + describe);
+//                }
+//            }
+        if (!isRead) {
+            readFile(box.getPos() + 8, box.getPos() + box.getLength(), box.getLevel() + 1, box.getId());
+            readBox(builders, box);
+            Log.e(TAG, "readBox: " + builders[0].toString());
+            return getBox(box.getLevel() + 1, box.getId());
         }
         return null;
     }

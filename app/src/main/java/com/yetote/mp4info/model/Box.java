@@ -1,7 +1,10 @@
 package com.yetote.mp4info.model;
 
+import android.text.SpannableStringBuilder;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.channels.FileChannel;
 
 public class Box {
     private String name;
@@ -12,6 +15,7 @@ public class Box {
     private int parentId;
     ByteBuffer buffer;
     private boolean isRead = false;
+    String describe = "box分两种，普通box与fullbox";
 
     public Box(String name, int id, int pos, int length, int level, int parentId) {
         this.id = id;
@@ -89,5 +93,10 @@ public class Box {
                 ", level=" + level +
                 ", parentId=" + parentId +
                 '}';
+    }
+
+    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel) {
+        builders[0].append(this.describe);
+        builders[1].append("暂无数据");
     }
 }

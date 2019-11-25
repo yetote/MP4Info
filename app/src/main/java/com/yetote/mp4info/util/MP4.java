@@ -11,6 +11,7 @@ import com.yetote.mp4info.model.Minf;
 import com.yetote.mp4info.model.Moov;
 import com.yetote.mp4info.model.Mvhd;
 import com.yetote.mp4info.model.Stbl;
+import com.yetote.mp4info.model.Stsd;
 import com.yetote.mp4info.model.Tkhd;
 import com.yetote.mp4info.model.Trak;
 import com.yetote.mp4info.model.Vmhd;
@@ -38,6 +39,7 @@ public class MP4 {
         MP4_MAP.put("dinf", Dinf.class.getName());
         MP4_MAP.put("dref", Dref.class.getName());
         MP4_MAP.put("stbl", Stbl.class.getName());
+        MP4_MAP.put("stsd", Stsd.class.getName());
 
         CHILD_MAP.put("ftyp", false);
         CHILD_MAP.put("mdat", false);
@@ -53,6 +55,7 @@ public class MP4 {
         CHILD_MAP.put("dinf", true);
         CHILD_MAP.put("dref", false);
         CHILD_MAP.put("stbl", true);
+        CHILD_MAP.put("stsd", false);
     }
 
     public static String getValue(String key) {

@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
             builders[0].clear();
             builders[1].clear();
             if (box.getLevel() != 0) {
-
                 if (MP4.getChild(box.getName())) {
                     ArrayList<Box> list = readInfo.readBox(builders, box, box.isRead());
                     if (list != null) {

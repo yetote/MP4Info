@@ -18,7 +18,6 @@ public:
     virtual ~ReadFile();
 
     void read();
-
 private:
     std::string path;
 
