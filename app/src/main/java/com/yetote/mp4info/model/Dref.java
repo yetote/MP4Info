@@ -50,7 +50,7 @@ public class Dref {
         all = new byte[length];
     }
 
-    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel) {
+    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel,Box box) {
         builders[0].append(this.describe);
         String[] name = new String[]{"全部数据", "version", "flag",
                 "entry_count",

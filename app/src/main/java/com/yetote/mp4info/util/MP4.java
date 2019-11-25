@@ -1,5 +1,6 @@
 package com.yetote.mp4info.util;
 
+import com.yetote.mp4info.model.AVCOne;
 import com.yetote.mp4info.model.Dinf;
 import com.yetote.mp4info.model.Dref;
 import com.yetote.mp4info.model.Ftyp;
@@ -40,6 +41,7 @@ public class MP4 {
         MP4_MAP.put("dref", Dref.class.getName());
         MP4_MAP.put("stbl", Stbl.class.getName());
         MP4_MAP.put("stsd", Stsd.class.getName());
+        MP4_MAP.put("avc1", AVCOne.class.getName());
 
         CHILD_MAP.put("ftyp", false);
         CHILD_MAP.put("mdat", false);
@@ -55,7 +57,8 @@ public class MP4 {
         CHILD_MAP.put("dinf", true);
         CHILD_MAP.put("dref", false);
         CHILD_MAP.put("stbl", true);
-        CHILD_MAP.put("stsd", false);
+        CHILD_MAP.put("stsd", true);
+        CHILD_MAP.put("avc1", false);
     }
 
     public static String getValue(String key) {

@@ -15,6 +15,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +56,8 @@ public class NIOReadInfo {
             if (className == null) return;
             Class<?> clz = Class.forName(className);
             Constructor constructor = clz.getConstructor(int.class);
-            Method method = clz.getMethod("read", SpannableStringBuilder[].class, int.class, int.class, FileChannel.class);
-            method.invoke(constructor.newInstance(box.getLength()), builders, box.getPos(), box.getLength(), fileChannel);
+            Method method = clz.getMethod("read", SpannableStringBuilder[].class, int.class, int.class, FileChannel.class, Box.class);
+            method.invoke(constructor.newInstance(box.getLength()), builders, box.getPos(), box.getLength(), fileChannel, box);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();
         }
@@ -84,7 +85,7 @@ public class NIOReadInfo {
                 buffer.get(lengthArr);
                 buffer.get(typeArr);
                 int length = CharUtil.c2Int(lengthArr);
-
+                Log.e(TAG, "readFile: " + Arrays.toString(typeArr));
                 String type = new String(typeArr);
                 buffer.clear();
                 boxList.add(new Box(type, id, pos, length, level, parentId));
@@ -129,8 +130,8 @@ public class NIOReadInfo {
 //                }
 //            }
         if (!isRead) {
-            readFile(box.getPos() + 8, box.getPos() + box.getLength(), box.getLevel() + 1, box.getId());
             readBox(builders, box);
+            readFile(box.getPos() + 8 + box.getOffset(), box.getPos() + box.getLength(), box.getLevel() + 1, box.getId());
             Log.e(TAG, "readBox: " + builders[0].toString());
             return getBox(box.getLevel() + 1, box.getId());
         }

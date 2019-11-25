@@ -13,6 +13,7 @@ public class Box {
     private int length;
     private int level;
     private int parentId;
+    private int offset;
     ByteBuffer buffer;
     private boolean isRead = false;
     String describe = "box分两种，普通box与fullbox";
@@ -25,6 +26,14 @@ public class Box {
         this.parentId = parentId;
         this.name = name;
         buffer = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
     public boolean isRead() {
@@ -95,7 +104,7 @@ public class Box {
                 '}';
     }
 
-    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel) {
+    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel, Box box) {
         builders[0].append(this.describe);
         builders[1].append("暂无数据");
     }

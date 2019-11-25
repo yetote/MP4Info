@@ -12,7 +12,7 @@ public class Moov {
 
     public Moov(int length) {
     }
-    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel) {
+    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel,Box box) {
         builders[0].append(this.describe);
         builders[1].append("暂无数据");
     }
