@@ -112,7 +112,21 @@ public class AVCOne {
     }
 
     public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel, Box box) {
-//        box.setOffset(entry_count_size + version_size + flag_size)
+
+        box.setOffset(reserved_one_size +
+                data_reference_index_size +
+                pre_define_one_size +
+                reserved_two_size +
+                pre_define_two_size +
+                width_size +
+                height_size +
+                horizresolution_size +
+                vertresolution_size +
+                reserved_three_size +
+                frame_count_size +
+                compressorname_size +
+                depth_size +
+                pre_define_three_size);
         builders[0].append(this.describe);
         String[] name = new String[]{"全部数据", "reserved", "data_reference_index",
                 "pre_define", "reserved",

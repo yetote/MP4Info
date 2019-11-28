@@ -53,7 +53,11 @@ public class NIOReadInfo {
     public void readBox(SpannableStringBuilder[] builders, Box box) {
         try {
             String className = MP4.getValue(box.getName());
-            if (className == null) return;
+            if (className.equals("")) {
+                builders[0].append("暂不支持");
+                builders[1].append("暂不支持");
+                return;
+            }
             Class<?> clz = Class.forName(className);
             Constructor constructor = clz.getConstructor(int.class);
             Method method = clz.getMethod("read", SpannableStringBuilder[].class, int.class, int.class, FileChannel.class, Box.class);
@@ -148,7 +152,7 @@ public class NIOReadInfo {
             boxBuffer.flip();
             boxBuffer.get(data[0]);
             value[0] = CharUtil.c2Str(data[0]);
-
+            int last = 0;
             boxBuffer.position(8);
             for (int i = 1; i < name.length; i++) {
                 if (data[i].length == 0) {
@@ -162,6 +166,7 @@ public class NIOReadInfo {
                         break;
                     case "int":
                         value[i] = CharUtil.c2Int(data[i]) + "";
+                        last = CharUtil.c2Int(data[i]);
                         break;
                     case "time":
                         value[i] = CharUtil.c2Str(data[i]);
@@ -171,9 +176,15 @@ public class NIOReadInfo {
                         break;
                     case "fixed":
                         value[i] = (float) CharUtil.c2Fixed(data[i]) + "";
+                        last = CharUtil.c2Int(data[i]);
                         break;
                     case "null":
                         value[i] = "null";
+                        break;
+                    case "next is mult(8,last)":
+                        last = CharUtil.c2Int(data[i]);
+                        value[i] = last + "";
+                        data[i + 1] = new byte[last];
                         break;
                     default:
                         value[i] = CharUtil.c2Str(data[i]);
