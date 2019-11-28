@@ -5,12 +5,15 @@
 #ifndef MP4INFO_TEST_H
 #define MP4INFO_TEST_H
 
+#include <vector>
 
 class Test {
-    int max=0;
-    int min=0;
-    int temp=0;
-    int guessNumber(int n);
+public:
+    int max = 0;
+    int min = 0;
+    int temp = 0;
+
+    std::vector<double> medianSlidingWindow(std::vector<int> &nums, int k);
 };
 
 

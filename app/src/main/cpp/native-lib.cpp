@@ -4,17 +4,22 @@
 #include <unistd.h>
 #include "LogUtils.h"
 #include "ReadFile.h"
+#include "Test.h"
 
 #define native_lib_TAG "native_lib"
 JavaVM *jvm;
 //ReadFile *read;
+Test *test;
 
 void readFile(JNIEnv *env, jobject thiz, jstring path_) {
     std::string path = env->GetStringUTFChars(path_, JNI_FALSE);
     LOGE(native_lib_TAG, "%s:path=%s", __func__, path.c_str());
 //    read = new ReadFile(path);
 //    read->read();
-    sleep(600);
+//    sleep(600);
+    test = new Test;
+    std::vector<int> temp = {1,4,2,3};
+    test->medianSlidingWindow(temp, 4);
 }
 
 
