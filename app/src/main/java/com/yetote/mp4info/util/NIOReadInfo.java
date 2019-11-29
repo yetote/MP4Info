@@ -60,8 +60,8 @@ public class NIOReadInfo {
             }
             Class<?> clz = Class.forName(className);
             Constructor constructor = clz.getConstructor(int.class);
-            Method method = clz.getMethod("read", SpannableStringBuilder[].class, int.class, int.class, FileChannel.class, Box.class);
-            method.invoke(constructor.newInstance(box.getLength()), builders, box.getPos(), box.getLength(), fileChannel, box);
+            Method method = clz.getMethod("read", SpannableStringBuilder[].class, FileChannel.class, Box.class);
+            method.invoke(constructor.newInstance(box.getLength()), builders, fileChannel, box);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();
         }
@@ -135,7 +135,7 @@ public class NIOReadInfo {
 //            }
         if (!isRead) {
             readBox(builders, box);
-            readFile(box.getPos() + 8 + box.getOffset(), box.getPos() + box.getLength(), box.getLevel() + 1, box.getId());
+            readFile(box.getPos() + box.getOffset() + 8, box.getPos() + box.getLength(), box.getLevel() + 1, box.getId());
             Log.e(TAG, "readBox: " + builders[0].toString());
             return getBox(box.getLevel() + 1, box.getId());
         }
@@ -153,7 +153,7 @@ public class NIOReadInfo {
             boxBuffer.get(data[0]);
             value[0] = CharUtil.c2Str(data[0]);
             int last = 0;
-            boxBuffer.position(8);
+            boxBuffer.position(0);
             for (int i = 1; i < name.length; i++) {
                 if (data[i].length == 0) {
                     value[i] = "null";

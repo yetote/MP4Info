@@ -1,13 +1,15 @@
-package com.yetote.mp4info.model;
+package com.yetote.mp4info.bean;
 
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 
+import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.model.FullBox;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
-public class Vmhd {
+public class Vmhd extends FullBox {
     String describe = "视频信息头，此box包含了视频的特征信息\n" +
             "version:版本号\n" +
             "flag:标志码\n" +
@@ -32,7 +34,9 @@ public class Vmhd {
         opcolor = new byte[opcolor_size];
         all = new byte[length];
     }
-    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel,Box box) {
+    @Override
+    public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
+        super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
         String[] name = new String[]{"全部数据", "version", "flag",
                 "graphicsmode",
@@ -46,6 +50,6 @@ public class Vmhd {
                 "char",
                 "char"
         };
-        NIOReadInfo.readBox(builders[1], pos, length, fileChannel, name, value, data, type);
+        NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);
     }
 }

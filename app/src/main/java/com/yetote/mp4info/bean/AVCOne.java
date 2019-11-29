@@ -1,7 +1,8 @@
-package com.yetote.mp4info.model;
+package com.yetote.mp4info.bean;
 
 import android.text.SpannableStringBuilder;
 
+import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
@@ -111,8 +112,7 @@ public class AVCOne {
         pre_define_three = new byte[pre_define_three_size];
     }
 
-    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel, Box box) {
-
+    public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         box.setOffset(reserved_one_size +
                 data_reference_index_size +
                 pre_define_one_size +
@@ -169,6 +169,6 @@ public class AVCOne {
                 "int",
                 "char",
         };
-        NIOReadInfo.readBox(builders[1], pos, length, fileChannel, name, value, data, type);
+        NIOReadInfo.readBox(builders[1], box.getPos(), box.getLength(), fileChannel, name, value, data, type);
     }
 }

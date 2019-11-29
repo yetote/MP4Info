@@ -1,13 +1,15 @@
-package com.yetote.mp4info.model;
+package com.yetote.mp4info.bean;
 
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 
+import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.model.FullBox;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
-public class Hdlr {
+public class Hdlr extends FullBox {
     private static final String TAG = "Hdlr";
     String describe = "hdlr容器描述了track的类型，并记录了媒体的播放过程\n" +
             "version:版本号\n" +
@@ -52,7 +54,9 @@ public class Hdlr {
         all = new byte[length];
     }
 
-    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel,Box box) {
+    @Override
+    public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
+        super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
         String[] name = new String[]{"全部数据", "version", "flag",
                 "per_define",
@@ -75,7 +79,7 @@ public class Hdlr {
         if (extend_name_size != 0) {
             type[6] = "char";
         }
-        NIOReadInfo.readBox(builders[1], pos, length, fileChannel, name, value, data, type);
+        NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);
     }
 
 }

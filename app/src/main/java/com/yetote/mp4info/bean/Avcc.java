@@ -1,12 +1,14 @@
-package com.yetote.mp4info.model;
+package com.yetote.mp4info.bean;
 
 import android.text.SpannableStringBuilder;
 
+import com.yetote.mp4info.model.BasicBox;
+import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
-public class Avcc {
+public class Avcc extends BasicBox {
 
     String describe = "Sample Describe 该box描述了编码类型与编码初始化所需需要的参数\n" +
             "configurationVersion：配置版本\n" +
@@ -62,7 +64,9 @@ public class Avcc {
         pictureParameterSetNALUnit = new byte[pictureParameterSetNALUnit_size];
     }
 
-    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel, Box box) {
+    @Override
+    public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
+        super.read(builders, fileChannel, box);
 //        box.setOffset(entry_count_size + version_size + flag_size)
         builders[0].append(this.describe);
         String[] name = new String[]{"全部数据",
@@ -99,6 +103,6 @@ public class Avcc {
                 "next is mult(8,last)",
                 "char",
         };
-        NIOReadInfo.readBox(builders[1], pos, length, fileChannel, name, value, data, type);
+        NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);
     }
 }

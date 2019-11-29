@@ -1,12 +1,14 @@
-package com.yetote.mp4info.model;
+package com.yetote.mp4info.bean;
 
 import android.text.SpannableStringBuilder;
 
+import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.model.FullBox;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
-public class Mdhd {
+public class Mdhd extends FullBox {
     String describe = "mdhd说明该track的信息\n" +
             "version:版本号\n" +
             "flag:标志码\n" +
@@ -53,7 +55,9 @@ public class Mdhd {
         all = new byte[length];
     }
 
-    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel,Box box) {
+    @Override
+    public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
+        super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
         String[] name = new String[]{"全部数据", "version", "flag",
                 "creation_time",
@@ -79,6 +83,6 @@ public class Mdhd {
                 "int",
                 "char",
         };
-        NIOReadInfo.readBox(builders[1], pos, length, fileChannel, name, value, data, type);
+        NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);
     }
 }

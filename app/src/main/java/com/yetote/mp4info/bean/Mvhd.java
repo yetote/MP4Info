@@ -1,13 +1,15 @@
-package com.yetote.mp4info.model;
+package com.yetote.mp4info.bean;
 
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 
+import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.model.FullBox;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
-public class Mvhd {
+public class Mvhd extends FullBox {
     String describe = "该box在文件中唯一，对整个媒体文件进行了全局的描述（这些信息与媒体数据无关，只是对媒体文件的描述）\n" +
             "version:version为0时，creation_time、modification_time、timescale、duration长度为32bit；为1时，长度为64bit\n" +
             "flag:标志位\n" +
@@ -65,7 +67,9 @@ public class Mvhd {
         all = new byte[length];
     }
 
-    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel,Box box) {
+    @Override
+    public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
+        super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
         String[] name = new String[]{"全部数据", "version", "flag",
                 "creation_time",
@@ -101,6 +105,6 @@ public class Mvhd {
                 "matrix",
                 "char",
                 "int"};
-        NIOReadInfo.readBox(builders[1], pos, length, fileChannel, name, value, data, type);
+        NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);
     }
 }

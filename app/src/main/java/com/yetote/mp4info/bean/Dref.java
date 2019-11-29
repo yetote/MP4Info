@@ -1,12 +1,15 @@
-package com.yetote.mp4info.model;
+package com.yetote.mp4info.bean;
 
 import android.text.SpannableStringBuilder;
 
+import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.model.FullBox;
 import com.yetote.mp4info.util.NIOReadInfo;
 
+import java.lang.reflect.Field;
 import java.nio.channels.FileChannel;
 
-public class Dref {
+public class Dref extends FullBox {
     String describe = "描述媒体信息在track的位置\n" +
             "version:版本号\n" +
             "flag：标志码\n" +
@@ -50,7 +53,9 @@ public class Dref {
         all = new byte[length];
     }
 
-    public void read(SpannableStringBuilder[] builders, int pos, int length, FileChannel fileChannel,Box box) {
+    @Override
+    public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
+        super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
         String[] name = new String[]{"全部数据", "version", "flag",
                 "entry_count",
@@ -79,6 +84,6 @@ public class Dref {
         if (data_entry_size != 0) {
             type[type.length - 1] = "char";
         }
-        NIOReadInfo.readBox(builders[1], pos, length, fileChannel, name, value, data, type);
+        NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);
     }
 }

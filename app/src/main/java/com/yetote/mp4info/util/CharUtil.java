@@ -28,6 +28,14 @@ public class CharUtil {
         return i;
     }
 
+    public static long c2long(byte[] arr) {
+        long i = 0;
+        for (int j = 0; j < arr.length; j++) {
+            i += (arr[j] & 0xff) * Math.pow(16, 2 * (arr.length - 1 - j));
+        }
+        return i;
+    }
+
     public static double c2Fixed(byte[] arr) {
         int length = arr.length;
         double temp = 0.0;
