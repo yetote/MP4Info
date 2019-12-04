@@ -34,11 +34,9 @@ public class NIOReadInfo {
         this.path = path;
         indexMap = new HashMap<>();
         buffer = ByteBuffer.allocate(8).order(ByteOrder.nativeOrder());
-
     }
 
     public boolean prepare() {
-
         try {
             inputStream = new FileInputStream(path);
             fileChannel = inputStream.getChannel();
@@ -144,58 +142,63 @@ public class NIOReadInfo {
 
 
     public static void readBox(SpannableStringBuilder builder, int pos, int length, FileChannel fileChannel, String[] name, String[] value, byte[][] data, String[] type) {
-        try {
-            fileChannel.position(pos);
-            ByteBuffer boxBuffer = ByteBuffer.allocate(length).order(ByteOrder.nativeOrder());
-            fileChannel.read(boxBuffer);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    fileChannel.position(pos);
+                    ByteBuffer boxBuffer = ByteBuffer.allocate(length).order(ByteOrder.nativeOrder());
+                    fileChannel.read(boxBuffer);
 
-            boxBuffer.flip();
-            boxBuffer.get(data[0]);
-            value[0] = CharUtil.c2Str(data[0]);
-            int last = 0;
-            boxBuffer.position(0);
-            for (int i = 1; i < name.length; i++) {
-                if (data[i].length == 0) {
-                    value[i] = "null";
-                    continue;
-                }
-                boxBuffer.get(data[i]);
-                switch (type[i]) {
-                    case "char":
-                        value[i] = CharUtil.c2Str(data[i]);
-                        break;
-                    case "int":
-                        value[i] = CharUtil.c2Int(data[i]) + "";
-                        last = CharUtil.c2Int(data[i]);
-                        break;
-                    case "time":
-                        value[i] = CharUtil.c2Str(data[i]);
-                        break;
-                    case "matrix":
-                        value[i] = CharUtil.c2Str(data[i]);
-                        break;
-                    case "fixed":
-                        value[i] = (float) CharUtil.c2Fixed(data[i]) + "";
-                        last = CharUtil.c2Int(data[i]);
-                        break;
-                    case "null":
-                        value[i] = "null";
-                        break;
-                    case "next is mult(8,last)":
-                        last = CharUtil.c2Int(data[i]);
-                        value[i] = last + "";
-                        data[i + 1] = new byte[last];
-                        break;
-                    default:
-                        value[i] = CharUtil.c2Str(data[i]);
-                        break;
+                    boxBuffer.flip();
+                    boxBuffer.get(data[0]);
+                    value[0] = CharUtil.c2Str(data[0]);
+                    int last = 0;
+                    boxBuffer.position(0);
+                    for (int i = 1; i < name.length; i++) {
+                        if (data[i].length == 0) {
+                            value[i] = "null";
+                            continue;
+                        }
+                        boxBuffer.get(data[i]);
+                        switch (type[i]) {
+                            case "char":
+                                value[i] = CharUtil.c2Str(data[i]);
+                                break;
+                            case "int":
+                                value[i] = CharUtil.c2Int(data[i]) + "";
+                                last = CharUtil.c2Int(data[i]);
+                                break;
+                            case "time":
+                                value[i] = CharUtil.c2Str(data[i]);
+                                break;
+                            case "matrix":
+                                value[i] = CharUtil.c2Str(data[i]);
+                                break;
+                            case "fixed":
+                                value[i] = (float) CharUtil.c2Fixed(data[i]) + "";
+                                last = CharUtil.c2Int(data[i]);
+                                break;
+                            case "null":
+                                value[i] = "null";
+                                break;
+                            case "next is mult(8,last)":
+                                last = CharUtil.c2Int(data[i]);
+                                value[i] = last + "";
+                                data[i + 1] = new byte[last];
+                                break;
+                            default:
+                                value[i] = CharUtil.c2Str(data[i]);
+                                break;
+                        }
+                    }
+                    boxBuffer.clear();
+                    CharUtil.linkDataString(builder, name, data, value);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-            boxBuffer.clear();
-            CharUtil.linkDataString(builder, name, data, value);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }).start();
     }
 
     public void clear() {
