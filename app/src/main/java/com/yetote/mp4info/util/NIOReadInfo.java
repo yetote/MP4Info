@@ -4,6 +4,7 @@ import android.text.SpannableStringBuilder;
 import android.util.Log;
 
 import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.model.DataModel;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -146,6 +147,7 @@ public class NIOReadInfo {
             @Override
             public void run() {
                 try {
+                    MyHandler.clear();
                     fileChannel.position(pos);
                     ByteBuffer boxBuffer = ByteBuffer.allocate(length).order(ByteOrder.nativeOrder());
                     fileChannel.read(boxBuffer);
@@ -191,9 +193,14 @@ public class NIOReadInfo {
                                 value[i] = CharUtil.c2Str(data[i]);
                                 break;
                         }
+                        if (i == name.length - 1) {
+                            MyHandler.pushMessage(MyHandler.DATA_FINISH, new DataModel(type[i], CharUtil.changePrimevalData(data[i]), value[i]));
+                        } else {
+                            MyHandler.pushMessage(MyHandler.DATA_CONTINUE, new DataModel(type[i], CharUtil.changePrimevalData(data[i]), value[i]));
+                        }
                     }
                     boxBuffer.clear();
-                    CharUtil.linkDataString(builder, name, data, value);
+//                    CharUtil.linkDataString(builder, name, data, value);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

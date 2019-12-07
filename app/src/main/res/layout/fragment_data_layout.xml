@@ -4,18 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/data_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/data_tv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/non" />
-    </ScrollView>
+        android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

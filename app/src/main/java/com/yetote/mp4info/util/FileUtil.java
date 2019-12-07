@@ -17,7 +17,6 @@ public class FileUtil {
                 cursor.close();
                 return s;
             }
-
         } else if ("file".equalsIgnoreCase(uri.getScheme())) {
             return uri.getPath();
         }

@@ -3,6 +3,7 @@ package com.yetote.mp4info;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.yetote.mp4info.adapter.ViewPagerAdapter;
 import com.yetote.mp4info.fragment.DataFragment;
 import com.yetote.mp4info.fragment.DescribeFragment;
 import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.model.DataModel;
 import com.yetote.mp4info.util.FileUtil;
 import com.yetote.mp4info.util.MP4;
 import com.yetote.mp4info.util.ReadInfo;
@@ -61,19 +63,18 @@ public class MainActivity extends AppCompatActivity {
     private static final int FILE_SELECT_CODE = 0x01;
     private static final int PERMISSION_READ_FILE = 0x10;
     private String path;
+    private ArrayList<DataModel> dataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initView();
 
         onClick();
     }
 
     private void onClick() {
-
         chooseFileBtn.setOnClickListener(v -> {
             clear();
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PERMISSION_DENIED) {
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tView.setDefaultNodeClickListener((node, value) -> {
+            dataFragment.clear();
             Log.e(TAG, "onClick: ");
             Box box = (Box) value;
             builders[0].clear();
@@ -128,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     readInfo.readBox(builders, box);
                 }
                 describeFragment.setDescribe(builders[0]);
-                dataFragment.setData(builders[1]);
+//                dataFragment.setData(dataList);
 
             }
         });
@@ -174,6 +176,8 @@ public class MainActivity extends AppCompatActivity {
         tView.setSelectionModeEnabled(true);
 
         treeView.addView(tView.getView());
+
+        dataList = new ArrayList<>();
     }
 
     @Override
