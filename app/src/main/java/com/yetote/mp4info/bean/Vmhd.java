@@ -22,10 +22,10 @@ public class Vmhd extends FullBox {
     private int opcolor_size = 6;
 
     private byte[] version;
-    private byte[] flag ;
-    private byte[] graphicsmode ;
-    private byte[] opcolor ;
-    private byte[] all ;
+    private byte[] flag;
+    private byte[] graphicsmode;
+    private byte[] opcolor;
+    private byte[] all;
 
     public Vmhd(int length) {
         version = new byte[version_size];
@@ -34,19 +34,20 @@ public class Vmhd extends FullBox {
         opcolor = new byte[opcolor_size];
         all = new byte[length];
     }
+
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据", "version", "flag",
+        String[] name = new String[]{"全部数据", "length", "type", "version", "flag",
                 "graphicsmode",
                 "opcolor"};
-        byte[][] data = new byte[][]{all, version, flag,
+        byte[][] data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr, version, flag,
                 graphicsmode,
                 opcolor
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char", "int", "int",
+        String[] type = new String[]{"char", "int", "char", "int", "int",
                 "char",
                 "char"
         };

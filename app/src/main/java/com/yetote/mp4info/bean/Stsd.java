@@ -44,16 +44,16 @@ public class Stsd extends FullBox {
         super.read(builders, fileChannel, box);
         box.setOffset(entry_count_size + version_size + flag_size);
         builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据", "version", "flag",
+        String[] name = new String[]{"全部数据", "length", "type","version", "flag",
                 "entry_count",
 //                "reserved_size",
 //                "data_reference_index_size"
         };
-        byte[][] data = new byte[][]{all, version, flag,
+        byte[][] data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr,version, flag,
                 entry_count,
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char", "int", "int",
+        String[] type = new String[]{"char", "int", "char","int", "int",
                 "int",
         };
         NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);

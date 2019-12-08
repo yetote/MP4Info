@@ -59,14 +59,14 @@ public class Mdhd extends FullBox {
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据", "version", "flag",
+        String[] name = new String[]{"全部数据", "length", "type","version", "flag",
                 "creation_time",
                 "modification_time",
                 "time_scale",
                 "duration",
                 "language",
                 "pre_define"};
-        byte[][] data = new byte[][]{all, version, flag,
+        byte[][] data = new byte[][]{all,length != 1 ? length_arr : large_length_arr, type_arr, version, flag,
                 creation_time,
                 modification_time,
                 time_scale,
@@ -75,7 +75,7 @@ public class Mdhd extends FullBox {
                 pre_define,
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char", "int", "int",
+        String[] type = new String[]{"char", "int", "char","int", "int",
                 "time",
                 "time",
                 "int",

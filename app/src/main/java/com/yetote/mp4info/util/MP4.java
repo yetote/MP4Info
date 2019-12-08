@@ -13,7 +13,10 @@ import com.yetote.mp4info.bean.Minf;
 import com.yetote.mp4info.bean.Moov;
 import com.yetote.mp4info.bean.Mvhd;
 import com.yetote.mp4info.bean.Stbl;
+import com.yetote.mp4info.bean.Stco;
+import com.yetote.mp4info.bean.Stsc;
 import com.yetote.mp4info.bean.Stsd;
+import com.yetote.mp4info.bean.Stss;
 import com.yetote.mp4info.bean.Stsz;
 import com.yetote.mp4info.bean.Stts;
 import com.yetote.mp4info.bean.Tkhd;
@@ -50,6 +53,9 @@ public class MP4 {
         MP4_MAP.put("avcC", Avcc.class.getName());              CHILD_MAP.put("avcC", false);
         MP4_MAP.put("stts", Stts.class.getName());              CHILD_MAP.put("stts", false);
         MP4_MAP.put("stsz", Stsz.class.getName());              CHILD_MAP.put("stsz", false);
+        MP4_MAP.put("stsc", Stsc.class.getName());              CHILD_MAP.put("stsc", false);
+        MP4_MAP.put("stco", Stco.class.getName());              CHILD_MAP.put("stco", false);
+        MP4_MAP.put("stss", Stss.class.getName());              CHILD_MAP.put("stss", false);
 
     }
     //    @formatter:on

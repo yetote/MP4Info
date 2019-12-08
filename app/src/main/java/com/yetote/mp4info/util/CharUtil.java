@@ -8,6 +8,7 @@ import android.util.Log;
 public class CharUtil {
     private static final String TAG = "CharUtil";
 
+
     public static String c2Str(byte[] arr) {
         StringBuilder s = new StringBuilder();
         for (byte b : arr) {

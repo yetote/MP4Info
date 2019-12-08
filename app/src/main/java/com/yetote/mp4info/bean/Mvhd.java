@@ -71,7 +71,7 @@ public class Mvhd extends FullBox {
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据", "version", "flag",
+        String[] name = new String[]{"全部数据","length", "type", "version", "flag",
                 "creation_time",
                 "modification_time",
                 "time_scale",
@@ -82,7 +82,7 @@ public class Mvhd extends FullBox {
                 "matrix",
                 "pre_defined",
                 "next_track_id"};
-        byte[][] data = new byte[][]{all, version, flag,
+        byte[][] data = new byte[][]{all,length != 1 ? length_arr : large_length_arr, type_arr, version, flag,
                 creation_time,
                 modification_time,
                 time_scale,
@@ -94,7 +94,7 @@ public class Mvhd extends FullBox {
                 pre_defined,
                 next_track_id};
         String[] value = new String[name.length];
-        String[] type = new String[]{"char", "int", "int",
+        String[] type = new String[]{"char","int", "char", "int", "int",
                 "time",
                 "time",
                 "int",

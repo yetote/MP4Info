@@ -69,7 +69,7 @@ public class Avcc extends BasicBox {
         super.read(builders, fileChannel, box);
 //        box.setOffset(entry_count_size + version_size + flag_size)
         builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据",
+        String[] name = new String[]{"全部数据","length", "type",
                 "configurationVersion", "AVCProfileIndication",
                 "profile_compatibility", "AVCLevelIndication",
                 "reservedAndLengthSizeMinusOne",
@@ -80,7 +80,7 @@ public class Avcc extends BasicBox {
                 "pictureParameterSetLength",
                 "pictureParameterSetNALUnit",
         };
-        byte[][] data = new byte[][]{all,
+        byte[][] data = new byte[][]{all,length != 1 ? length_arr : large_length_arr, type_arr,
                 configurationVersion, AVCProfileIndication,
                 profile_compatibility, AVCLevelIndication,
                 reservedAndLengthSizeMinusOne,
@@ -92,7 +92,7 @@ public class Avcc extends BasicBox {
                 pictureParameterSetNALUnit,
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char",
+        String[] type = new String[]{"char","int", "char",
                 "int", "int",
                 "int", "int",
                 "int",

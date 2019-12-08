@@ -12,6 +12,7 @@ public class Minf extends BasicBox {
 
     public Minf(int length) {
     }
+
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);

@@ -1,5 +1,7 @@
 package com.yetote.mp4info.util;
 
+import android.util.Log;
+
 import com.yetote.mp4info.model.DataModel;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ public class MyHandler {
     public static final int DATA_FINISH = 0x0005;
     private static boolean pause = false;
     private static boolean finish = false;
+    private static final String TAG = "MyHandler";
 
     public static void pushMessage(int messageCode, DataModel model) {
         if (model == null) {
@@ -24,7 +27,8 @@ public class MyHandler {
         }
         switch (messageCode) {
             case DATA_CONTINUE:
-                queue.push(model);
+                queue.add(model);
+                Log.e(TAG, "pushMessage: push data");
                 break;
             case DATA_PAUSE:
                 break;
@@ -36,6 +40,7 @@ public class MyHandler {
                 break;
             case DATA_FINISH:
                 finish = true;
+                queue.add(model);
                 break;
             default:
                 break;
@@ -44,8 +49,8 @@ public class MyHandler {
 
     public static int getMessage(int count, ArrayList<DataModel> models) {
         int max = Math.min(count, queue.size());
-        if (finish) {
-            return DATA_CONTINUE;
+        if (queue.isEmpty() && finish) {
+            return DATA_FINISH;
         }
         for (int i = 0; i < max; i++) {
             try {

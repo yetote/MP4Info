@@ -9,6 +9,7 @@
     </style>
 
     <style name="TreeNodeStyleCustom">
-<!--        <item name="android:paddingStart">5dp</item>-->
+        <!--        <item name="android:paddingStart">5dp</item>-->
+        <item name="color">@color/treeColor</item>
     </style>
 </resources>

@@ -58,23 +58,23 @@ public class Hdlr extends FullBox {
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据", "version", "flag",
+        String[] name = new String[]{"全部数据", "length", "type","version", "flag",
                 "per_define",
                 "handler_type",
                 "reserved",
                 "name"};
-        byte[][] data = new byte[][]{all, version, flag,
+        byte[][] data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr,version, flag,
                 per_define,
                 handler_type,
                 reserved,
                 extend_name,
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char", "int", "int",
+        String[] type = new String[]{"char", "int", "char","int", "int",
                 "char",
                 "char",
                 "char",
-                "null",
+                "char",
         };
         if (extend_name_size != 0) {
             type[6] = "char";

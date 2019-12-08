@@ -57,14 +57,14 @@ public class Dref extends FullBox {
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据", "version", "flag",
+        String[] name = new String[]{"全部数据", "length", "type","version", "flag",
                 "entry_count",
                 "entry_box_length",
                 "entry_box_type",
                 "entry_version",
                 "entry_flags",
                 "data_entry"};
-        byte[][] data = new byte[][]{all, version, flag,
+        byte[][] data = new byte[][]{all,length != 1 ? length_arr : large_length_arr, type_arr, version, flag,
                 entry_count,
                 entry_box_length,
                 entry_box_type,
@@ -73,7 +73,7 @@ public class Dref extends FullBox {
                 data_entry,
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char", "int", "int",
+        String[] type = new String[]{"char", "int", "char","int", "int",
                 "int",
                 "int",
                 "char",

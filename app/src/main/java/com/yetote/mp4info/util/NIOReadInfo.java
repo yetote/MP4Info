@@ -155,6 +155,7 @@ public class NIOReadInfo {
                     boxBuffer.flip();
                     boxBuffer.get(data[0]);
                     value[0] = CharUtil.c2Str(data[0]);
+                    MyHandler.pushMessage(MyHandler.DATA_CONTINUE, new DataModel(name[0], CharUtil.changePrimevalData(data[0]), value[0]));
                     int last = 0;
                     boxBuffer.position(0);
                     for (int i = 1; i < name.length; i++) {
@@ -194,9 +195,9 @@ public class NIOReadInfo {
                                 break;
                         }
                         if (i == name.length - 1) {
-                            MyHandler.pushMessage(MyHandler.DATA_FINISH, new DataModel(type[i], CharUtil.changePrimevalData(data[i]), value[i]));
+                            MyHandler.pushMessage(MyHandler.DATA_FINISH, new DataModel(name[i], CharUtil.changePrimevalData(data[i]), value[i]));
                         } else {
-                            MyHandler.pushMessage(MyHandler.DATA_CONTINUE, new DataModel(type[i], CharUtil.changePrimevalData(data[i]), value[i]));
+                            MyHandler.pushMessage(MyHandler.DATA_CONTINUE, new DataModel(name[i], CharUtil.changePrimevalData(data[i]), value[i]));
                         }
                     }
                     boxBuffer.clear();

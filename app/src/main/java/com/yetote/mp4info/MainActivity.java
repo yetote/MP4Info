@@ -174,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
         tView.setDefaultViewHolder(TreeNodeAdapter.class);
 //        tView.setDefaultContainerStyle(R.style.TreeNodeStyle);
         tView.setSelectionModeEnabled(true);
-
         treeView.addView(tView.getView());
 
         dataList = new ArrayList<>();

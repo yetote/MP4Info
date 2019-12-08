@@ -15,9 +15,9 @@ import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
 public class Stsz extends FullBox {
-    private String describe = "stsz:Sample size atom。用于表示每一个sample的大小\n" +
+    private String describe = "stsz:Sample size Box。用于表示每一个sample的大小\n" +
             "length：长度\n" +
-            "type：atom 名\n" +
+            "type：Box名\n" +
             "version：版本号\n" +
             "flag：标志码\n" +
             "sample_size：如果不为0，则表示sample的大小相等都为该值；如果为0，则表示大小不相等，具体大小由entry_size指定\n" +

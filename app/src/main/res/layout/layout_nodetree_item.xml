@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
 
     <ImageView
         android:id="@+id/layout_treenode_item_icon"
@@ -16,9 +17,9 @@
         android:id="@+id/layout_treenode_item_name"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:textColor="@color/colorPrimary"
         android:layout_alignBottom="@+id/layout_treenode_item_icon"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@id/layout_treenode_item_icon" />
+        android:layout_toEndOf="@id/layout_treenode_item_icon"
+        android:textColor="@color/treeColor" />
 </RelativeLayout>

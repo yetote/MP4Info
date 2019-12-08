@@ -3,11 +3,12 @@ package com.yetote.mp4info.bean;
 import android.text.SpannableStringBuilder;
 
 import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.model.FullBox;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
-public class AVCOne {
+public class AVCOne extends FullBox {
     String describe = "  reserved:预定义\n" +
             "  data_reference_index:数据引用索引\n" +
             "  reserved:保留位\n" +
@@ -113,6 +114,7 @@ public class AVCOne {
     }
 
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
+        super.read(builders, fileChannel, box);
         box.setOffset(reserved_one_size +
                 data_reference_index_size +
                 pre_define_one_size +
@@ -128,7 +130,8 @@ public class AVCOne {
                 depth_size +
                 pre_define_three_size);
         builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据", "reserved", "data_reference_index",
+        String[] name = new String[]{"全部数据", "length", "type",
+                "reserved", "data_reference_index",
                 "pre_define", "reserved",
                 "pre_define",
                 "width",
@@ -141,7 +144,8 @@ public class AVCOne {
                 "depth",
                 "pre_define"
         };
-        byte[][] data = new byte[][]{all, reserved_one, data_reference_index,
+        byte[][] data = new byte[][]{all,length != 1 ? length_arr : large_length_arr, type_arr,
+                reserved_one, data_reference_index,
                 pre_define_one,
                 reserved_two,
                 pre_define_two,
@@ -156,7 +160,8 @@ public class AVCOne {
                 pre_define_three,
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char", "char", "int",
+        String[] type = new String[]{"char","int", "char",
+                "char", "int",
                 "char", "char",
                 "char",
                 "int",
