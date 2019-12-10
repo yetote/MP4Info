@@ -2,8 +2,11 @@ package com.yetote.mp4info.util;
 
 import com.yetote.mp4info.bean.AVCOne;
 import com.yetote.mp4info.bean.Avcc;
+import com.yetote.mp4info.bean.Ctts;
 import com.yetote.mp4info.bean.Dinf;
 import com.yetote.mp4info.bean.Dref;
+import com.yetote.mp4info.bean.Edts;
+import com.yetote.mp4info.bean.Elst;
 import com.yetote.mp4info.bean.Ftyp;
 import com.yetote.mp4info.bean.Hdlr;
 import com.yetote.mp4info.bean.Mdat;
@@ -12,6 +15,7 @@ import com.yetote.mp4info.bean.Mdia;
 import com.yetote.mp4info.bean.Minf;
 import com.yetote.mp4info.bean.Moov;
 import com.yetote.mp4info.bean.Mvhd;
+import com.yetote.mp4info.bean.Smhd;
 import com.yetote.mp4info.bean.Stbl;
 import com.yetote.mp4info.bean.Stco;
 import com.yetote.mp4info.bean.Stsc;
@@ -56,6 +60,10 @@ public class MP4 {
         MP4_MAP.put("stsc", Stsc.class.getName());              CHILD_MAP.put("stsc", false);
         MP4_MAP.put("stco", Stco.class.getName());              CHILD_MAP.put("stco", false);
         MP4_MAP.put("stss", Stss.class.getName());              CHILD_MAP.put("stss", false);
+        MP4_MAP.put("ctts", Ctts.class.getName());              CHILD_MAP.put("ctts", false);
+        MP4_MAP.put("smhd", Smhd.class.getName());              CHILD_MAP.put("smhd", false);
+        MP4_MAP.put("edts", Edts.class.getName());              CHILD_MAP.put("edts", true);
+        MP4_MAP.put("elst", Elst.class.getName());              CHILD_MAP.put("elst", false);
 
     }
     //    @formatter:on

@@ -29,7 +29,6 @@ public class DataFragment extends Fragment {
     private DataRvAdapter adapter;
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,7 +57,7 @@ public class DataFragment extends Fragment {
                     //如果相等则说明已经滑动到最后了
                     if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
                         int state = MyHandler.getMessage(30, dataList);
-                        Toast.makeText(getContext(), "loading data" + state, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "加载成功", Toast.LENGTH_SHORT).show();
                         if (state == MyHandler.DATA_FINISH) {
                             Toast.makeText(getContext(), "无更多数据", Toast.LENGTH_SHORT).show();
                         }
@@ -72,6 +71,7 @@ public class DataFragment extends Fragment {
 
     public void clear() {
         dataList.clear();
+        MyHandler.getMessage(30, dataList);
         adapter.notifyDataSetChanged();
     }
 }
