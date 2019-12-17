@@ -15,6 +15,7 @@ import com.yetote.mp4info.bean.Mdia;
 import com.yetote.mp4info.bean.Minf;
 import com.yetote.mp4info.bean.Moov;
 import com.yetote.mp4info.bean.Mvhd;
+import com.yetote.mp4info.bean.Sbgp;
 import com.yetote.mp4info.bean.Sgpd;
 import com.yetote.mp4info.bean.Smhd;
 import com.yetote.mp4info.bean.Stbl;
@@ -66,6 +67,7 @@ public class MP4 {
         MP4_MAP.put("edts", Edts.class.getName());              CHILD_MAP.put("edts", true);
         MP4_MAP.put("elst", Elst.class.getName());              CHILD_MAP.put("elst", false);
         MP4_MAP.put("sgpd", Sgpd.class.getName());              CHILD_MAP.put("sgpd", false);
+        MP4_MAP.put("sbgp", Sbgp.class.getName());              CHILD_MAP.put("sbgp", false);
 
     }
     //    @formatter:on
