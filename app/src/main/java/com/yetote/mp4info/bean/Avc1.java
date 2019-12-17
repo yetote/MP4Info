@@ -8,7 +8,7 @@ import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
-public class AVCOne extends FullBox {
+public class Avc1 extends FullBox {
     String describe = "  reserved:预定义\n" +
             "  data_reference_index:数据引用索引\n" +
             "  reserved:保留位\n" +
@@ -95,7 +95,7 @@ public class AVCOne extends FullBox {
 
     private byte[] all;
 
-    public AVCOne(int length) {
+    public Avc1(int length) {
         all = new byte[length];
         data_reference_index = new byte[data_reference_index_size];
         reserved_three = new byte[reserved_three_size];

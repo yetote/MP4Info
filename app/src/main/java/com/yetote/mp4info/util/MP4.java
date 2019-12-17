@@ -1,12 +1,16 @@
 package com.yetote.mp4info.util;
 
-import com.yetote.mp4info.bean.AVCOne;
+import com.yetote.mp4info.bean.Avc1;
 import com.yetote.mp4info.bean.Avcc;
+import com.yetote.mp4info.bean.Clap;
+import com.yetote.mp4info.bean.Co64;
+import com.yetote.mp4info.bean.Colr;
 import com.yetote.mp4info.bean.Ctts;
 import com.yetote.mp4info.bean.Dinf;
 import com.yetote.mp4info.bean.Dref;
 import com.yetote.mp4info.bean.Edts;
 import com.yetote.mp4info.bean.Elst;
+import com.yetote.mp4info.bean.Esds;
 import com.yetote.mp4info.bean.Ftyp;
 import com.yetote.mp4info.bean.Hdlr;
 import com.yetote.mp4info.bean.Mdat;
@@ -14,7 +18,9 @@ import com.yetote.mp4info.bean.Mdhd;
 import com.yetote.mp4info.bean.Mdia;
 import com.yetote.mp4info.bean.Minf;
 import com.yetote.mp4info.bean.Moov;
+import com.yetote.mp4info.bean.Mp4a;
 import com.yetote.mp4info.bean.Mvhd;
+import com.yetote.mp4info.bean.Pasp;
 import com.yetote.mp4info.bean.Sbgp;
 import com.yetote.mp4info.bean.Sgpd;
 import com.yetote.mp4info.bean.Smhd;
@@ -55,7 +61,7 @@ public class MP4 {
         MP4_MAP.put("dref", Dref.class.getName());              CHILD_MAP.put("dref", false);
         MP4_MAP.put("stbl", Stbl.class.getName());              CHILD_MAP.put("stbl", true);
         MP4_MAP.put("stsd", Stsd.class.getName());              CHILD_MAP.put("stsd", true);
-        MP4_MAP.put("avc1", AVCOne.class.getName());            CHILD_MAP.put("avc1", true);
+        MP4_MAP.put("avc1", Avc1.class.getName());              CHILD_MAP.put("avc1", true);
         MP4_MAP.put("avcC", Avcc.class.getName());              CHILD_MAP.put("avcC", false);
         MP4_MAP.put("stts", Stts.class.getName());              CHILD_MAP.put("stts", false);
         MP4_MAP.put("stsz", Stsz.class.getName());              CHILD_MAP.put("stsz", false);
@@ -68,6 +74,12 @@ public class MP4 {
         MP4_MAP.put("elst", Elst.class.getName());              CHILD_MAP.put("elst", false);
         MP4_MAP.put("sgpd", Sgpd.class.getName());              CHILD_MAP.put("sgpd", false);
         MP4_MAP.put("sbgp", Sbgp.class.getName());              CHILD_MAP.put("sbgp", false);
+        MP4_MAP.put("mp4a", Mp4a.class.getName());              CHILD_MAP.put("mp4a", true);
+        MP4_MAP.put("esds", Esds.class.getName());              CHILD_MAP.put("esds", false);
+        MP4_MAP.put("co64", Co64.class.getName());              CHILD_MAP.put("co64", false);
+        MP4_MAP.put("clap", Clap.class.getName());              CHILD_MAP.put("clap", false);
+        MP4_MAP.put("colr", Colr.class.getName());              CHILD_MAP.put("colr", false);
+        MP4_MAP.put("pasp", Pasp.class.getName());              CHILD_MAP.put("pasp", false);
 
     }
     //    @formatter:on
