@@ -145,7 +145,8 @@ public class Avc1 extends FullBox {
                 "pre_define"
         };
         byte[][] data = new byte[][]{all,length != 1 ? length_arr : large_length_arr, type_arr,
-                reserved_one, data_reference_index,
+                reserved_one,
+                data_reference_index,
                 pre_define_one,
                 reserved_two,
                 pre_define_two,

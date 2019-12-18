@@ -71,7 +71,8 @@ public class DataFragment extends Fragment {
 
     public void clear() {
         dataList.clear();
-        MyHandler.getMessage(30, dataList);
+//        MyHandler.getMessage(30, dataList);
+        MyHandler.clear();
         adapter.notifyDataSetChanged();
     }
 }

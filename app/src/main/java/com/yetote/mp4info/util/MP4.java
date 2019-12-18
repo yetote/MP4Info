@@ -13,12 +13,15 @@ import com.yetote.mp4info.bean.Elst;
 import com.yetote.mp4info.bean.Esds;
 import com.yetote.mp4info.bean.Ftyp;
 import com.yetote.mp4info.bean.Hdlr;
+import com.yetote.mp4info.bean.Ilst;
 import com.yetote.mp4info.bean.Mdat;
 import com.yetote.mp4info.bean.Mdhd;
 import com.yetote.mp4info.bean.Mdia;
+import com.yetote.mp4info.bean.Meta;
 import com.yetote.mp4info.bean.Minf;
 import com.yetote.mp4info.bean.Moov;
 import com.yetote.mp4info.bean.Mp4a;
+import com.yetote.mp4info.bean.Mp4v;
 import com.yetote.mp4info.bean.Mvhd;
 import com.yetote.mp4info.bean.Pasp;
 import com.yetote.mp4info.bean.Sbgp;
@@ -33,6 +36,7 @@ import com.yetote.mp4info.bean.Stsz;
 import com.yetote.mp4info.bean.Stts;
 import com.yetote.mp4info.bean.Tkhd;
 import com.yetote.mp4info.bean.Trak;
+import com.yetote.mp4info.bean.Udta;
 import com.yetote.mp4info.bean.Vmhd;
 
 import java.util.HashMap;
@@ -80,7 +84,10 @@ public class MP4 {
         MP4_MAP.put("clap", Clap.class.getName());              CHILD_MAP.put("clap", false);
         MP4_MAP.put("colr", Colr.class.getName());              CHILD_MAP.put("colr", false);
         MP4_MAP.put("pasp", Pasp.class.getName());              CHILD_MAP.put("pasp", false);
-
+        MP4_MAP.put("udta", Udta.class.getName());              CHILD_MAP.put("udta", true);
+        MP4_MAP.put("meta", Meta.class.getName());              CHILD_MAP.put("meta", true);
+        MP4_MAP.put("ilst", Ilst.class.getName());              CHILD_MAP.put("ilst", false);
+        MP4_MAP.put("mp4v", Avc1.class.getName());              CHILD_MAP.put("mp4v", true);
     }
     //    @formatter:on
 

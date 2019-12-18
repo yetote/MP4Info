@@ -132,12 +132,13 @@ public class NIOReadInfo {
 //                    Log.e(TAG, "readBox: describe" + describe);
 //                }
 //            }
+        readBox(builders, box);
         if (!isRead) {
-            readBox(builders, box);
             readFile(box.getPos() + box.getOffset() + 8, box.getPos() + box.getLength(), box.getLevel() + 1, box.getId());
             Log.e(TAG, "readBox: " + builders[0].toString());
             return getBox(box.getLevel() + 1, box.getId());
         }
+
         return null;
     }
 

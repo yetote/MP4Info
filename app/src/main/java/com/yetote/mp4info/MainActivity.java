@@ -111,8 +111,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tView.setDefaultNodeClickListener((node, value) -> {
+            if (parent.getChildren().size() == 0) {
+                Toast.makeText(this, "请先解析文件", Toast.LENGTH_SHORT).show();
+                return;
+            }
             dataFragment.clear();
-            Log.e(TAG, "onClick: ");
             Box box = (Box) value;
             builders[0].clear();
             builders[1].clear();
@@ -211,9 +214,10 @@ public class MainActivity extends AppCompatActivity {
     public void clear() {
         pathTv.setText("");
 //        root.deleteChild(parent);
-        for (int i = 0; i < parent.getChildren().size(); i++) {
+        for (int i = parent.getChildren().size() - 1; i >= 0; i--) {
             parent.deleteChild(parent.getChildren().get(i));
         }
+        tView.collapseAll();
         if (readInfo != null) {
             readInfo.clear();
         }

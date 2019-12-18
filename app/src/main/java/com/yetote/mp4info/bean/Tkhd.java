@@ -31,8 +31,6 @@ public class Tkhd extends FullBox {
             "height:高\n" +
             "width和height描述字幕等文本信息时，可以使用flag=0x000008（track_size_is_aspect_ratio）进行描述；对于非视觉轨道(如音轨),则应将其设置为0";
 
-    private int version_size = 1;
-    private int flag_size = 3;
     private int creation_time_size = 4;
     private int modification_time_size = 4;
     private int track_ID_size = 4;
@@ -47,8 +45,6 @@ public class Tkhd extends FullBox {
     private int width_size = 4;
     private int height_size = 4;
 
-    private byte[] version;
-    private byte[] flag;
     private byte[] creation_time;
     private byte[] modification_time;
     private byte[] track_ID;
@@ -65,8 +61,6 @@ public class Tkhd extends FullBox {
     private byte[] all;
 
     public Tkhd(int length) {
-        version = new byte[version_size];
-        flag = new byte[flag_size];
         creation_time = new byte[creation_time_size];
         modification_time = new byte[modification_time_size];
         track_ID = new byte[track_ID_size];
@@ -87,7 +81,7 @@ public class Tkhd extends FullBox {
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据", "length", "type","version", "flag",
+        String[] name = new String[]{"全部数据", "length", "type", "version", "flag",
                 "creation_time",
                 "modification_time",
                 "track_ID",
@@ -102,7 +96,7 @@ public class Tkhd extends FullBox {
                 "width",
                 "height"
         };
-        byte[][] data = new byte[][]{all,length != 1 ? length_arr : large_length_arr, type_arr, version, flag,
+        byte[][] data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr, version_arr, flag_arr,
                 creation_time,
                 modification_time,
                 track_ID,
@@ -118,7 +112,7 @@ public class Tkhd extends FullBox {
                 height,
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char", "int", "char","int", "int",
+        String[] type = new String[]{"char", "int", "char", "int", "int",
                 "time",
                 "time",
                 "int",

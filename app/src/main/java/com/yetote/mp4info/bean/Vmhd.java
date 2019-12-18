@@ -16,20 +16,14 @@ public class Vmhd extends FullBox {
             "graphicsmode:视频合成模式;0为复制现有模式\n" +
             "opcolor:rgb值，供graphics_mode使用\n";
 
-    private int version_size = 1;
-    private int flag_size = 3;
     private int graphicsmode_size = 2;
     private int opcolor_size = 6;
 
-    private byte[] version;
-    private byte[] flag;
     private byte[] graphicsmode;
     private byte[] opcolor;
     private byte[] all;
 
     public Vmhd(int length) {
-        version = new byte[version_size];
-        flag = new byte[flag_size];
         graphicsmode = new byte[graphicsmode_size];
         opcolor = new byte[opcolor_size];
         all = new byte[length];
@@ -42,7 +36,7 @@ public class Vmhd extends FullBox {
         String[] name = new String[]{"全部数据", "length", "type", "version", "flag",
                 "graphicsmode",
                 "opcolor"};
-        byte[][] data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr, version, flag,
+        byte[][] data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr, version_arr, flag_arr,
                 graphicsmode,
                 opcolor
         };
