@@ -30,7 +30,7 @@ public class TreeNodeAdapter extends TreeNode.BaseNodeViewHolder<Box> {
         tv = v.findViewById(R.id.layout_treenode_item_name);
         v.setPadding(value.getLevel() * 20, 10, 0, 0);
         icon = v.findViewById(R.id.layout_treenode_item_icon);
-        if (MP4.getChild(value.getName())) {
+        if (MP4.getChild(value.getName()) || value.getId() == -1) {
             Glide.with(context).load(R.drawable.hide).into(icon);
         } else {
             icon.setVisibility(View.INVISIBLE);
