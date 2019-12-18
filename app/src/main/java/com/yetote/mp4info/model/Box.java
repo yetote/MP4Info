@@ -1,6 +1,7 @@
 package com.yetote.mp4info.model;
 
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -17,6 +18,7 @@ public class Box {
     ByteBuffer buffer;
     private boolean isRead = false;
     String describe = "box分两种，普通box与fullbox";
+    private static final String TAG = "Box";
 
     public Box(String name, int id, int pos, int length, int level, int parentId) {
         this.id = id;
@@ -34,6 +36,7 @@ public class Box {
 
     public void setOffset(int offset) {
         this.offset = offset;
+        Log.e(TAG, "setOffset: name" + "=" + name + "\n offset" + "=" + offset);
     }
 
     public boolean isRead() {

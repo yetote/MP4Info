@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_READ_FILE = 0x10;
     private String path;
     private ArrayList<DataModel> dataList;
+    private static boolean parse = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +86,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         prepareBtn.setOnClickListener(v -> {
+            if (parse) {
+                Toast.makeText(this, "文件已解析", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            parse = true;
             if (pathTv.getText().toString().isEmpty()) {
                 Toast.makeText(this, "请选择文件", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!pathTv.getText().toString().endsWith(".mp4")) {
+                Toast.makeText(this, "仅支持MP4,请重新选择", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -188,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case FILE_SELECT_CODE:
                 if (resultCode == RESULT_OK) {
-                    String path = FileUtil.findFilePath(this, data.getData());
+                    String path = FileUtil.getRealPathFromUri(this, data.getData());
                     Log.e(TAG, "onActivityResult: " + path);
                     pathTv.setText(path);
                 }
@@ -221,6 +232,9 @@ public class MainActivity extends AppCompatActivity {
         if (readInfo != null) {
             readInfo.clear();
         }
+        builders[0].clear();
+        describeFragment.setDescribe(builders[0]);
+        parse = false;
     }
 
 

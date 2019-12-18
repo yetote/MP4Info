@@ -21,7 +21,9 @@ public class Meta extends FullBox {
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
-        box.setOffset(version_size + flag_size);
+        if (NIOReadInfo.searchBox(box.getParentId()).equalsIgnoreCase("udta")) {
+            box.setOffset(version_size + flag_size);
+        }
         String[] name = new String[]{"全部数据", "length", "type", "version", "flag"};
         byte[][] data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr, version_arr, flag_arr};
         String[] value = new String[name.length];

@@ -25,7 +25,7 @@ public class NIOReadInfo {
     private ByteBuffer buffer;
     private String path;
     private Map<String, Box> indexMap;
-    private List<Box> boxList = new ArrayList<>();
+    private static List<Box> boxList = new ArrayList<>();
     private static final String TAG = "Read";
     FileInputStream inputStream;
     FileChannel fileChannel;
@@ -87,8 +87,9 @@ public class NIOReadInfo {
                 buffer.flip();
                 buffer.get(lengthArr);
                 buffer.get(typeArr);
+                Log.e(TAG, "readFile: length " + Arrays.toString(lengthArr));
                 int length = CharUtil.c2Int(lengthArr);
-                Log.e(TAG, "readFile: " + Arrays.toString(typeArr));
+                Log.e(TAG, "readFile: type" + Arrays.toString(typeArr));
                 String type = new String(typeArr);
                 buffer.clear();
                 boxList.add(new Box(type, id, pos, length, level, parentId));
@@ -134,84 +135,92 @@ public class NIOReadInfo {
 //            }
         readBox(builders, box);
         if (!isRead) {
+            Log.e(TAG, "readBox: offset" + box.getOffset());
             readFile(box.getPos() + box.getOffset() + 8, box.getPos() + box.getLength(), box.getLevel() + 1, box.getId());
             Log.e(TAG, "readBox: " + builders[0].toString());
             return getBox(box.getLevel() + 1, box.getId());
         }
+
 
         return null;
     }
 
 
     public static void readBox(SpannableStringBuilder builder, int pos, int length, FileChannel fileChannel, String[] name, String[] value, byte[][] data, String[] type) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    MyHandler.clear();
-                    fileChannel.position(pos);
-                    ByteBuffer boxBuffer = ByteBuffer.allocate(length).order(ByteOrder.nativeOrder());
-                    fileChannel.read(boxBuffer);
+        new Thread(() -> {
+            try {
+                MyHandler.clear();
+                fileChannel.position(pos);
+                ByteBuffer boxBuffer = ByteBuffer.allocate(length).order(ByteOrder.nativeOrder());
+                fileChannel.read(boxBuffer);
 
-                    boxBuffer.flip();
-                    boxBuffer.get(data[0]);
-                    value[0] = CharUtil.c2Str(data[0]);
-                    MyHandler.pushMessage(MyHandler.DATA_CONTINUE, new DataModel(name[0], CharUtil.changePrimevalData(data[0]), value[0]));
-                    int last = 0;
-                    boxBuffer.position(0);
-                    for (int i = 1; i < name.length; i++) {
-                        if (data[i].length == 0) {
-                            value[i] = "null";
-                            continue;
-                        }
-                        boxBuffer.get(data[i]);
-                        switch (type[i]) {
-                            case "char":
-                                value[i] = CharUtil.c2Str(data[i]);
-                                break;
-                            case "int":
-                                value[i] = CharUtil.c2Int(data[i]) + "";
-                                last = CharUtil.c2Int(data[i]);
-                                break;
-                            case "time":
-                                value[i] = CharUtil.c2Str(data[i]);
-                                break;
-                            case "matrix":
-                                value[i] = CharUtil.c2Str(data[i]);
-                                break;
-                            case "fixed":
-                                value[i] = (float) CharUtil.c2Fixed(data[i]) + "";
-                                last = CharUtil.c2Int(data[i]);
-                                break;
-                            case "null":
-                                value[i] = "null";
-                                break;
-                            case "next is mult(8,last)":
-                                last = CharUtil.c2Int(data[i]);
-                                value[i] = last + "";
-                                data[i + 1] = new byte[last];
-                                break;
-                            default:
-                                value[i] = CharUtil.c2Str(data[i]);
-                                break;
-                        }
-                        if (i == name.length - 1) {
-                            MyHandler.pushMessage(MyHandler.DATA_FINISH, new DataModel(name[i], CharUtil.changePrimevalData(data[i]), value[i]));
-                        } else {
-                            MyHandler.pushMessage(MyHandler.DATA_CONTINUE, new DataModel(name[i], CharUtil.changePrimevalData(data[i]), value[i]));
-                        }
+                boxBuffer.flip();
+                boxBuffer.get(data[0]);
+                value[0] = CharUtil.c2Str(data[0]);
+                MyHandler.pushMessage(MyHandler.DATA_CONTINUE, new DataModel(name[0], CharUtil.changePrimevalData(data[0]), value[0]));
+                int last = 0;
+                boxBuffer.position(0);
+                for (int i = 1; i < name.length; i++) {
+                    if (MyHandler.stop) {
+                        break;
                     }
-                    boxBuffer.clear();
-//                    CharUtil.linkDataString(builder, name, data, value);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    if (data[i].length == 0) {
+                        value[i] = "null";
+                        continue;
+                    }
+                    boxBuffer.get(data[i]);
+                    switch (type[i]) {
+                        case "char":
+                            value[i] = CharUtil.c2Str(data[i]);
+                            break;
+                        case "int":
+                            value[i] = CharUtil.c2Int(data[i]) + "";
+                            last = CharUtil.c2Int(data[i]);
+                            break;
+                        case "time":
+                            value[i] = CharUtil.c2Str(data[i]);
+                            break;
+                        case "matrix":
+                            value[i] = CharUtil.c2Str(data[i]);
+                            break;
+                        case "fixed":
+                            value[i] = (float) CharUtil.c2Fixed(data[i]) + "";
+                            last = CharUtil.c2Int(data[i]);
+                            break;
+                        case "null":
+                            value[i] = "null";
+                            break;
+                        case "next is mult(8,last)":
+                            last = CharUtil.c2Int(data[i]);
+                            value[i] = last + "";
+                            data[i + 1] = new byte[last];
+                            break;
+                        default:
+                            value[i] = CharUtil.c2Str(data[i]);
+                            break;
+                    }
+                    if (i == name.length - 1) {
+                        MyHandler.pushMessage(MyHandler.DATA_FINISH, new DataModel(name[i], CharUtil.changePrimevalData(data[i]), value[i]));
+                    } else {
+                        MyHandler.pushMessage(MyHandler.DATA_CONTINUE, new DataModel(name[i], CharUtil.changePrimevalData(data[i]), value[i]));
+                    }
                 }
+                boxBuffer.clear();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }).start();
     }
 
     public void clear() {
-        destroy();
         id = 0;
+        MyHandler.stop = true;
+        boxList.clear();
+        destroy();
+    }
+
+    public static String searchBox(int id) {
+        Box box = boxList.stream().filter(b -> id == b.getId()).findAny().orElse(null);
+        return box.getName();
     }
 }

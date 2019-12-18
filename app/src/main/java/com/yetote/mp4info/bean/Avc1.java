@@ -1,6 +1,7 @@
 package com.yetote.mp4info.bean;
 
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 
 import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.model.FullBox;
@@ -9,6 +10,7 @@ import com.yetote.mp4info.util.NIOReadInfo;
 import java.nio.channels.FileChannel;
 
 public class Avc1 extends FullBox {
+    private static final String TAG = "Avc1";
     String describe = "  reserved:预定义\n" +
             "  data_reference_index:数据引用索引\n" +
             "  reserved:保留位\n" +
@@ -129,6 +131,7 @@ public class Avc1 extends FullBox {
                 compressorname_size +
                 depth_size +
                 pre_define_three_size);
+        Log.e(TAG, "read: offset" + box.getOffset());
         builders[0].append(this.describe);
         String[] name = new String[]{"全部数据", "length", "type",
                 "reserved", "data_reference_index",
@@ -144,7 +147,7 @@ public class Avc1 extends FullBox {
                 "depth",
                 "pre_define"
         };
-        byte[][] data = new byte[][]{all,length != 1 ? length_arr : large_length_arr, type_arr,
+        byte[][] data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr,
                 reserved_one,
                 data_reference_index,
                 pre_define_one,
@@ -161,7 +164,7 @@ public class Avc1 extends FullBox {
                 pre_define_three,
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char","int", "char",
+        String[] type = new String[]{"char", "int", "char",
                 "char", "int",
                 "char", "char",
                 "char",

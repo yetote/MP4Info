@@ -33,6 +33,11 @@ public class Colr extends BasicBox {
 
     public Colr(int length) {
         all = new byte[length];
+        color_type_arr = new byte[color_type_size];
+        colour_primaries_arr = new byte[colour_primaries_size];
+        transfer_characteristics_arr = new byte[transfer_characteristics_size];
+        matrix_coefficients_arr = new byte[matrix_coefficients_size];
+        full_range_flag_and_reserved_arr = new byte[full_range_flag_and_reserved_size];
     }
 
     @Override

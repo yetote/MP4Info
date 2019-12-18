@@ -20,6 +20,7 @@ public class MyHandler {
     private static boolean pause = false;
     private static boolean finish = false;
     private static final String TAG = "MyHandler";
+    public static boolean stop = false;
 
     public static void pushMessage(int messageCode, DataModel model) {
         if (model == null) {
@@ -65,10 +66,12 @@ public class MyHandler {
         return DATA_CONTINUE;
     }
 
+
     public static void clear() {
         count = 0;
         pause = false;
         finish = false;
+        stop = false;
         queue.clear();
     }
 }
