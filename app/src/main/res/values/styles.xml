@@ -6,10 +6,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="background">@color/white</item>
     </style>
 
     <style name="TreeNodeStyleCustom">
         <!--        <item name="android:paddingStart">5dp</item>-->
         <item name="color">@color/treeColor</item>
     </style>
+
+
 </resources>

@@ -5,21 +5,33 @@ import android.text.SpannableStringBuilder;
 import com.yetote.mp4info.model.BasicBox;
 import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.model.FullBox;
+import com.yetote.mp4info.util.CharUtil;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
 public class Mp4a extends BasicBox {
-    String describe = "Sample Description Boxes, 存储了该流的采样信息\n" +
-            "reserved：保留\n" +
-            "data_reference_index：数据引用索引\n" +
-            "reserved：保留\n" +
-            "channelcount：声道数\n" +
-            "samplesize：量化精度\n" +
-            "pre_defined：预定义\n" +
-            "reserved：保留\n" +
-            "samplerate：采样率\n";
-
+    String describe = "Sample Description Boxes, 存储了该流的采样信息";
+    private String[] key = new String[]{
+            "reserved",
+            "data_reference_index",
+            "reserved",
+            "channelcount",
+            "samplesize",
+            "pre_defined",
+            "reserved",
+            "samplerate",
+    };
+    private String[] introductions = new String[]{
+            "保留",
+            "数据引用索引",
+            "保留",
+            "声道数",
+            "量化精度",
+            "预定义",
+            "保留",
+            "采样率",
+    };
     private int reserved_one_size = 6;
     private int data_reference_index_size = 2;
     private int reserved_two_size = 8;
@@ -54,7 +66,7 @@ public class Mp4a extends BasicBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         box.setOffset(reserved_one_size +
                 data_reference_index_size +
                 reserved_two_size +

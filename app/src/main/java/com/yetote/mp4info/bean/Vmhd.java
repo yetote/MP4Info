@@ -5,17 +5,27 @@ import android.util.Log;
 
 import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.model.FullBox;
+import com.yetote.mp4info.util.CharUtil;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
 public class Vmhd extends FullBox {
-    String describe = "视频信息头，此box包含了视频的特征信息\n" +
-            "version:版本号\n" +
-            "flag:标志码\n" +
-            "graphicsmode:视频合成模式;0为复制现有模式\n" +
-            "opcolor:rgb值，供graphics_mode使用\n";
+    String describe = "视频信息头，此box包含了视频的特征信息";
 
+    private String[] key = new String[]{
+            "version",
+            "flag",
+            "graphicsmode",
+            "opcolor",
+
+    };
+    private String[] introductions = new String[]{
+            "版本号",
+            "标志码",
+            "视频合成模式;0为复制现有模式",
+            "rgb值，供graphics_mode使用",
+    };
     private int graphicsmode_size = 2;
     private int opcolor_size = 6;
 
@@ -32,7 +42,7 @@ public class Vmhd extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         String[] name = new String[]{"全部数据", "length", "type", "version", "flag",
                 "graphicsmode",
                 "opcolor"};

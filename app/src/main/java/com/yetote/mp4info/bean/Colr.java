@@ -14,10 +14,14 @@ import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
 public class Colr extends BasicBox {
-    String describe = "Colour information Box,颜色信息，\n" +
-            "color_type_size：指示了所提供的颜色信息的类型\n" +
-            "\n";
+    String describe = "Colour information Box,颜色信息";
 
+    private String[] key = new String[]{
+            "color_type_size",
+    };
+    private String[] introductions = new String[]{
+            "指示了所提供的颜色信息的类型",
+    };
     private int color_type_size = 4;
     private int colour_primaries_size = 2;
     private int transfer_characteristics_size = 2;
@@ -43,7 +47,7 @@ public class Colr extends BasicBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         try {
             byte[] colorTypeArr = new byte[4];
             ByteBuffer buffer = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());

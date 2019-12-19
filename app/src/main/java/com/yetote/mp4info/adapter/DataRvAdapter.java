@@ -23,6 +23,7 @@ public class DataRvAdapter extends RecyclerView.Adapter {
     private SpannableStringBuilder builder;
     public static final int DATA_RAW = 0X0001;
     public static final int DATA_DECODE = 0X0002;
+    public static final int DATA_NULL = 0X0003;
 
     public DataRvAdapter(ArrayList<DataModel> list, Context context) {
         this.list = list;
@@ -81,13 +82,28 @@ public class DataRvAdapter extends RecyclerView.Adapter {
         }
     }
 
+    class NullDataViewHolder extends RecyclerView.ViewHolder {
+        private TextView textView;
+
+        public NullDataViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textView = itemView.findViewById(R.id.item_null_data_tv);
+        }
+
+        public TextView getTextView() {
+            return textView;
+        }
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == DATA_DECODE) {
             return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.item_data_layout, parent, false));
+        } else if (viewType == DATA_RAW) {
+            return new RawDataViewHolder(LayoutInflater.from(context).inflate(R.layout.item_data_raw_data_layout, parent, false));
         } else {
-            return new RawDataViewHolder(LayoutInflater.from(context).inflate(R.layout.item_data_layout, parent, false));
+            return new NullDataViewHolder(LayoutInflater.from(context).inflate(R.layout.item_data_null_data_layout, parent, false));
         }
     }
 
@@ -119,9 +135,12 @@ public class DataRvAdapter extends RecyclerView.Adapter {
                             3,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             vh.getDecodeTv().setText(builder);
-        } else {
+        } else if (holder instanceof RawDataViewHolder) {
             RawDataViewHolder vh = (RawDataViewHolder) holder;
             vh.getTextView().setText(list.get(position).getRawData());
+        } else {
+            NullDataViewHolder vh = (NullDataViewHolder) holder;
+            vh.getTextView().setText("暂无数据");
         }
     }
 
@@ -134,6 +153,8 @@ public class DataRvAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         if (list.get(position).getType().equals("raw"))
             return DATA_RAW;
+        else if (list.get(position).getType().equals("null"))
+            return DATA_NULL;
         else return DATA_DECODE;
     }
 }

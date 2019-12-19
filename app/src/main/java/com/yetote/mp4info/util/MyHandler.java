@@ -1,6 +1,10 @@
 package com.yetote.mp4info.util;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.yetote.mp4info.model.DataModel;
 
@@ -21,6 +25,11 @@ public class MyHandler {
     private static boolean finish = false;
     private static final String TAG = "MyHandler";
     public static boolean stop = false;
+    private static LocalBroadcastManager localBroadcastManager;
+
+    public static void init(LocalBroadcastManager broadcastManager) {
+        localBroadcastManager = broadcastManager;
+    }
 
     public static void pushMessage(int messageCode, DataModel model) {
         if (model == null) {
@@ -42,6 +51,11 @@ public class MyHandler {
             case DATA_FINISH:
                 finish = true;
                 queue.add(model);
+                if (localBroadcastManager != null) {
+                    Intent i = new Intent();
+                    i.setAction("com.yetote.mp4info.handler.FINISH");
+                    localBroadcastManager.sendBroadcast(i);
+                }
                 break;
             default:
                 break;

@@ -4,24 +4,35 @@ import android.text.SpannableStringBuilder;
 
 import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.model.FullBox;
+import com.yetote.mp4info.util.CharUtil;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
 public class Mdhd extends FullBox {
-    String describe = "mdhd说明该track的信息\n" +
-            "version:版本号\n" +
-            "flag:标志码\n" +
-            "creation_time:创建时间\n" +
-            "modification_time:最新修改时间\n" +
-            "time_scale:时间单位\n" +
-            "duration:总时长\n" +
-            "pad: 不明\n" +
-            "language:使用的语言 \n" +
-            "pre_define:不明\n" +
-            "";
+    String describe = "mdhd说明该track的信息";
 
-
+    private String[] key = new String[]{
+            "version",
+            "flag",
+            "creation_time",
+            "modification_time",
+            "time_scale",
+            "duration",
+            "language",
+            "pre_define"
+    };
+    private String[] introductions = new String[]{
+            "版本号",
+            "标志码",
+            "创建时间",
+            "最新修改时间",
+            "时间单位",
+            "总时长",
+            "文档未注明",
+            "使用的语言",
+            "预定义",
+    };
     private int version_size = 1;
     private int flag_size = 3;
     private int creation_time_size = 4;
@@ -58,15 +69,15 @@ public class Mdhd extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据", "length", "type","version", "flag",
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
+        String[] name = new String[]{"全部数据", "length", "type", "version", "flag",
                 "creation_time",
                 "modification_time",
                 "time_scale",
                 "duration",
                 "language",
                 "pre_define"};
-        byte[][] data = new byte[][]{all,length != 1 ? length_arr : large_length_arr, type_arr, version, flag,
+        byte[][] data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr, version, flag,
                 creation_time,
                 modification_time,
                 time_scale,
@@ -75,7 +86,7 @@ public class Mdhd extends FullBox {
                 pre_define,
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char", "int", "char","int", "int",
+        String[] type = new String[]{"char", "int", "char", "int", "int",
                 "time",
                 "time",
                 "int",

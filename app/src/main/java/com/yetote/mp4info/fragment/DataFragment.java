@@ -1,11 +1,11 @@
 package com.yetote.mp4info.fragment;
 
 import android.os.Bundle;
-import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,28 +14,29 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.yetote.mp4info.R;
 import com.yetote.mp4info.adapter.DataRvAdapter;
 import com.yetote.mp4info.model.DataModel;
 import com.yetote.mp4info.util.MyHandler;
-import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DataFragment extends Fragment {
     private RecyclerView rv;
     private ArrayList<DataModel> dataList;
     private DataRvAdapter adapter;
-
+    private ImageView waitingIv;
+    private static final String TAG = "DataFragment";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_data_layout, null);
         rv = view.findViewById(R.id.data_rv);
+        waitingIv = view.findViewById(R.id.data_waiting_iv);
+        Glide.with(getContext()).load(R.drawable.waiting).into(waitingIv);
         dataList = new ArrayList<>();
-
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         MyHandler.getMessage(30, dataList);
         adapter = new DataRvAdapter(dataList, getContext());
@@ -56,12 +57,7 @@ public class DataFragment extends Fragment {
                     //时判断界面显示的最后item的position是否等于itemCount总数-1也就是最后一个item的position
                     //如果相等则说明已经滑动到最后了
                     if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
-                        int state = MyHandler.getMessage(30, dataList);
-                        Toast.makeText(getContext(), "加载成功", Toast.LENGTH_SHORT).show();
-                        if (state == MyHandler.DATA_FINISH) {
-                            Toast.makeText(getContext(), "无更多数据", Toast.LENGTH_SHORT).show();
-                        }
-                        adapter.notifyDataSetChanged();
+                        getData(30);
                     }
                 }
             }
@@ -73,6 +69,24 @@ public class DataFragment extends Fragment {
         dataList.clear();
 //        MyHandler.getMessage(30, dataList);
         MyHandler.clear();
+        adapter.notifyDataSetChanged();
+        waitingIv.setVisibility(View.VISIBLE);
+    }
+
+    public void getData(int size) {
+        if (waitingIv.getVisibility() == View.VISIBLE) {
+            waitingIv.setVisibility(View.GONE);
+        }
+        int state = MyHandler.getMessage(size, dataList);
+        Log.e(TAG, "getData:size " + dataList.size());
+        if (state == MyHandler.DATA_FINISH) {
+            Toast.makeText(getContext(), "无更多数据", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "加载成功", Toast.LENGTH_SHORT).show();
+        }
+        if (dataList.size() == 0) {
+            dataList.add(new DataModel("null", "", ""));
+        }
         adapter.notifyDataSetChanged();
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.util.CharUtil;
+import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -22,12 +23,14 @@ public abstract class BasicBox {
     protected int length;
     protected long large_length;
 
-    public BasicBox() {
+    private byte[] all;
 
+    public BasicBox() {
         length_arr = new byte[length_size];
         large_length_arr = new byte[large_length_size];
         type_arr = new byte[type_size];
     }
+
 
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         ByteBuffer buffer = ByteBuffer.allocate(length_size + type_size).order(ByteOrder.nativeOrder());
@@ -47,9 +50,9 @@ public abstract class BasicBox {
             } else if (length == 0) {
                 length = (int) (fileChannel.size() - box.getPos());
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }

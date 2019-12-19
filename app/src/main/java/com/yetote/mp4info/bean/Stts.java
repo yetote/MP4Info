@@ -15,14 +15,18 @@ import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
 public class Stts extends FullBox {
-    private String describe = "stts:Time to Sample Box。即采样时间容器。该值描述了视频的dts\n" +
-            "length：长度\n" +
-            "type：box 名\n" +
-            "version：版本号\n" +
-            "flag：标志码\n" +
-            "entry_count：子表的数目(一对sample_count和sample_delta是一张子表)\n" +
-            "sample_count：具有相同sample_delta的sample数目\n" +
-            "sample_delta：相对上一sample的dts增量\n";
+    private String describe = "Time to Sample Box。即采样时间容器。该值描述了视频的dts";
+
+    private String[] key = new String[]{
+            "entry_count",
+            "sample_count",
+            "sample_delta",
+    };
+    private String[] introductions = new String[]{
+            "子表的数目(一对sample_count和sample_delta是一张子表)",
+            "具有相同sample_delta的sample数目",
+            "相对上一sample的dts增量",
+    };
     private byte[] all;
     private static final String TAG = "Stts";
 
@@ -33,7 +37,7 @@ public class Stts extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         try {
             byte[] countArr = new byte[4];
             ByteBuffer buffer = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());

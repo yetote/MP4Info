@@ -103,4 +103,22 @@ public class CharUtil {
         }
         return s.toString();
     }
+
+    public static void linkDescribe(SpannableStringBuilder builder, String describe, String[] key, String[] value) {
+        builder.append(describe).append("\n\n");
+        int start = builder.length();
+        int end;
+        for (int i = 0; i < key.length; i++) {
+            end = start + key[i].length();
+            builder.append(key[i]).append(":")
+                    .append(value[i])
+                    .append("\n")
+                    .setSpan(new StyleSpan(android.graphics.Typeface.BOLD),
+                            start,
+                            end,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            start = builder.length();
+        }
+    }
+
 }

@@ -5,29 +5,44 @@ import android.util.Log;
 
 import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.model.FullBox;
+import com.yetote.mp4info.util.CharUtil;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
 public class Avc1 extends FullBox {
     private static final String TAG = "Avc1";
-    String describe = "  reserved:预定义\n" +
-            "  data_reference_index:数据引用索引\n" +
-            "  reserved:保留位\n" +
-            "  pre_define:预定义\n" +
-            "  width:宽\n" +
-            "  height:高\n" +
-            "  horizresolution:横向dpi\n" +
-            "  vertresolution:纵向dpi\n" +
-            "  reserved:保留位\n" +
-            "  frame_count:制定每个样本存储多少帧，video track中固定为1，除非明确的指定了媒体格式\n" +
-            "  compressorname:Compressorname is a name, for informative purposes. It is formatted in a fixed 32‐byte field, with " +
-            "the  first byte  set  to  the  number  of bytes  to  be displayed,  followed by  that number  of  bytes  of " +
-            "displayable data, and then padding to complete 32 bytes total (including the size byte). The field " +
-            "may be set to 0. \n" +
-            "  depth:位深\n" +
-            "  pre_define:预定义\n";
-
+    String describe = "该track为Video Track，编码格式为AVC(H.264)";
+    private String[] key = new String[]{
+            "reserved",
+            "data_reference_index",
+            "reserved",
+            "pre_define",
+            "width",
+            "height",
+            "horizresolution",
+            "vertresolution",
+            "reserved",
+            "frame_count",
+            "compressorname",
+            "depth",
+            "pre_define",
+    };
+    private String[] introductions = new String[]{
+            "预定义",
+            "数据引用索引",
+            "保留位",
+            "预定义",
+            "宽",
+            "高",
+            "横向dpi",
+            "纵向dpi",
+            "保留位",
+            "指定每个样本存储多少帧，video track中固定为1，除非明确的指定了媒体格式",
+            "扩展名",
+            "位深",
+            "预定义",
+    };
     private int reserved_one_size = 6;
     private int data_reference_index_size = 2;
     private int pre_define_one_size = 2;
@@ -58,42 +73,6 @@ public class Avc1 extends FullBox {
     private byte[] depth;
     private byte[] pre_define_three;
 
-//    String describe = "Sample Describe 该box描述了编码类型与编码初始化所需需要的参数\n" +
-//            "configurationVersion：配置版本\n" +
-//            "AVCProfileIndication：在 ISO/IEC 14496-10 中定义的配置文件代码\n" +
-//            "profile_compatibility：在 ISO/IEC 14496-10 中定义的profile_IDC和level_IDC的参数集\n" +
-//            "AVCLevelIndication：在 ISO/IEC 14496-10 中定义的级别码\n" +
-//            "       PS:以上部分均可视为预定义部分\n" +
-//            "reservedAndLengthSizeMinusOne：该byte由两部分组成，前1bit为保留位，后1bit用（0,1,3）表示NALUnitLength字段的字节长度（1,2,4）\n" +
-//            "reservedAndNumOfSequenceParameterSets：该byte由两部分组成，前1bit为保留位，后一部分指示SPS的集的数量\n" +
-//            "sequenceParameterSetLength：指示SPS NAL单元中定义的字节长度\n" +
-//            "sequenceParameterSetNALUnit：指示SPS NAL单元\n" +
-//            "numOfPictureParameterSets：PPS的数量\n" +
-//            "pictureParameterSetLength：指示PPS NAL单元中定义的字节长度\n" +
-//            "pictureParameterSetNALUnit：指示PPS NAL单元：\n"
-//    private int configurationVersion" 1
-//    private int AVCProfileIndication" 1
-//    private int profile_compatibility" 1
-//    private int AVCLevelIndication" 1
-//    private int reservedAndLengthSizeMinusOne" 1
-//    private int reservedAndNumOfSequenceParameterSets" 1
-//    private int sequenceParameterSetLength" 2
-//    //    private int sequenceParameterSetNALUnit_size= 8 * sequenceParameterSetLength
-//    private int numOfPictureParameterSets" 1
-//    private int pictureParameterSetLength" 2
-////    private int pictureParameterSetNALUnit_size= 8 * pictureParameterSetLength
-//
-//    private byte[] configurationVersion
-//    private byte[] AVCProfileIndication
-//    private byte[] profile_compatibility
-//    private byte[] AVCLevelIndication
-//    private byte[] reservedAndLengthSizeMinusOne
-//    private byte[] reservedAndNumOfSequenceParameterSets
-//    private byte[] sequenceParameterSetLength
-//    private byte[] numOfPictureParameterSets
-//    private byte[] pictureParameterSetLength
-//    //    private int sequenceParameterSetNALUnit = 8 * sequenceParameterSetLength
-////    private int pictureParameterSetNALUnit = 8 * pictureParameterSetLength
 
     private byte[] all;
 
@@ -132,7 +111,7 @@ public class Avc1 extends FullBox {
                 depth_size +
                 pre_define_three_size);
         Log.e(TAG, "read: offset" + box.getOffset());
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         String[] name = new String[]{"全部数据", "length", "type",
                 "reserved", "data_reference_index",
                 "pre_define", "reserved",

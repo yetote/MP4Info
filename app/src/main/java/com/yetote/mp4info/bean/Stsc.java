@@ -14,15 +14,21 @@ import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
 public class Stsc extends FullBox {
-    String describe = "Sample to Chunk Box, 该box描述了chunk和sample的关系\n" +
-            "version：版本号\n" +
-            "flag：标志码\n" +
-            "entry_count：chunk的数量\n" +
-            "first_chunk：如果该值不连续，则表明省略的chunk含有和上一个chunk相同的sample数量\n" +
-            "sample_per_chunk：chunk中sample的数量\n" +
-            "sample_description_index：is an integer that gives the index of the sample entry that\n" +
-            "describes the samples in this chunk.The index ranges from 1 to the number of sample entries in\n" +
-            "the Sample Description Box\n";
+    String describe = "Sample to Chunk Box, 该box描述了chunk和sample的关系";
+    private String[] key = new String[]{
+            "entry_count",
+            "first_chunk",
+            "sample_per_chunk",
+            "sample_description_index",
+    };
+    private String[] introductions = new String[]{
+            "chunk的数量",
+            "如果该值不连续，则表明省略的chunk含有和上一个chunk相同的sample数量",
+            "sample_description_index：is an integer that gives the index of the sample entry that " +
+                    "describes the samples in this chunk.The index ranges from 1 to the number of sample entries in " +
+                    "the Sample Description Box",
+    };
+
     private int entry_count_size = 4;
     private int first_chunk_size = 4;
     private int sample_per_chunk_size = 4;
@@ -45,7 +51,7 @@ public class Stsc extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         try {
             byte[] countArr = new byte[4];
             ByteBuffer buffer = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());

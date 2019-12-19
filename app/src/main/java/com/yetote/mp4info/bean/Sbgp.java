@@ -15,18 +15,24 @@ import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
 public class Sbgp extends FullBox {
-    String describe = "Sample to Group Box, 该box用于查找样本所属的样本组以及相关描述\n" +
-            "version：版本号\n" +
-            "flag：标志码\n" +
-            "grouping_type：组名。根据轨道的不同，分组也有不同的组名\n" +
-            "grouping_type_parameter：分组的子类型（只有version==1时才会出现）\n" +
-            "entry_count：子分组\n" +
-            "sample_count：描述具有相同样本组描述的连续样本数\n" +
-            "group_description_index： is an integer that gives the index of the sample group entry which \n" +
-            "describes  the  samples in  this group.  The index  ranges  from  1  to  the  number  of  sample group \n" +
-            "entries  in  the  SampleGroupDescription  Box,  or  takes  the  value  0  to  indicate  that  this \n" +
-            "sample is a member of no group of this type. \n";
-
+    String describe = "Sample to Group Box, 该box用于查找样本所属的样本组以及相关描述";
+    private String[] key = new String[]{
+            "grouping_type",
+            "grouping_type_parameter",
+            "entry_count",
+            "sample_count",
+            "group_description_index： is an integer that gives the index of the sample group entry which " +
+                    "describes  the  samples in  this group.  The index  ranges  from  1  to  the  number  of  sample group " +
+                    "entries  in  the  SampleGroupDescription  Box,  or  takes  the  value  0  to  indicate  that  this " +
+                    "sample is a member of no group of this type. \n",
+    };
+    private String[] introductions = new String[]{
+            "组名。根据轨道的不同，分组也有不同的组名",
+            "分组的子类型（只有version==1时才会出现）",
+            "子分组",
+            "描述具有相同样本组描述的连续样本数",
+            "子分组",
+    };
     private int grouping_type_size = 4;
     private int grouping_type_parameter_size = 4;
     private int entry_count_size = 4;
@@ -53,7 +59,7 @@ public class Sbgp extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         try {
             byte[] countArr = new byte[4];
             ByteBuffer buffer = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());

@@ -15,15 +15,17 @@ import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
 public class Stsz extends FullBox {
-    private String describe = "stsz:Sample size Box。用于表示每一个sample的大小\n" +
-            "length：长度\n" +
-            "type：Box名\n" +
-            "version：版本号\n" +
-            "flag：标志码\n" +
-            "sample_size：如果不为0，则表示sample的大小相等都为该值；如果为0，则表示大小不相等，具体大小由entry_size指定\n" +
-            "sample_count：sample个数\n" +
-            "entry_size：sample的大小\n";
-
+    private String describe = "Sample size Box。用于表示每一个sample的大小";
+    private String[] key = new String[]{
+            "sample_size",
+            "sample_count",
+            "entry_size",
+    };
+    private String[] introductions = new String[]{
+            "如果不为0，则表示sample的大小相等都为该值；如果为0，则表示大小不相等，具体大小由entry_size指定",
+            "sample个数",
+            "sample的大小",
+    };
     private int sample_size_size = 4;
     private int sample_count_size = 4;
     private int entry_size_size = 4;
@@ -44,7 +46,7 @@ public class Stsz extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         try {
             ByteBuffer buffer = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());
             fileChannel.position(box.getPos() + 12);

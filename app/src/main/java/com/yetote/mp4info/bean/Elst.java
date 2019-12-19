@@ -14,15 +14,25 @@ import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
 public class Elst extends FullBox {
-    String describe = "Edit List Box, 该box存储了track的时间偏离量\n" +
-            "version：版本号\n" +
-            "flag：标志码\n" +
-            "entry_count：子表的数目\n" +
-            "segment_duration：指明此edit段的时长，用mvhd的time_scale进行转换\n" +
-            "media_time：指明此edit段的起始时间，用mvhd的time_scale进行转换\n" +
-            "media_rate_integer：如果该值为0，则表明画面时暂停的;如果该值为-1(0xffffff)，则表明该elst为空\n" +
-            "media_rate_fraction：始终为0，文档上未注明其含义\n";
-
+    String describe = "Edit List Box, 该box存储了track的时间偏离量";
+    private String[] key = new String[]{
+            "version",
+            "flag",
+            "entry_count",
+            "segment_duration",
+            "media_time",
+            "media_rate_integer",
+            "media_rate_fraction",
+    };
+    private String[] introductions = new String[]{
+            "版本号",
+            "标志码",
+            "子表的数目",
+            "指明此edit段的时长，用mvhd的time_scale进行转换",
+            "指明此edit段的起始时间，用mvhd的time_scale进行转换",
+            "如果该值为0，则表明画面时暂停的;如果该值为-1(0xffffff)，则表明该elst为空",
+            "始终为0，文档上未注明其含义",
+    };
     private int entry_count_size = 4;
     private int segment_duration_size = 2;
     private int media_time_size = 2;
@@ -46,7 +56,7 @@ public class Elst extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         if (version == 0) {
             segment_duration_size = 4;
             media_time_size = 4;

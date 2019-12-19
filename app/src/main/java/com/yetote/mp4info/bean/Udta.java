@@ -8,7 +8,7 @@ import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
-public class Udta extends BasicBox {
+public class  Udta extends BasicBox {
     String describe = "User Data Box,此Box用于存储用户信息";
     private byte[] all;
 

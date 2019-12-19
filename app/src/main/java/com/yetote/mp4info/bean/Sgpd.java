@@ -14,16 +14,23 @@ import java.nio.channels.FileChannel;
 
 public class Sgpd extends FullBox {
 
-    String describe = "SampleGroupDescription Box, 该box用于描述sample group信息\n" +
-            "version：版本号\n" +
-            "flag：标志码\n" +
-            "grouping_type：组名。根据轨道的不同，分组也有不同的组名\n" +
-            "default_length：默认长度，指示每个组条目的长度。0表示长度是可变的\n" +
-            "default_sample_description_index：默认的样本描述索引(不清楚用途)\n" +
-            "entry_count：子分组\n" +
-            "description_length：表示单个组条目的长度，如果default_length为0\n" +
-            "roll_distance：如果为正值，则表明为了成功解码样本所必需的解码的样本数；负值表示必须全部解码\n";
-
+    String describe = "SampleGroupDescription Box, 该box用于描述sample group信息";
+    private String[] key = new String[]{
+            "grouping_type",
+            "default_length",
+            "default_sample_description_index",
+            "entry_count",
+            "description_length",
+            "roll_distance",
+    };
+    private String[] introductions = new String[]{
+            "组名。根据轨道的不同，分组也有不同的组名",
+            "默认长度，指示每个组条目的长度。0表示长度是可变的",
+            "默认的样本描述索引(不清楚用途)",
+            "子分组",
+            "表示单个组条目的长度，如果default_length为0",
+            "如果为正值，则表明为了成功解码样本所必需的解码的样本数；负值表示必须全部解码",
+    };
     private int grouping_type_size = 4;
     private int default_length_size = 4;
     private int default_sample_description_index_size = 4;
@@ -52,7 +59,7 @@ public class Sgpd extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         try {
             byte[] countArr = new byte[4];
             ByteBuffer buffer = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());

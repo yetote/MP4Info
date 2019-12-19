@@ -1,7 +1,10 @@
 package com.yetote.mp4info;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -30,6 +34,7 @@ import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.model.DataModel;
 import com.yetote.mp4info.util.FileUtil;
 import com.yetote.mp4info.util.MP4;
+import com.yetote.mp4info.util.MyHandler;
 import com.yetote.mp4info.util.ReadInfo;
 
 import java.util.ArrayList;
@@ -65,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     private String path;
     private ArrayList<DataModel> dataList;
     private static boolean parse = false;
+    private LocalBroadcastManager localBroadcastManager;
+    private IntentFilter intentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +165,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        intentFilter = new IntentFilter("com.yetote.mp4info.handler.FINISH");
+        localBroadcastManager.registerReceiver(new MyReceiver(), intentFilter);
+        MyHandler.init(localBroadcastManager);
         pathTv = findViewById(R.id.path_tv);
         chooseFileBtn = findViewById(R.id.choose_file);
         prepareBtn = findViewById(R.id.prepare);
@@ -237,5 +247,15 @@ public class MainActivity extends AppCompatActivity {
         parse = false;
     }
 
+
+    class MyReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (dataFragment != null) {
+                dataFragment.getData(10);
+            }
+        }
+    }
 
 }

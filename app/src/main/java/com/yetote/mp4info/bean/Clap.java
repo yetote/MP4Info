@@ -4,27 +4,40 @@ import android.text.SpannableStringBuilder;
 
 import com.yetote.mp4info.model.BasicBox;
 import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.util.CharUtil;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
 public class Clap extends BasicBox {
     String describe = " Clean Aperture Box,不知道干啥用的，也不知道咋翻译。clap box 中有四对值，使用分数N/D表示\n" +
-            "       PS：对于horizOff和vertOff，分母必须为正值\n" +
-            "           对于cleanApertureWidth和cleanApertureHeight，分子分母都必须为正值\n" +
-            "cleanApertureWidthN：clean Aperture 宽度（分子）\n" +
-            "cleanApertureWidthD：clean Aperture 宽度（分母）\n"+
-            "cleanApertureHeightN：clean Aperture 高度（分子）\n" +
-            "cleanApertureHeightD：clean Aperture 高度（分母）\n"+
-            "horizOffN： a fractional number which defines the horizontal offset of clean" +
-            "aperture centre minus(width‐1)/2.Typically 0（分子）\n" +
-            "horizOffD：horizOffN： a fractional number which defines the horizontal offset of clean" +
-            "aperture centre minus(width‐1)/2.Typically 0（分母）\n"+
-            "vertOffN： a fractional number which defines the vertical offset of clean aperture" +
-            "centre minus (height‐1)/2 Typically 0. （分子）\n" +
-            "vertOffD： a fractional number which defines the vertical offset of clean aperture" +
-            "centre minus (height‐1)/2. Typically 0.（分母） \n";
+            "       \nPS：对于horizOff和vertOff，分母必须为正值\n" +
+            "           对于cleanApertureWidth和cleanApertureHeight，分子分母都必须为正值";
+    private String[] key = new String[]{
+            "cleanApertureWidthN",
+            "cleanApertureWidthD",
+            "cleanApertureHeightN",
+            "cleanApertureHeightD",
+            "horizOffN",
+            "horizOffD",
+            "vertOffN",
+            "vertOffD",
+    };
+    private String[] introductions = new String[]{
+            "clean Aperture 宽度（分子）",
+            "clean Aperture 宽度（分母）",
+            "clean Aperture 高度（分子）",
+            "clean Aperture 高度（分母）",
+            "a fractional number which defines the horizontal offset of clean" +
+                    "aperture centre minus(width‐1)/2.Typically 0（分子）",
+            "a fractional number which defines the horizontal offset of clean" +
+                    "aperture centre minus(width‐1)/2.Typically 0（分母）",
+            "a fractional number which defines the vertical offset of clean aperture" +
+                    "centre minus (height‐1)/2 Typically 0. （分子",
+            "a fractional number which defines the vertical offset of clean aperture" +
+                    "centre minus (height‐1)/2. Typically 0.（分母）",
 
+    };
     private int cleanApertureWidthN_size = 4;
     private int cleanApertureWidthD_size = 4;
     private int cleanApertureHeightN_size = 4;
@@ -59,7 +72,7 @@ public class Clap extends BasicBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         String[] name = new String[]{"全部数据", "length", "type",
                 "cleanApertureWidthN",
                 "cleanApertureWidthD",

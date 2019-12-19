@@ -5,24 +5,35 @@ import android.util.Log;
 
 import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.model.FullBox;
+import com.yetote.mp4info.util.CharUtil;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
 public class Hdlr extends FullBox {
     private static final String TAG = "Hdlr";
-    String describe = "hdlr容器描述了track的类型，并记录了媒体的播放过程\n" +
-            "version:版本号\n" +
-            "flag:标志码\n" +
-            "per_define:预定义\n" +
-            "handler_type:hdlr类型\n" +
-            "       当父容器为mdia时：该值表示track类型包括以下几种值：\n" +
-            "               vide：该track为视频\n" +
-            "               soun：该track为音频\n" +
-            "       当父容器为meta时：该值表示文件的别名\n" +
-            "reserved:保留\n" +
-            "name:是一个以 \\0 结尾的，可变的扩展hdlr的扩展名，方便理解与调试（该值长度可为0）\n" +
-            "ps:该box存在于mdia和meta中\n";
+    String describe = "hdlr容器描述了track的类型，并记录了媒体的播放过程";
+    private String[] key = new String[]{
+            "version",
+            "flag",
+            "per_define",
+            "handler_type",
+            "reserved",
+            "name",
+    };
+    private String[] introductions = new String[]{
+            "版本号",
+            "标志码",
+            "预定义",
+            "hdlr类型\n" +
+                    "\nPS:当父容器为mdia时：该值表示track类型包括以下几种值：\n" +
+                    "       vide：该track为视频\n" +
+                    "       soun：该track为音频\n" +
+                    "当父容器为meta时：该值表示文件的别名\n",
+            "保留",
+            "是一个以 \\0 结尾的，可变的扩展hdlr的扩展名，方便理解与调试（该值长度可为0）\n" +
+                    "ps:该box存在于mdia和meta中\n",
+    };
     private int per_define_size = 4;
     private int handler_type_size = 4;
     private int reserved_size = 12;
@@ -49,7 +60,7 @@ public class Hdlr extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         String[] name = new String[]{"全部数据", "length", "type", "version", "flag",
                 "per_define",
                 "handler_type",

@@ -5,25 +5,39 @@ import android.util.Log;
 
 import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.model.FullBox;
+import com.yetote.mp4info.util.CharUtil;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
 public class Mvhd extends FullBox {
-    String describe = "该box在文件中唯一，对整个媒体文件进行了全局的描述（这些信息与媒体数据无关，只是对媒体文件的描述）\n" +
-            "version:version为0时，creation_time、modification_time、timescale、duration长度为32bit；为1时，长度为64bit\n" +
-            "flag:标志位\n" +
-            "creation_time:媒体文件创建时间（从1904-01-01 00:00:00开始计算，单位：秒）\n" +
-            "modification_time：媒体文件最新修改时间（从1904-01-01 00:00:00开始计算，单位：秒。该数值并不一定准确）\n" +
-            "time_scale：该数值表示整个文件的单位，表示将1s划分为多少份。例如：time_scale=1000，则本文件时间单位为1/1000s=1ms\n" +
-            "duration：媒体可播放最长时间，需要与time_scale计算才能得到实际时间。（所有轨道中的最长持续时间）\n" +
-            "rate:文件播放速率，0x00010000代表播放速率为1.0（正常速率）\n" +
-            "volume：音量，0x0100表示音量为1.0（最大音量）\n" +
-            "reserved：保留数据\n" +
-            "matrix：提供视频的转换矩阵(貌似用于视频画面缩放)；（u，v，w）在这里限制为（0,0,1），十六进制值（0,0,0x40000000）。\n" +
-            "pre_defined：不清楚，文档没解释\n" +
-            "next_track_id：下一个待添加的轨道id，0不是有效值。如果该值全为1并且需要添加新轨道，则必须搜索未使用的轨道\n";
-
+    String describe = "该box在文件中唯一，对整个媒体文件进行了全局的描述（这些信息与媒体数据无关，只是对媒体文件的描述";
+    private String[] key = new String[]{
+            "version",
+            "creation_time",
+            "modification_time",
+            "time_scale",
+            "duration",
+            "rate",
+            "volume",
+            "reserved",
+            "matrix",
+            "pre_defined",
+            "next_track_id"
+    };
+    private String[] introductions = new String[]{
+            "version为0时，creation_time、modification_time、timescale、duration长度为32bit；为1时，长度为64bit",
+            "媒体文件创建时间（从1904-01-01 00:00:00开始计算，单位：秒）",
+            "媒体文件最新修改时间（从1904-01-01 00:00:00开始计算，单位：秒。该数值并不一定准确）",
+            "该数值表示整个文件的单位，表示将1s划分为多少份。例如：time_scale=1000，则本文件时间单位为1/1000s=1ms",
+            "媒体可播放最长时间，需要与time_scale计算才能得到实际时间。（所有轨道中的最长持续时间）/1000s=1ms",
+            "文件播放速率，0x00010000代表播放速率为1.0（正常速率）/1000s=1ms",
+            "音量，0x0100表示音量为1.0（最大音量）/1000s=1ms",
+            "保留数据",
+            "提供视频的转换矩阵(貌似用于视频画面缩放)；（u，v，w）在这里限制为（0,0,1），十六进制值（0,0,0x40000000）",
+            "预定义",
+            "下一个待添加的轨道id，0不是有效值。如果该值全为1并且需要添加新轨道，则必须搜索未使用的轨道",
+    };
     private int version_size = 1;
     private int flag_size = 3;
     private int creation_time_size = 4;
@@ -70,7 +84,7 @@ public class Mvhd extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         String[] name = new String[]{"全部数据","length", "type", "version", "flag",
                 "creation_time",
                 "modification_time",

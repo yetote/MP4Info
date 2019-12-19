@@ -14,14 +14,26 @@ import java.nio.channels.FileChannel;
 
 public class Ctts extends FullBox {
     String describe = "Composition Time to Sample Box, 该box指定了每个sample的Composition Time与Decode Time的时间差\n" +
-            "       PS:如果该box不存在，则表示视频中无B帧\n" +
+            "       \nPS:如果该box不存在，则表示视频中无B帧\n";
+
+
+    private String[] key = new String[]{
+            "version",
+            "flag",
+            "entry_count",
+            "sample_count",
+            "sample_offset",
+    };
+    private String[] introductions = new String[]{
             "version：版本号\n" +
-            "       0：sample_offset为有符号32位整数\n" +
-            "       1：sample_offset为无符号32位整数\n" +
-            "flag：标志码\n" +
-            "entry_count：表的条目数\n" +
-            "sample_count：具有相同偏移量的sample\n" +
-            "sample_offset：CT(n)与DT(n)的偏移量，具体公式为:CT(n)=DT(n)+CTTS(n)\n";
+                    "       0：sample_offset为有符号32位整数\n" +
+                    "       1：sample_offset为无符号32位整数\n",
+            "标志码",
+            "表的条目数",
+            "具有相同偏移量的sample",
+            "CT(n)与DT(n)的偏移量，具体公式为:CT(n)=DT(n)+CTTS(n)",
+    };
+
     private int entry_count_size = 4;
     private int sample_count_size = 4;
     private int sample_offset_size = 4;
@@ -41,7 +53,7 @@ public class Ctts extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         try {
             byte[] countArr = new byte[4];
             ByteBuffer buffer = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());

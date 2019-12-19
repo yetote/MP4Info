@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#3D8A4E</color>
     <color name="colorAccent">#4AA85E</color>
     <color name="treeColor">#4AA85E</color>
+    <color name="white">#ffffff</color>
 </resources>

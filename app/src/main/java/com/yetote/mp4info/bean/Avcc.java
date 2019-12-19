@@ -4,25 +4,42 @@ import android.text.SpannableStringBuilder;
 
 import com.yetote.mp4info.model.BasicBox;
 import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.util.CharUtil;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
 public class Avcc extends BasicBox {
 
-    String describe = "Sample Describe 该box描述了编码类型与编码初始化所需需要的参数\n" +
-            "configurationVersion：配置版本\n" +
-            "AVCProfileIndication：在 ISO/IEC 14496-10 中定义的配置文件代码\n" +
-            "profile_compatibility：在 ISO/IEC 14496-10 中定义的profile_IDC和level_IDC的参数集\n" +
+    String describe = "Sample Describe 该box描述了编码类型与编码初始化所需需要的参数";
+
+    private String[] key = new String[]{
+            "configurationVersion",
+            "AVCProfileIndication",
+            "profile_compatibility",
+            "AVCLevelIndication",
+            "reservedAndLengthSizeMinusOne",
+            "reservedAndNumOfSequenceParameterSets",
+            "sequenceParameterSetLength",
+            "sequenceParameterSetNALUnit",
+            "numOfPictureParameterSets",
+            "pictureParameterSetLength",
+            "pictureParameterSetNALUnit",
+    };
+    private String[] introductions = new String[]{
+            "配置版本",
+            "在 ISO/IEC 14496-10 中定义的配置文件代码",
+            "在 ISO/IEC 14496-10 中定义的profile_IDC和level_IDC的参数集",
             "AVCLevelIndication：在 ISO/IEC 14496-10 中定义的级别码\n" +
-            "       PS:以上部分均可视为预定义部分\n" +
-            "reservedAndLengthSizeMinusOne：该byte由两部分组成，前1bit为保留位，后1bit用（0,1,3）表示NALUnitLength字段的字节长度（1,2,4）\n" +
-            "reservedAndNumOfSequenceParameterSets：该byte由两部分组成，前1bit为保留位，后一部分指示SPS的集的数量\n" +
-            "sequenceParameterSetLength：指示NAL单元中定义的 SPS 字节长度\n" +
-            "sequenceParameterSetNALUnit：指示NAL单元的SPS \n" +
-            "numOfPictureParameterSets：PPS的数量\n" +
-            "pictureParameterSetLength：指示NAL单元中定义的PPS 字节长度\n" +
-            "pictureParameterSetNALUnit：指示NAL单元的PPS ：\n";
+                    "       \nPS:以上部分均可视为预定义部分\n",
+            "该byte由两部分组成，前1bit为保留位，后1bit用（0,1,3）表示NALUnitLength字段的字节长度（1,2,4）",
+            "该byte由两部分组成，前1bit为保留位，后一部分指示SPS的集的数量",
+            "指示NAL单元中定义的 SPS 字节长度",
+            "指示NAL单元的SPS",
+            "PPS的数量",
+            "指示NAL单元中定义的PPS 字节长度",
+            "指示NAL单元的PPS",
+    };
     private int configurationVersion_size = 1;
     private int AVCProfileIndication_size = 1;
     private int profile_compatibility_size = 1;
@@ -68,8 +85,8 @@ public class Avcc extends BasicBox {
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
 //        box.setOffset(entry_count_size + version_size + flag_size)
-        builders[0].append(this.describe);
-        String[] name = new String[]{"全部数据","length", "type",
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
+        String[] name = new String[]{"全部数据", "length", "type",
                 "configurationVersion", "AVCProfileIndication",
                 "profile_compatibility", "AVCLevelIndication",
                 "reservedAndLengthSizeMinusOne",
@@ -80,7 +97,7 @@ public class Avcc extends BasicBox {
                 "pictureParameterSetLength",
                 "pictureParameterSetNALUnit",
         };
-        byte[][] data = new byte[][]{all,length != 1 ? length_arr : large_length_arr, type_arr,
+        byte[][] data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr,
                 configurationVersion, AVCProfileIndication,
                 profile_compatibility, AVCLevelIndication,
                 reservedAndLengthSizeMinusOne,
@@ -92,7 +109,7 @@ public class Avcc extends BasicBox {
                 pictureParameterSetNALUnit,
         };
         String[] value = new String[name.length];
-        String[] type = new String[]{"char","int", "char",
+        String[] type = new String[]{"char", "int", "char",
                 "int", "int",
                 "int", "int",
                 "int",

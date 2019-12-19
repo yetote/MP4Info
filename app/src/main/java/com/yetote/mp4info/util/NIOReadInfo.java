@@ -3,6 +3,7 @@ package com.yetote.mp4info.util;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 
+import com.yetote.mp4info.model.BasicBox;
 import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.model.DataModel;
 
@@ -61,6 +62,7 @@ public class NIOReadInfo {
             Constructor constructor = clz.getConstructor(int.class);
             Method method = clz.getMethod("read", SpannableStringBuilder[].class, FileChannel.class, Box.class);
             method.invoke(constructor.newInstance(box.getLength()), builders, fileChannel, box);
+
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();
         }

@@ -5,15 +5,21 @@ import android.util.Log;
 
 import com.yetote.mp4info.model.BasicBox;
 import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.util.CharUtil;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
 public class Pasp extends BasicBox {
-    String describe = "Pixel Aspect Ratio Box,指明了像素长宽比，\n" +
-            "hSpacing：像素的相对高度\n" +
-            "vSpacing：像素的相对宽度\n";
-
+    String describe = "Pixel Aspect Ratio Box,指明了像素长宽比";
+    private String[] key = new String[]{
+            "hSpacing",
+            "vSpacing",
+    };
+    private String[] introductions = new String[]{
+            "像素的相对高度",
+            "像素的相对宽度",
+    };
     private int hSpacing_size = 4;
     private int vSpacing_size = 4;
 
@@ -30,7 +36,7 @@ public class Pasp extends BasicBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         String[] name = new String[]{"全部数据", "length", "type",
                 "hSpacing",
                 "vSpacing"};

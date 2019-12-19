@@ -13,12 +13,18 @@ import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
 public class Stss extends FullBox {
-    String describe = "Sync Sample Box, 该box用于指示关键帧的索引" +
-            "       PS：如果该box不存在，则表示全部为关键帧\n" +
-            "version：版本号\n" +
-            "flag：标志码\n" +
-            "entry_count：chunk offset的数量\n" +
-            "chunk_offset：关键帧的索引\n";
+    String describe = "Sync Sample Box, 该box用于指示关键帧的索引\n" +
+            "\nPS：如果该box不存在，则表示全部为关键帧";
+
+    private String[] key = new String[]{
+            "entry_count",
+            "sample_number",
+    };
+    private String[] introductions = new String[]{
+            "子表的数量",
+            "关键帧的索引",
+
+    };
     private int entry_count_size = 4;
     private int sample_number_size = 4;
 
@@ -36,7 +42,7 @@ public class Stss extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         try {
             byte[] countArr = new byte[4];
             ByteBuffer buffer = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());

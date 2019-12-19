@@ -4,17 +4,21 @@ import android.text.SpannableStringBuilder;
 
 import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.model.FullBox;
+import com.yetote.mp4info.util.CharUtil;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
 
 public class Smhd extends FullBox {
-    String describe = "Sound media header, 该box指定了音频信息头\n" +
-            "version：版本号\n" +
-            "flag：标志码\n" +
-            "balance：均衡,是一个8.8的定点数，全部左声道为-1.0，全部右声道为1.0\n" +
-            "reserved：保留位\n";
-
+    String describe = "Sound media header, 该box指定了音频信息头";
+    private String[] key = new String[]{
+            "balance",
+            "reserved",
+    };
+    private String[] introductions = new String[]{
+            "均衡,是一个8.8的定点数，全部左声道为-1.0，全部右声道为1.0",
+            "保留位",
+    };
     private int balance_size = 2;
     private int reserved_size = 2;
 
@@ -31,7 +35,7 @@ public class Smhd extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         String[] name = new String[]{"全部数据", "length", "type", "version", "flag",
                 "balance",
                 "reserved"};

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.yetote.mp4info.model.BasicBox;
 import com.yetote.mp4info.model.Box;
+import com.yetote.mp4info.util.CharUtil;
 import com.yetote.mp4info.util.NIOReadInfo;
 
 import java.nio.channels.FileChannel;
@@ -18,11 +19,21 @@ public class Ftyp extends BasicBox {
     byte[] compatible_brands;
     byte[] all;
     private static final String TAG = "Ftyp";
-    String describe = "ftyp为file type,意味着文件格式,其中包含MP4的一些文件信息,其中包含三部分:\nmajor_brand(协议名称)\nminor_version(版本号)\ncompatible_brands(兼容的协议)";
+    String describe = "ftyp为file type,意味着文件格式,其中包含MP4的一些文件信息";
 
     int major_brand_size = 4;
     int minor_version_size = 4;
     int compatible_brands_size = 12;
+    private String[] key = new String[]{
+            "major_brand",
+            "nminor_version",
+            "compatible_brands"
+    };
+    private String[] introductions = new String[]{
+            "协议名称",
+            "版本号",
+            "兼容的协议"
+    };
 
     public Ftyp(int length) {
         major_brand = new byte[major_brand_size];
@@ -37,7 +48,7 @@ public class Ftyp extends BasicBox {
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
         Log.e(TAG, "read: " + length);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         String[] name = new String[]{"全部数据", "length", "type",
                 "major_brand",
                 "minor_version",

@@ -13,12 +13,15 @@ import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
 public class Stco extends FullBox {
-    String describe = "Chunk offset Box, chunk偏移容器，该box指明了chunk在文件中的存储位置\n" +
-            "version：版本号\n" +
-            "flag：标志码\n" +
-            "entry_count：chunk offset的数量\n" +
-            "chunk_offset：给出了每个chunk的偏移量\n";
-
+    String describe = "Chunk offset Box, chunk偏移容器，该box指明了chunk在文件中的存储位置";
+    private String[] key = new String[]{
+            "entry_count",
+            "chunk_offset",
+    };
+    private String[] introductions = new String[]{
+            "chunk offset的数量",
+            "给出了每个chunk的偏移量",
+    };
     private int entry_count_size = 4;
     private int chunk_offset_size = 4;
 
@@ -36,7 +39,7 @@ public class Stco extends FullBox {
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
-        builders[0].append(this.describe);
+        CharUtil.linkDescribe(builders[0], describe, key, introductions);
         try {
             byte[] countArr = new byte[4];
             ByteBuffer buffer = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder());

@@ -11,7 +11,6 @@ public class Edts extends BasicBox {
     String describe = "此box包含了elst box，用于指明某一track的时间偏移量";
 
     public Edts(int length) {
-
     }
 
     @Override

@@ -2,18 +2,22 @@ package com.yetote.mp4info.util;
 
 import com.yetote.mp4info.bean.Avc1;
 import com.yetote.mp4info.bean.Avcc;
+import com.yetote.mp4info.bean.Btrt;
 import com.yetote.mp4info.bean.Clap;
 import com.yetote.mp4info.bean.Co64;
 import com.yetote.mp4info.bean.Colr;
 import com.yetote.mp4info.bean.Ctts;
+import com.yetote.mp4info.bean.DefaultBox;
 import com.yetote.mp4info.bean.Dinf;
 import com.yetote.mp4info.bean.Dref;
 import com.yetote.mp4info.bean.Edts;
 import com.yetote.mp4info.bean.Elst;
 import com.yetote.mp4info.bean.Esds;
+import com.yetote.mp4info.bean.Free;
 import com.yetote.mp4info.bean.Ftyp;
 import com.yetote.mp4info.bean.Hdlr;
 import com.yetote.mp4info.bean.Ilst;
+import com.yetote.mp4info.bean.Iods;
 import com.yetote.mp4info.bean.Mdat;
 import com.yetote.mp4info.bean.Mdhd;
 import com.yetote.mp4info.bean.Mdia;
@@ -21,7 +25,6 @@ import com.yetote.mp4info.bean.Meta;
 import com.yetote.mp4info.bean.Minf;
 import com.yetote.mp4info.bean.Moov;
 import com.yetote.mp4info.bean.Mp4a;
-import com.yetote.mp4info.bean.Mp4v;
 import com.yetote.mp4info.bean.Mvhd;
 import com.yetote.mp4info.bean.Pasp;
 import com.yetote.mp4info.bean.Sbgp;
@@ -38,6 +41,7 @@ import com.yetote.mp4info.bean.Tkhd;
 import com.yetote.mp4info.bean.Trak;
 import com.yetote.mp4info.bean.Udta;
 import com.yetote.mp4info.bean.Vmhd;
+import com.yetote.mp4info.model.BasicBox;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -88,6 +92,9 @@ public class MP4 {
         MP4_MAP.put("meta", Meta.class.getName());              CHILD_MAP.put("meta", true);
         MP4_MAP.put("ilst", Ilst.class.getName());              CHILD_MAP.put("ilst", false);
         MP4_MAP.put("mp4v", Avc1.class.getName());              CHILD_MAP.put("mp4v", true);
+        MP4_MAP.put("iods", Iods.class.getName());              CHILD_MAP.put("iods", false);
+        MP4_MAP.put("btrt", Btrt.class.getName());              CHILD_MAP.put("btrt", false);
+        MP4_MAP.put("free", Free.class.getName());              CHILD_MAP.put("free", false);
     }
     //    @formatter:on
 
@@ -95,7 +102,7 @@ public class MP4 {
         if (MP4_MAP.containsKey(key)) {
             return MP4_MAP.get(key);
         } else {
-            return "";
+            return DefaultBox.class.getName();
         }
     }
 
