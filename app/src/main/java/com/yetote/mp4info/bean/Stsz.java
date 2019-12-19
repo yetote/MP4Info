@@ -39,6 +39,7 @@ public class Stsz extends FullBox {
 
     public Stsz(int length) {
         all = new byte[length];
+        entry_size_arr = new byte[entry_size_size];
         sample_size_arr = new byte[sample_size_size];
         sample_count_arr = new byte[sample_count_size];
     }
@@ -80,36 +81,37 @@ public class Stsz extends FullBox {
             }
 
             name[0] = "全部数据";
-            data[0] = new byte[length];
+            data[0] = all;
             type[0] = "char";
 
             name[1] = "length";
-            data[1] = new byte[4];
+            data[1] = length_arr;
             type[1] = "int";
 
             name[2] = "type";
-            data[2] = new byte[4];
+            data[2] = type_arr;
             type[2] = "char";
 
             name[3] = "version";
-            data[3] = new byte[3];
+            data[3] = version_arr;
             type[3] = "int";
 
             name[4] = "flag";
-            data[4] = new byte[1];
+            data[4] = flag_arr;
             type[4] = "int";
 
+
             name[5] = "sample_size";
-            data[5] = new byte[4];
+            data[5] = sample_size_arr;
             type[5] = "int";
 
             name[6] = "sample_count";
-            data[6] = new byte[4];
+            data[6] = sample_count_arr;
             type[6] = "int";
 
             for (int i = 0; i < sampleCount; i++) {
                 name[i + 7] = "entry_size" + (i + 1);
-                data[i + 7] = new byte[4];
+                data[i + 7] = entry_size_arr;
                 type[i + 7] = "int";
             }
             NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);

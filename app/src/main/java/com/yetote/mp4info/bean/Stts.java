@@ -53,23 +53,23 @@ public class Stts extends FullBox {
             String[] type = new String[2 * count + 6];
 
             name[0] = "全部数据";
-            data[0] = new byte[length];
+            data[0] = all;
             type[0] = "char";
 
             name[1] = "length";
-            data[1] = new byte[4];
+            data[1] = length_arr;
             type[1] = "int";
 
             name[2] = "type";
-            data[2] = new byte[4];
+            data[2] = type_arr;
             type[2] = "char";
 
             name[3] = "version";
-            data[3] = new byte[3];
+            data[3] = version_arr;
             type[3] = "int";
 
             name[4] = "flag";
-            data[4] = new byte[1];
+            data[4] = flag_arr;
             type[4] = "int";
 
             name[5] = "entry_count";

@@ -48,6 +48,8 @@ public class Elst extends FullBox {
 
     public Elst(int length) {
         entry_count_arr = new byte[entry_count_size];
+        media_time_arr = new byte[media_time_size];
+        segment_duration_arr = new byte[segment_duration_size];
         media_rate_integer_arr = new byte[media_rate_integer_size];
         media_rate_fraction_arr = new byte[media_rate_fraction_size];
         all = new byte[length];
@@ -78,44 +80,44 @@ public class Elst extends FullBox {
             String[] type = new String[4 * count + 6];
 
             name[0] = "全部数据";
-            data[0] = new byte[length];
+            data[0] = all;
             type[0] = "char";
 
             name[1] = "length";
-            data[1] = new byte[4];
+            data[1] = length_arr;
             type[1] = "int";
 
             name[2] = "type";
-            data[2] = new byte[4];
+            data[2] = type_arr;
             type[2] = "char";
 
             name[3] = "version";
-            data[3] = new byte[3];
+            data[3] = version_arr;
             type[3] = "int";
 
             name[4] = "flag";
-            data[4] = new byte[1];
+            data[4] = flag_arr;
             type[4] = "int";
 
             name[5] = "entry_count";
-            data[5] = new byte[4];
+            data[5] = entry_count_arr;
             type[5] = "int";
 
             for (int i = 0; i < count; i++) {
                 name[i * 4 + 6] = "segment_duration(" + (i + 1) + ")";
-                data[i * 4 + 6] = new byte[segment_duration_size];
+                data[i * 4 + 6] = segment_duration_arr;
                 type[i * 4 + 6] = "int";
 
                 name[i * 4 + 7] = "media_time(" + (i + 1) + ")";
-                data[i * 4 + 7] = new byte[media_time_size];
+                data[i * 4 + 7] = media_time_arr;
                 type[i * 4 + 7] = "int";
 
                 name[i * 4 + 8] = "media_rate_integer(" + (i + 1) + ")";
-                data[i * 4 + 8] = new byte[2];
+                data[i * 4 + 8] = media_rate_integer_arr;
                 type[i * 4 + 8] = "int";
 
                 name[i * 4 + 9] = "media_rate_fraction(" + (i + 1) + ")";
-                data[i * 4 + 9] = new byte[2];
+                data[i * 4 + 9] = media_rate_fraction_arr;
                 type[i * 4 + 9] = "int";
             }
 

@@ -78,7 +78,7 @@ public class DataFragment extends Fragment {
             waitingIv.setVisibility(View.GONE);
         }
         int state = MyHandler.getMessage(size, dataList);
-        Log.e(TAG, "getData:size " + dataList.size());
+        Log.e(TAG, "getData:state " + state);
         if (state == MyHandler.DATA_FINISH) {
             Toast.makeText(getContext(), "无更多数据", Toast.LENGTH_SHORT).show();
         } else {

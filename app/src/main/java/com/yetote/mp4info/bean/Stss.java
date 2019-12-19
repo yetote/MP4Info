@@ -57,32 +57,32 @@ public class Stss extends FullBox {
             String[] type = new String[count + 6];
 
             name[0] = "全部数据";
-            data[0] = new byte[length];
+            data[0] = all;
             type[0] = "char";
 
             name[1] = "length";
-            data[1] = new byte[4];
+            data[1] = length_arr;
             type[1] = "int";
 
             name[2] = "type";
-            data[2] = new byte[4];
+            data[2] = type_arr;
             type[2] = "char";
 
             name[3] = "version";
-            data[3] = new byte[3];
+            data[3] = version_arr;
             type[3] = "int";
 
             name[4] = "flag";
-            data[4] = new byte[1];
+            data[4] = flag_arr;
             type[4] = "int";
 
             name[5] = "entry_count";
-            data[5] = new byte[4];
+            data[5] = entry_count_arr;
             type[5] = "int";
 
             for (int i = 0; i < count; i++) {
                 name[i + 6] = "sample_number:(" + (i + 1) + ")";
-                data[i + 6] = new byte[4];
+                data[i + 6] = sample_number_arr;
                 type[i + 6] = "int";
             }
             NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);
