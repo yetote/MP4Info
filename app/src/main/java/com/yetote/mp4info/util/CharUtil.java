@@ -71,7 +71,7 @@ public class CharUtil {
         int end = 0;
         for (int i = 0; i < name.length; i++) {
             end = start + name[i].length();
-            builder.append(name[i]).append(":\n(")
+            builder.append(name[i]).append("：\n(")
                     .append(CharUtil.changePrimevalData(primevalData[i]))
                     .append(")\n")
                     .append(value[i])
@@ -110,7 +110,7 @@ public class CharUtil {
         int end;
         for (int i = 0; i < key.length; i++) {
             end = start + key[i].length();
-            builder.append(key[i]).append(":")
+            builder.append(key[i]).append("：")
                     .append(value[i])
                     .append("\n")
                     .setSpan(new StyleSpan(android.graphics.Typeface.BOLD),

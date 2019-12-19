@@ -32,7 +32,7 @@ public class Hdlr extends FullBox {
                     "当父容器为meta时：该值表示文件的别名\n",
             "保留",
             "是一个以 \\0 结尾的，可变的扩展hdlr的扩展名，方便理解与调试（该值长度可为0）\n" +
-                    "ps:该box存在于mdia和meta中\n",
+                    "\nps:该box存在于mdia和meta中\n",
     };
     private int per_define_size = 4;
     private int handler_type_size = 4;
