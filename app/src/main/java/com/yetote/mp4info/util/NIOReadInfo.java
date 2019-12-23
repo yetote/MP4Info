@@ -38,6 +38,7 @@ public class NIOReadInfo {
         buffer = ByteBuffer.allocate(8).order(ByteOrder.nativeOrder());
     }
 
+
     public boolean prepare() {
         try {
             inputStream = new FileInputStream(path);
@@ -170,6 +171,7 @@ public class NIOReadInfo {
                         value[i] = "null";
                         continue;
                     }
+                    Log.e(TAG, "readBox: i=" + i + "\n length=" + length + "\n pos=" + boxBuffer.position());
                     boxBuffer.get(data[i]);
                     switch (type[i]) {
                         case "char":
@@ -180,6 +182,9 @@ public class NIOReadInfo {
                             last = CharUtil.c2Int(data[i]);
                             break;
                         case "time":
+                            value[i] = CharUtil.c2Str(data[i]);
+                            break;
+                        case "duration":
                             value[i] = CharUtil.c2Str(data[i]);
                             break;
                         case "matrix":
@@ -221,8 +226,17 @@ public class NIOReadInfo {
         destroy();
     }
 
-    public static String searchBox(int id) {
+    public static Box searchBox(int id) {
         Box box = boxList.stream().filter(b -> id == b.getId()).findAny().orElse(null);
-        return box.getName();
+        return box;
+    }
+
+    public static Box searchBox(String type) {
+        Box box = boxList.stream().filter(b -> type.equalsIgnoreCase(type)).findAny().orElse(null);
+        return box;
+    }
+
+    public static void readItem(byte[] data, int pos, int length) {
+
     }
 }

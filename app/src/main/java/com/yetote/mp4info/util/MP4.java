@@ -92,6 +92,7 @@ public class MP4 {
         MP4_MAP.put("meta", Meta.class.getName());              CHILD_MAP.put("meta", true);
         MP4_MAP.put("ilst", Ilst.class.getName());              CHILD_MAP.put("ilst", false);
         MP4_MAP.put("mp4v", Avc1.class.getName());              CHILD_MAP.put("mp4v", true);
+        MP4_MAP.put("hvc1", Avc1.class.getName());              CHILD_MAP.put("hvc1", true);
         MP4_MAP.put("iods", Iods.class.getName());              CHILD_MAP.put("iods", false);
         MP4_MAP.put("btrt", Btrt.class.getName());              CHILD_MAP.put("btrt", false);
         MP4_MAP.put("free", Free.class.getName());              CHILD_MAP.put("free", false);

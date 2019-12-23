@@ -29,7 +29,6 @@ public class Mdhd extends FullBox {
             "最新修改时间",
             "时间单位",
             "总时长",
-            "文档未注明",
             "使用的语言",
             "预定义",
     };

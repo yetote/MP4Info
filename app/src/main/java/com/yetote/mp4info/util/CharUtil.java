@@ -53,15 +53,35 @@ public class CharUtil {
         }
         return temp;
     }
-//    public static String c2Time(byte[] data) {
-//        if (MP4.TIME_SCALE==0){
-//            return "无法计算具体时间，原始数据为:"+c2Int(data);
-//        }
-//        int time = c2Int(data)/;
-//        int hour=time/(60*60)
-//        return null;
-//    }
 
+    public static String c2Time(byte[] data) {
+        if (MP4.TIME_SCALE <= 0) {
+            byte[] timeScaleArr = new byte[4];
+            NIOReadInfo.readItem(timeScaleArr, NIOReadInfo.searchBox("mvhd").getPos() + 20, 4);
+            MP4.TIME_SCALE = CharUtil.c2Int(timeScaleArr);
+            if (MP4.TIME_SCALE <= 0) {
+                return "无法计算具体时间，原始数据为:" + c2Int(data);
+            }
+        }
+        int time = c2Int(data) / MP4.TIME_SCALE;
+        int second = time % (60);
+        int minute = time % (60 * 60);
+        int hour = time / (60 * 60);
+        return null;
+    }
+
+    public static String c2Duration(byte[] data) {
+        if (MP4.TIME_SCALE == 0) {
+            return "无法计算具体时间，原始数据为:" + c2Int(data);
+        }
+        int time = c2Int(data) /;
+        int hour = time / (60 * 60)
+        return null;
+    }
+
+    public static String c2Matrix(byte[] data) {
+        return null;
+    }
 //    public static String c2Matrix(byte[] data) {
 //        return null;
 //    }
