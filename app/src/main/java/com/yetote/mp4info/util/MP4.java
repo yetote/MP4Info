@@ -49,7 +49,7 @@ import java.util.Map;
 public class MP4 {
     public static final Map<String, String> MP4_MAP = new HashMap<String, String>();
     public static final Map<String, Boolean> CHILD_MAP = new HashMap<>();
-    public static int TIME_SCALE = 0;
+    public static long TIME_SCALE = 0;
 
     //    @formatter:off
     static {

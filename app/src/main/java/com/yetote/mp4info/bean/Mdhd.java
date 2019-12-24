@@ -89,7 +89,7 @@ public class Mdhd extends FullBox {
                 "time",
                 "time",
                 "int",
-                "time",
+                "duration",
                 "int",
                 "char",
         };

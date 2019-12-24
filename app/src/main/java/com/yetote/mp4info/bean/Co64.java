@@ -14,11 +14,7 @@ import java.nio.channels.FileChannel;
 
 public class Co64 extends FullBox {
     String describe = "Chunk offset Box, chunk偏移容器，该box指明了chunk在文件中的存储位置\n" +
-            "        PS：stco和co64都属于 chunk offset table，区别只是staco的chunk_offset是32bit;co64是64bit\n" +
-            "version：版本号\n" +
-            "flag：标志码\n" +
-            "entry_count：chunk offset的数量\n" +
-            "chunk_offset：给出了每个chunk的偏移量\n";
+            "\nPS：stco和co64都属于 chunk offset table，区别只是staco的chunk_offset是32bit;co64是64bit\n";
     private String[] key = new String[]{
             "version",
             "flag",

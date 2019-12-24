@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            readInfo = new ReadInfo(pathTv.getText().toString());
-            Observable.create((ObservableOnSubscribe<Boolean>) emitter -> emitter.onNext(readInfo.prepare()))
+            readInfo = new ReadInfo();
+            Observable.create((ObservableOnSubscribe<Boolean>) emitter -> emitter.onNext(readInfo.prepare(pathTv.getText().toString())))
                     .subscribeOn(Schedulers.newThread())
                     .flatMap((Function<Boolean, ObservableSource<List<Box>>>) isPrepare -> {
                         return isPrepare ? Observable.just(readInfo.getBox(1, 0)) : null;

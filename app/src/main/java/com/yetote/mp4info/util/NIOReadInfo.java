@@ -13,6 +13,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
@@ -23,27 +24,21 @@ import java.util.List;
 import java.util.Map;
 
 public class NIOReadInfo {
-    private ByteBuffer buffer;
-    private String path;
-    private Map<String, Box> indexMap;
+    private static ByteBuffer buffer = ByteBuffer.allocate(8).order(ByteOrder.nativeOrder());
     private static List<Box> boxList = new ArrayList<>();
     private static final String TAG = "Read";
-    FileInputStream inputStream;
-    FileChannel fileChannel;
+    static FileInputStream inputStream;
+    static FileChannel fileChannel;
     private static int id = 0;
 
-    public NIOReadInfo(String path) {
-        this.path = path;
-        indexMap = new HashMap<>();
-        buffer = ByteBuffer.allocate(8).order(ByteOrder.nativeOrder());
-    }
 
-
-    public boolean prepare() {
+    public static boolean prepare(String path) {
+        if (inputStream != null || fileChannel != null) {
+            destroy();
+        }
         try {
             inputStream = new FileInputStream(path);
             fileChannel = inputStream.getChannel();
-
             readFile(0, fileChannel.size(), 1, 0);
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,7 +46,7 @@ public class NIOReadInfo {
         return true;
     }
 
-    public void readBox(SpannableStringBuilder[] builders, Box box) {
+    public static void readBox(SpannableStringBuilder[] builders, Box box) {
         try {
             String className = MP4.getValue(box.getName());
             if (className.equals("")) {
@@ -70,7 +65,7 @@ public class NIOReadInfo {
     }
 
 
-    public ArrayList<Box> getBox(int level, int parentId) {
+    public static ArrayList<Box> getBox(int level, int parentId) {
         ArrayList<Box> list = new ArrayList<>();
         for (Box b : boxList) {
             if (b.getLevel() == level && b.getParentId() == parentId) {
@@ -80,7 +75,7 @@ public class NIOReadInfo {
         return list;
     }
 
-    private void readFile(int pos, long max, int level, int parentId) {
+    private static void readFile(int pos, long max, int level, int parentId) {
         byte[] lengthArr = new byte[4];
         byte[] typeArr = new byte[4];
         try {
@@ -108,7 +103,7 @@ public class NIOReadInfo {
     }
 
 
-    private void destroy() {
+    private static void destroy() {
         try {
             if (fileChannel != null) {
                 fileChannel.close();
@@ -121,21 +116,8 @@ public class NIOReadInfo {
         }
     }
 
-    public ArrayList<Box> readBox(SpannableStringBuilder[] builders, Box box, boolean isRead) {
+    public static ArrayList<Box> readBox(SpannableStringBuilder[] builders, Box box, boolean isRead) {
         Log.e(TAG, "readBox: ");
-//        try {
-//            if (box.getLevel() != 0) {
-//                String className = MP4.getValue(box.getName());
-//                Class clz = Class.forName(className);
-//                Field field = clz.getDeclaredField("describe");
-//                field.setAccessible(true);
-//                String describe = (String) field.get(clz.newInstance());
-//                if (describe != null) {
-//                    builders[0] = new SpannableStringBuilder();
-//                    builders[0].append(describe);
-//                    Log.e(TAG, "readBox: describe" + describe);
-//                }
-//            }
         readBox(builders, box);
         if (!isRead) {
             Log.e(TAG, "readBox: offset" + box.getOffset());
@@ -182,10 +164,10 @@ public class NIOReadInfo {
                             last = CharUtil.c2Int(data[i]);
                             break;
                         case "time":
-                            value[i] = CharUtil.c2Str(data[i]);
+                            value[i] = CharUtil.c2Time(data[i]);
                             break;
                         case "duration":
-                            value[i] = CharUtil.c2Str(data[i]);
+                            value[i] = CharUtil.c2Duration(data[i]);
                             break;
                         case "matrix":
                             value[i] = CharUtil.c2Str(data[i]);
@@ -219,24 +201,32 @@ public class NIOReadInfo {
         }).start();
     }
 
-    public void clear() {
+    public static void clear() {
         id = 0;
         MyHandler.stop = true;
         boxList.clear();
+        MP4.TIME_SCALE = 0;
         destroy();
     }
 
     public static Box searchBox(int id) {
-        Box box = boxList.stream().filter(b -> id == b.getId()).findAny().orElse(null);
-        return box;
+        return boxList.stream().filter(b -> id == b.getId()).findAny().orElse(null);
     }
 
     public static Box searchBox(String type) {
-        Box box = boxList.stream().filter(b -> type.equalsIgnoreCase(type)).findAny().orElse(null);
-        return box;
+        return boxList.stream().filter(b -> type.equalsIgnoreCase(b.getName())).findAny().orElse(null);
     }
 
     public static void readItem(byte[] data, int pos, int length) {
-
+        ByteBuffer buffer = ByteBuffer.wrap(data);
+        try {
+            fileChannel.position(pos);
+            fileChannel.read(buffer);
+            buffer.flip();
+            buffer.get(data);
+            buffer.clear();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

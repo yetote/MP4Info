@@ -9,7 +9,7 @@ import com.yetote.mp4info.util.NIOReadInfo;
 import java.nio.channels.FileChannel;
 
 public class Meta extends FullBox {
-    String describe = "暂不支持";
+    String describe = "一个通用的基本结构，用于包含通用的MetaData";
 
     private byte[] all;
 
@@ -21,7 +21,7 @@ public class Meta extends FullBox {
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
-        if (NIOReadInfo.searchBox(box.getParentId()).equalsIgnoreCase("udta")) {
+        if (NIOReadInfo.searchBox(box.getParentId()).getName().equalsIgnoreCase("udta")) {
             box.setOffset(version_size + flag_size);
         }
         String[] name = new String[]{"全部数据", "length", "type", "version", "flag"};

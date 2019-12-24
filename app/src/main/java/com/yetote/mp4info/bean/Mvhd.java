@@ -28,7 +28,8 @@ public class Mvhd extends FullBox {
     private String[] introductions = new String[]{
             "version为0时，creation_time、modification_time、timescale、duration长度为32bit；为1时，长度为64bit",
             "媒体文件创建时间（从1904-01-01 00:00:00开始计算，单位：秒）",
-            "媒体文件最新修改时间（从1904-01-01 00:00:00开始计算，单位：秒。该数值并不一定准确）",
+            "媒体文件最新修改时间（从1904-01-01 00:00:00开始计算，单位：秒。该数值并不一定准确）\n" +
+                    "\nPS:所有时间均为格林尼治时间\n",
             "该数值表示整个文件的单位，表示将1s划分为多少份。例如：time_scale=1000，则本文件时间单位为1/1000s=1ms",
             "媒体可播放最长时间，需要与time_scale计算才能得到实际时间。（所有轨道中的最长持续时间）/1000s=1ms",
             "文件播放速率，0x00010000代表播放速率为1.0（正常速率）/1000s=1ms",
@@ -85,7 +86,7 @@ public class Mvhd extends FullBox {
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
         CharUtil.linkDescribe(builders[0], describe, key, introductions);
-        String[] name = new String[]{"全部数据","length", "type", "version", "flag",
+        String[] name = new String[]{"全部数据", "length", "type", "version", "flag",
                 "creation_time",
                 "modification_time",
                 "time_scale",
@@ -96,7 +97,7 @@ public class Mvhd extends FullBox {
                 "matrix",
                 "pre_defined",
                 "next_track_id"};
-        byte[][] data = new byte[][]{all,length != 1 ? length_arr : large_length_arr, type_arr, version, flag,
+        byte[][] data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr, version, flag,
                 creation_time,
                 modification_time,
                 time_scale,
@@ -108,11 +109,11 @@ public class Mvhd extends FullBox {
                 pre_defined,
                 next_track_id};
         String[] value = new String[name.length];
-        String[] type = new String[]{"char","int", "char", "int", "int",
+        String[] type = new String[]{"char", "int", "char", "int", "int",
                 "time",
                 "time",
                 "int",
-                "time",
+                "duration",
                 "fixed",
                 "fixed",
                 "char",

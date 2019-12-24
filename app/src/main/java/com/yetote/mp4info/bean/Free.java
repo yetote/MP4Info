@@ -10,7 +10,7 @@ import java.nio.channels.FileChannel;
 
 public class Free extends BasicBox {
     String describe = "Free Space Box，剩余空间\n"
-            + "      PS:省略部分数据";
+            + "\nPS:省略部分数据";
 
     private byte[] all;
 

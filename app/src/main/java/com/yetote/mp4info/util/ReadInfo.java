@@ -11,13 +11,13 @@ public class ReadInfo {
 
     NIOReadInfo nioReadInfo;
 
-    public ReadInfo(String path) {
-        nioReadInfo = new NIOReadInfo(path);
+    public ReadInfo() {
+//        nioReadInfo = NIOReadInfo.prepare(path);
 //        NativeReadInfo.readFile(path);
     }
 
-    public boolean prepare() {
-        return nioReadInfo.prepare();
+    public boolean prepare(String path) {
+        return nioReadInfo.prepare(path);
     }
 
 

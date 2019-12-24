@@ -136,7 +136,7 @@ public class Tkhd extends FullBox {
                 "time",
                 "int",
                 "char",
-                "time",
+                "duration",
                 "char",
                 "int",
                 "int",

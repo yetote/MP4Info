@@ -5,9 +5,15 @@ import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import static java.util.Locale.SIMPLIFIED_CHINESE;
+
 public class CharUtil {
     private static final String TAG = "CharUtil";
-
+    public static final long TIME_SCALE_1904 = -2082873600;
 
     public static String c2Str(byte[] arr) {
         StringBuilder s = new StringBuilder();
@@ -55,28 +61,52 @@ public class CharUtil {
     }
 
     public static String c2Time(byte[] data) {
-        if (MP4.TIME_SCALE <= 0) {
-            byte[] timeScaleArr = new byte[4];
-            NIOReadInfo.readItem(timeScaleArr, NIOReadInfo.searchBox("mvhd").getPos() + 20, 4);
-            MP4.TIME_SCALE = CharUtil.c2Int(timeScaleArr);
-            if (MP4.TIME_SCALE <= 0) {
-                return "无法计算具体时间，原始数据为:" + c2Int(data);
-            }
+        long currentTimeFrom1970 = c2long(data) + TIME_SCALE_1904;
+        if (currentTimeFrom1970<=0){
+            return "无法计算具体时间，原始数据为:" + c2long(data);
         }
-        int time = c2Int(data) / MP4.TIME_SCALE;
-        int second = time % (60);
-        int minute = time % (60 * 60);
-        int hour = time / (60 * 60);
-        return null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Log.e(TAG, "c2Time: " + currentTimeFrom1970);
+        return sdf.format(new Date(currentTimeFrom1970 * 1000));
     }
 
     public static String c2Duration(byte[] data) {
-        if (MP4.TIME_SCALE == 0) {
-            return "无法计算具体时间，原始数据为:" + c2Int(data);
+        if (MP4.TIME_SCALE <= 0) {
+            byte[] timeScaleArr = new byte[4];
+            NIOReadInfo.readItem(timeScaleArr, NIOReadInfo.searchBox("mvhd").getPos() + 20, 4);
+            MP4.TIME_SCALE = CharUtil.c2long(timeScaleArr);
+            if (MP4.TIME_SCALE <= 0) {
+                return "无法计算具体时间，原始数据为:" + c2long(data);
+            }
         }
-        int time = c2Int(data) /;
-        int hour = time / (60 * 60)
-        return null;
+        //mp4TimeUnit指mp4中时间单位为多少秒
+        double mp4TimeUnit = 1.0 / MP4.TIME_SCALE;
+        long time = (long) (c2long(data) * mp4TimeUnit);
+        if (time <= 0) {
+            return "无法计算具体时间，原始数据为:" + c2long(data);
+        }
+        Log.e(TAG, "c2Duration: " + time);
+        long hour = time / (60 * 60);
+        long min = time % (60 * 60) / 60;
+        long sec = time % 60;
+        String s = "";
+        if (hour < 10) {
+            s += "0" + hour + ":";
+        } else {
+            s += hour + ":";
+        }
+        if (min < 10) {
+            s += "0" + min + ":";
+        } else {
+            s += min + ":";
+        }
+        if (sec < 10) {
+            s += "0" + sec;
+        } else {
+            s += sec;
+        }
+        Log.e(TAG, "c2Duration: " + hour + ":" + min + ":" + sec);
+        return s;
     }
 
     public static String c2Matrix(byte[] data) {

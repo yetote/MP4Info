@@ -10,7 +10,7 @@ import java.nio.channels.FileChannel;
 
 public class Mdat extends BasicBox {
     String describe = "音视频真实数据\n"
-            + "      PS:省略部分数据";
+            + "\nS:省略部分数据";
 
     private byte[] all;
 
