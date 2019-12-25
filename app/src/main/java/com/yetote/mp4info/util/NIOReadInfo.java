@@ -140,7 +140,7 @@ public class NIOReadInfo {
                 fileChannel.read(boxBuffer);
 
                 boxBuffer.flip();
-                boxBuffer.get(data[0]);
+                boxBuffer.get(data[0], 0, data[0].length);
                 value[0] = CharUtil.c2Str(data[0]);
                 MyHandler.pushMessage(MyHandler.DATA_CONTINUE, new DataModel(name[0], CharUtil.changePrimevalData(data[0]), value[0]));
                 int last = 0;

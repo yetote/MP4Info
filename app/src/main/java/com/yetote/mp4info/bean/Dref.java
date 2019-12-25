@@ -52,6 +52,7 @@ public class Dref extends FullBox {
     private byte[] data_entry;
     private byte[] all;
 
+
     public Dref(int length) {
         data_entry_size = length - 28;
         version = new byte[version_size];
@@ -69,32 +70,58 @@ public class Dref extends FullBox {
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
         CharUtil.linkDescribe(builders[0], describe, key, introductions);
-        String[] name = new String[]{"全部数据", "length", "type", "version", "flag",
-                "entry_count",
-                "entry_box_length",
-                "entry_box_type",
-                "entry_version",
-                "entry_flags",
-                "data_entry"};
-        byte[][] data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr, version, flag,
-                entry_count,
-                entry_box_length,
-                entry_box_type,
-                entry_version,
-                entry_flags,
-                data_entry,
-        };
-        String[] value = new String[name.length];
-        String[] type = new String[]{"char", "int", "char", "int", "int",
-                "int",
-                "int",
-                "char",
-                "int",
-                "int",
-                "null",
-        };
+        String[] name;
+        String[] value;
+        String[] type;
+        byte[][] data;
         if (data_entry_size != 0) {
-            type[type.length - 1] = "char";
+            name = new String[]{"全部数据", "length", "type", "version", "flag",
+                    "entry_count",
+                    "entry_box_length",
+                    "entry_box_type",
+                    "entry_version",
+                    "entry_flags",
+                    "data_entry"};
+            data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr, version, flag,
+                    entry_count,
+                    entry_box_length,
+                    entry_box_type,
+                    entry_version,
+                    entry_flags,
+                    data_entry,
+            };
+            value = new String[name.length];
+            type = new String[]{"char", "int", "char", "int", "int",
+                    "int",
+                    "int",
+                    "char",
+                    "int",
+                    "int",
+                    "char",
+            };
+        } else {
+            name = new String[]{"全部数据", "length", "type", "version", "flag",
+                    "entry_count",
+                    "entry_box_length",
+                    "entry_box_type",
+                    "entry_version",
+                    "entry_flags",
+            };
+            data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr, version, flag,
+                    entry_count,
+                    entry_box_length,
+                    entry_box_type,
+                    entry_version,
+                    entry_flags,
+            };
+            value = new String[name.length];
+            type = new String[]{"char", "int", "char", "int", "int",
+                    "int",
+                    "int",
+                    "char",
+                    "int",
+                    "int",
+            };
         }
         NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);
     }

@@ -11,7 +11,7 @@ import com.yetote.mp4info.util.NIOReadInfo;
 import java.nio.channels.FileChannel;
 
 public class Mvhd extends FullBox {
-    String describe = "该box在文件中唯一，对整个媒体文件进行了全局的描述（这些信息与媒体数据无关，只是对媒体文件的描述";
+    String describe = "该box在文件中唯一，对整个媒体文件进行了全局的描述（这些信息与媒体数据无关，只是对媒体文件的描述）";
     private String[] key = new String[]{
             "version",
             "creation_time",

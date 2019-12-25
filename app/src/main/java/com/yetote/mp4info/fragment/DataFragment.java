@@ -57,7 +57,7 @@ public class DataFragment extends Fragment {
                     //时判断界面显示的最后item的position是否等于itemCount总数-1也就是最后一个item的position
                     //如果相等则说明已经滑动到最后了
                     if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
-                        getData(30);
+                        getData(50);
                     }
                 }
             }

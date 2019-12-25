@@ -253,9 +253,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (dataFragment != null) {
-                dataFragment.getData(10);
+                dataFragment.getData(50);
             }
         }
     }
-
 }

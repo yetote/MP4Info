@@ -14,14 +14,21 @@ public class Trak extends BasicBox {
             "       1、包含媒体轨道信息\n" +
             "       2、包含流媒体数据打包协议(hint track)\n" +
             "一个trak至少要包括一个tkhd容器和一个mdia容器";
+    private byte[] all;
 
     public Trak(int length) {
+        all = new byte[length];
     }
 
     @Override
     public void read(SpannableStringBuilder[] builders, FileChannel fileChannel, Box box) {
         super.read(builders, fileChannel, box);
         builders[0].append(this.describe);
-        builders[1].append("暂无数据");
+        String[] name = new String[]{"全部数据", "length", "type",};
+        byte[][] data = new byte[][]{all, length != 1 ? length_arr : large_length_arr, type_arr,};
+        String[] value = new String[name.length];
+        String[] type = new String[]{"char", "int", "char",};
+
+        NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);
     }
 }

@@ -15,7 +15,7 @@ public class Mdat extends BasicBox {
     private byte[] all;
 
     public Mdat(int length) {
-        if (length >= 5000) length = 5000;
+        if (length >= 1000) length = 1000;
         all = new byte[length];
     }
 
