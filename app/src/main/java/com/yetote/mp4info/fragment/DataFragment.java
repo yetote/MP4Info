@@ -66,9 +66,8 @@ public class DataFragment extends Fragment {
     }
 
     public void clear() {
-        dataList.clear();
-//        MyHandler.getMessage(30, dataList);
         MyHandler.clear();
+        dataList.clear();
         adapter.notifyDataSetChanged();
         waitingIv.setVisibility(View.VISIBLE);
     }

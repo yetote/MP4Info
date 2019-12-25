@@ -47,7 +47,7 @@ public class Tkhd extends FullBox {
             "保留字段",
             "矩阵",
             "宽",
-            "高" +
+            "高\n" +
                     "\nPS:width和height描述字幕等文本信息时，可以使用flag=0x000008（track_size_is_aspect_ratio）进行描述；对于非视觉轨道(如音轨),则应将其设置为0",
     };
     private int creation_time_size = 4;

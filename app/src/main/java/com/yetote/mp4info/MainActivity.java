@@ -234,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void clear() {
         pathTv.setText("");
+        dataFragment.clear();
 //        root.deleteChild(parent);
         for (int i = parent.getChildren().size() - 1; i >= 0; i--) {
             parent.deleteChild(parent.getChildren().get(i));

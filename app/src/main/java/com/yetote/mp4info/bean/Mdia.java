@@ -13,6 +13,7 @@ public class Mdia extends BasicBox {
     private byte[] all;
 
     public Mdia(int length) {
+        if (length >= 1000) length = 1000;
         all = new byte[length];
     }
 
