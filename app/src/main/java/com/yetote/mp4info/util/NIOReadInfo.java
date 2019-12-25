@@ -85,14 +85,11 @@ public class NIOReadInfo {
                 buffer.flip();
                 buffer.get(lengthArr);
                 buffer.get(typeArr);
-                Log.e(TAG, "readFile: length " + Arrays.toString(lengthArr));
                 int length = CharUtil.c2Int(lengthArr);
-                Log.e(TAG, "readFile: type" + Arrays.toString(typeArr));
                 String type = new String(typeArr);
                 buffer.clear();
                 boxList.add(new Box(type, id, pos, length, level, parentId));
                 pos += length;
-                Log.e(TAG, "readFile:" + boxList.get(id).toString());
                 id++;
                 // TODO: 2019/11/18 需要处理==1时的largesize
                 if (length == 0 || length == 1) return;
@@ -117,16 +114,11 @@ public class NIOReadInfo {
     }
 
     public static ArrayList<Box> readBox(SpannableStringBuilder[] builders, Box box, boolean isRead) {
-        Log.e(TAG, "readBox: ");
         readBox(builders, box);
         if (!isRead) {
-            Log.e(TAG, "readBox: offset" + box.getOffset());
             readFile(box.getPos() + box.getOffset() + 8, box.getPos() + box.getLength(), box.getLevel() + 1, box.getId());
-            Log.e(TAG, "readBox: " + builders[0].toString());
             return getBox(box.getLevel() + 1, box.getId());
         }
-
-
         return null;
     }
 
@@ -153,7 +145,6 @@ public class NIOReadInfo {
                         value[i] = "null";
                         continue;
                     }
-                    Log.e(TAG, "readBox: i=" + i + "\n length=" + length + "\n pos=" + boxBuffer.position());
                     boxBuffer.get(data[i]);
                     switch (type[i]) {
                         case "char":
@@ -174,7 +165,6 @@ public class NIOReadInfo {
                             break;
                         case "fixed":
                             value[i] = (float) CharUtil.c2Fixed(data[i]) + "";
-                            last = CharUtil.c2Int(data[i]);
                             break;
                         case "null":
                             value[i] = "null";

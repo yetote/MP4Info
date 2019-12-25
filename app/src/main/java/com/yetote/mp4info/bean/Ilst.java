@@ -9,7 +9,7 @@ import com.yetote.mp4info.util.NIOReadInfo;
 import java.nio.channels.FileChannel;
 
 public class Ilst extends BasicBox {
-    String describe = "暂不支持";
+    String describe = "未找到说明文档";
 
     private byte[] all;
 

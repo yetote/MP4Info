@@ -78,11 +78,11 @@ public class DataFragment extends Fragment {
         }
         int state = MyHandler.getMessage(size, dataList);
         Log.e(TAG, "getData:state " + state);
-        if (state == MyHandler.DATA_FINISH) {
-            Toast.makeText(getContext(), "无更多数据", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getContext(), "加载成功", Toast.LENGTH_SHORT).show();
-        }
+//        if (state == MyHandler.DATA_FINISH) {
+//            Toast.makeText(getContext(), "无更多数据", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(getContext(), "加载成功", Toast.LENGTH_SHORT).show();
+//        }
         if (dataList.size() == 0) {
             dataList.add(new DataModel("null", "", ""));
         }

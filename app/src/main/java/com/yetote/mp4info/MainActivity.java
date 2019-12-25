@@ -24,6 +24,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 import com.yetote.mp4info.adapter.TreeNodeAdapter;
@@ -93,15 +94,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         prepareBtn.setOnClickListener(v -> {
+            if (pathTv.getText().toString().isEmpty()) {
+                Toast.makeText(this, "请选择文件", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (parse) {
                 Toast.makeText(this, "文件已解析", Toast.LENGTH_SHORT).show();
                 return;
             }
             parse = true;
-            if (pathTv.getText().toString().isEmpty()) {
-                Toast.makeText(this, "请选择文件", Toast.LENGTH_SHORT).show();
-                return;
-            }
 
             if (!pathTv.getText().toString().endsWith(".mp4")) {
                 Toast.makeText(this, "仅支持MP4,请重新选择", Toast.LENGTH_SHORT).show();

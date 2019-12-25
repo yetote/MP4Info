@@ -13,6 +13,7 @@ public class Stbl extends BasicBox {
     private byte[] all;
 
     public Stbl(int length) {
+        if (length>=1000) length=1000;
         all = new byte[length];
     }
 

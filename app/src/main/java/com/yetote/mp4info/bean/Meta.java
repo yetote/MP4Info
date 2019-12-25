@@ -14,6 +14,7 @@ public class Meta extends FullBox {
     private byte[] all;
 
     public Meta(int length) {
+        if (length>=1000) length=1000;
         all = new byte[length];
     }
 

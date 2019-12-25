@@ -17,6 +17,7 @@ public class Trak extends BasicBox {
     private byte[] all;
 
     public Trak(int length) {
+        if (length >= 1000) length = 1000;
         all = new byte[length];
     }
 

@@ -13,6 +13,7 @@ public class Minf extends BasicBox {
     private byte[] all;
 
     public Minf(int length) {
+        if (length >= 1000) length = 1000;
         all = new byte[length];
     }
 

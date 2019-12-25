@@ -8,6 +8,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        CrashReport.initCrashReport(getApplicationContext(), "1c78955348", true);
+        CrashReport.initCrashReport(getApplicationContext(), "f9e0fae12e", true);
     }
 }

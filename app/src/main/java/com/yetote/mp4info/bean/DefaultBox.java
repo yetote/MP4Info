@@ -13,6 +13,7 @@ public class DefaultBox extends BasicBox {
     private byte[] all;
 
     public DefaultBox(int length) {
+        if (length>=1000) length=1000;
         all = new byte[length];
     }
     @Override

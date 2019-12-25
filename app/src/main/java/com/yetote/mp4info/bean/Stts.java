@@ -31,6 +31,7 @@ public class Stts extends FullBox {
     private static final String TAG = "Stts";
 
     public Stts(int length) {
+        if (length>=1000) length=1000;
         all = new byte[length];
     }
 
