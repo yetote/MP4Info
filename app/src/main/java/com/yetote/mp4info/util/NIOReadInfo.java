@@ -138,7 +138,6 @@ public class NIOReadInfo {
             Log.e(TAG, "readBox: " + Arrays.toString(name));
             boxBuffer.flip();
             Log.e(TAG, "readFile: 索引=" + pos + "\n可用=" + length + "\n总可用=" + (fileChannel.size() - pos) + "\n需要=" + data[0].length + "\n当前=" + boxBuffer.limit());
-            data[0] = new byte[boxBuffer.limit()];
             boxBuffer.get(data[0], 0, data[0].length);
             value[0] = CharUtil.c2Str(data[0]);
             if (name.length == 1) {

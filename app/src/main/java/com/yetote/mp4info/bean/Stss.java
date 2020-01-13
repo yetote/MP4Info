@@ -81,7 +81,7 @@ public class Stss extends FullBox {
             type[5] = "int";
 
             for (int i = 0; i < count; i++) {
-                name[i + 6] = "sample_number:(" + (i + 1) + ")";
+                name[i + 6] = "sample_number(" + (i + 1) + "):";
                 data[i + 6] = sample_number_arr;
                 type[i + 6] = "int";
             }

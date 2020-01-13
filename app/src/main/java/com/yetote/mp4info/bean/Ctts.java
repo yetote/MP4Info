@@ -92,15 +92,15 @@ public class Ctts extends FullBox {
             type[5] = "int";
 
             for (int i = 0; i < count; i++) {
-                name[i * 2 + 6] = "sample_count:(" + (i + 1) + ")";
+                name[i * 2 + 6] = "sample_count(" + (i + 1) + "):";
                 data[i * 2 + 6] = sample_count_arr;
                 type[i * 2 + 6] = "int";
 
-                name[i * 2 + 7] = "sample_offset:(" + (i + 1) + ")";
+                name[i * 2 + 7] = "sample_offset(" + (i + 1) + "):";
                 data[i * 2 + 7] = sample_offset_arr;
                 type[i * 2 + 7] = "long";
             }
-            NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);
+            NIOReadInfo.readBox(builders[1], box.getPos(), Math.min(length, 1000), fileChannel, name, value, data, type);
         } catch (IOException e) {
             e.printStackTrace();
         }

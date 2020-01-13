@@ -110,11 +110,11 @@ public class Stsz extends FullBox {
             type[6] = "int";
 
             for (int i = 0; i < sampleCount; i++) {
-                name[i + 7] = "entry_size" + (i + 1);
+                name[i + 7] = "entry_size(" + (i + 1)+"):";
                 data[i + 7] = entry_size_arr;
                 type[i + 7] = "int";
             }
-            NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);
+            NIOReadInfo.readBox(builders[1], box.getPos(),  Math.min(length, 1000), fileChannel, name, value, data, type);
         } catch (IOException e) {
             e.printStackTrace();
         }

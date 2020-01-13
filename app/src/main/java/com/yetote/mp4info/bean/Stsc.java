@@ -91,15 +91,15 @@ public class Stsc extends FullBox {
             type[5] = "int";
 
             for (int i = 0; i < count; i++) {
-                name[i * 3 + 6] = "first_chunk" + (i + 1);
+                name[i * 3 + 6] = "first_chunk(" + (i + 1)+"):";
                 data[i * 3 + 6] = first_chunk_arr;
                 type[i * 3 + 6] = "int";
 
-                name[i * 3 + 7] = "sample_per_chunk" + (i + 1);
+                name[i * 3 + 7] = "sample_per_chunk(" + (i + 1)+"):";
                 data[i * 3 + 7] = sample_per_chunk_arr;
                 type[i * 3 + 7] = "int";
 
-                name[i * 3 + 8] = "sample_description_index" + (i + 1);
+                name[i * 3 + 8] = "sample_description_index(" + (i + 1)+"):";
                 data[i * 3 + 8] = sample_description_index_arr;
                 type[i * 3 + 8] = "int";
             }

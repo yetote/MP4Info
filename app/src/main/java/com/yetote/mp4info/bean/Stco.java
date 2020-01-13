@@ -78,7 +78,7 @@ public class Stco extends FullBox {
             type[5] = "int";
 
             for (int i = 0; i < count; i++) {
-                name[i + 6] = "chunk_offset:(" + (i + 1) + ")";
+                name[i + 6] = "chunk_offset(" + (i + 1) + "):";
                 data[i + 6] = chunk_offset_arr;
                 type[i + 6] = "int";
             }

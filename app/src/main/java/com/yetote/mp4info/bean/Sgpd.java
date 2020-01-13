@@ -99,7 +99,7 @@ public class Sgpd extends FullBox {
                 type[6] = "int";
 
                 for (int i = 0; i < count; i++) {
-                    name[i + 7] = "roll_distance:(" + (i + 1) + ")";
+                    name[i + 7] = "roll_distance(" + (i + 1) + "):";
                     data[i + 7] = roll_distance_arr;
                     type[i + 7] = "int";
                 }

@@ -53,6 +53,7 @@ public abstract class BasicBox {
                 Log.e(TAG, "read:length " + length);
             }
             Log.e(TAG, "read: BasicLength" + length);
+            length = Math.min(1000, length);
         } catch (IOException e) {
             e.printStackTrace();
         }

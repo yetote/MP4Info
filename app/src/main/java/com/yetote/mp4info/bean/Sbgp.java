@@ -110,11 +110,11 @@ public class Sbgp extends FullBox {
 
 
             for (int i = 0; i < count; i++) {
-                name[2 * i + 7 + offset] = "sample_count:(" + (i + offset + 1) + ")";
+                name[2 * i + 7 + offset] = "sample_count(" + (i + offset + 1) + "):";
                 data[2 * i + 7 + offset] = sample_count_arr;
                 type[2 * i + 7 + offset] = "int";
 
-                name[2 * i + 8 + offset] = "group_description_index:(" + (i + offset + 1) + ")";
+                name[2 * i + 8 + offset] = "group_description_index(" + (i + offset + 1) + "):";
                 data[2 * i + 8 + offset] = group_description_index_arr;
                 type[2 * i + 8 + offset] = "int";
             }

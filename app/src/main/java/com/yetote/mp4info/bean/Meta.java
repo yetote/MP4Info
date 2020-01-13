@@ -30,6 +30,6 @@ public class Meta extends FullBox {
         String[] value = new String[name.length];
         String[] type = new String[]{"char", "int", "char", "int", "int"};
 
-        NIOReadInfo.readBox(builders[1], box.getPos(), length, fileChannel, name, value, data, type);
+        NIOReadInfo.readBox(builders[1], box.getPos(),  Math.min(length, 1000), fileChannel, name, value, data, type);
     }
 }
