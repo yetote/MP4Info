@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
@@ -24,7 +23,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 import com.yetote.mp4info.adapter.TreeNodeAdapter;

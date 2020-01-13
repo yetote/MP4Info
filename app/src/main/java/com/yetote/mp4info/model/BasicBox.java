@@ -22,7 +22,7 @@ public abstract class BasicBox {
     protected String type;
     protected int length;
     protected long large_length;
-
+    private static final String TAG = "BasicBox";
     private byte[] all;
 
     public BasicBox() {
@@ -47,9 +47,12 @@ public abstract class BasicBox {
                 buffer.flip();
                 buffer.get(large_length_arr);
                 large_length = CharUtil.c2long(large_length_arr);
+                Log.e(TAG, "read:largeLength " + large_length);
             } else if (length == 0) {
                 length = (int) (fileChannel.size() - box.getPos());
+                Log.e(TAG, "read:length " + length);
             }
+            Log.e(TAG, "read: BasicLength" + length);
         } catch (IOException e) {
             e.printStackTrace();
         }

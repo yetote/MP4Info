@@ -33,6 +33,7 @@ public class MyHandler {
 
     public static void pushMessage(int messageCode, DataModel model) {
         if (model == null) {
+            Log.e(TAG, "pushMessage: model is null " );
             return;
         }
         switch (messageCode) {

@@ -47,6 +47,7 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+    ndkVersion "21.0.6011959-rc2"
 }
 
 dependencies {
