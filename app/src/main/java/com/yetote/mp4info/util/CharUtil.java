@@ -60,9 +60,14 @@ public class CharUtil {
         return temp;
     }
 
+    public static int c2TimeScale(byte[] data) {
+        MP4.TIME_SCALE = CharUtil.c2long(data);
+        return c2Int(data);
+    }
+
     public static String c2Time(byte[] data) {
         long currentTimeFrom1970 = c2long(data) + TIME_SCALE_1904;
-        if (currentTimeFrom1970<=0){
+        if (currentTimeFrom1970 <= 0) {
             return "无法计算具体时间，原始数据为:" + c2long(data);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());

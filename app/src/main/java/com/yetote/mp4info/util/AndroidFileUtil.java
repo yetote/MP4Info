@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
-public class FileUtil {
+public class AndroidFileUtil {
     /**
      * 根据Uri获取图片的绝对路径
      *

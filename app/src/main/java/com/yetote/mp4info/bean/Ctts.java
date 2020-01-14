@@ -44,7 +44,7 @@ public class Ctts extends FullBox {
     private byte[] sample_offset_arr;
 
     public Ctts(int length) {
-        all = new byte[length];
+        all = new byte[Math.min(length, 1000)];
         entry_count_arr = new byte[entry_count_size];
         sample_count_arr = new byte[sample_count_size];
         sample_offset_arr = new byte[sample_offset_size];

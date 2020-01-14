@@ -112,7 +112,7 @@ public class Mvhd extends FullBox {
         String[] type = new String[]{"char", "int", "char", "int", "int",
                 "time",
                 "time",
-                "int",
+                "timeScale",
                 "duration",
                 "fixed",
                 "fixed",

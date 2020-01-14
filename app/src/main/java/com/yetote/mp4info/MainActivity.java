@@ -31,7 +31,7 @@ import com.yetote.mp4info.fragment.DataFragment;
 import com.yetote.mp4info.fragment.DescribeFragment;
 import com.yetote.mp4info.model.Box;
 import com.yetote.mp4info.model.DataModel;
-import com.yetote.mp4info.util.FileUtil;
+import com.yetote.mp4info.util.AndroidFileUtil;
 import com.yetote.mp4info.util.MP4;
 import com.yetote.mp4info.util.MyHandler;
 import com.yetote.mp4info.util.ReadInfo;
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case FILE_SELECT_CODE:
                 if (resultCode == RESULT_OK) {
-                    String path = FileUtil.getRealPathFromUri(this, data.getData());
+                    String path = AndroidFileUtil.getRealPathFromUri(this, data.getData());
                     Log.e(TAG, "onActivityResult: " + path);
                     pathTv.setText(path);
                 }

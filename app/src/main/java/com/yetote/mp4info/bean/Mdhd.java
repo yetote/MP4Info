@@ -27,7 +27,9 @@ public class Mdhd extends FullBox {
             "标志码",
             "创建时间",
             "最新修改时间",
-            "时间单位",
+            "时间单位\n" +
+                    "\nPS:在视轨中，该值可以通过与trak-minf-stbl-stts中的sample_delta相除得到帧率(如果sample_delta有多个，可以除以该值的平均值);\n" +
+                    "在音轨中，该值表示采样率\n",
             "总时长",
             "使用的语言",
             "预定义",
@@ -88,7 +90,7 @@ public class Mdhd extends FullBox {
         String[] type = new String[]{"char", "int", "char", "int", "int",
                 "time",
                 "time",
-                "int",
+                "timeScale",
                 "duration",
                 "int",
                 "char",
